@@ -26,21 +26,14 @@ const SORTS: Record<string, string> = {
   entity: "entity_name",
 };
 
-const BUNDLED = path.join("data", "public", "ledger.sqlite");
-
 let cached: DatabaseSync | undefined;
 
 function bundledSource(): string {
   if (process.env.LEDGER_PUBLIC_DB) return process.env.LEDGER_PUBLIC_DB;
-  const candidates = [
-    path.join(process.cwd(), BUNDLED),
-    path.join(process.cwd(), "..", BUNDLED),
-  ];
-  for (const candidate of candidates) {
-    if (fs.existsSync(candidate)) return candidate;
-  }
+  const bundled = path.join(process.cwd(), "data", "public", "ledger.sqlite");
+  if (fs.existsSync(bundled)) return bundled;
   throw new Error(
-    "Screened public ledger not found at web/data/public/ledger.sqlite. Run the local Python ingest, then node web/scripts/prepare-public-db.mjs.",
+    "Screened public ledger not found at data/public/ledger.sqlite. Run the local Python ingest, then node web/scripts/prepare-public-db.mjs.",
   );
 }
 
