@@ -297,6 +297,17 @@ def _transformations() -> list[dict[str, object]]:
             ),
             "code": "pipeline/enrollment.py load_october1_enrollment",
         },
+        {
+            "id": "historic_screened_merge",
+            "step": (
+                "Merge screened historic public lines beside the existing index. "
+                "A document whose id or SHA-256 is already stored is skipped. "
+                "An indexed document is kept only when public cents plus withheld cents plus non-spending cents equal the printed total. "
+                "Unreconciled documents are listed with no public lines and are not zero spending. "
+                "Native fiscal-year and period labels stay as printed. Amounts stay integer cents and are reported or vouchered, not settlement proof."
+            ),
+            "code": "pipeline/historic.py load_historic",
+        },
     ]
 
 

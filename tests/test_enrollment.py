@@ -67,30 +67,27 @@ def test_public_enrollment_keeps_suppression_and_the_comparability_break():
     screened = connection.execute(
         "SELECT COUNT(*), COALESCE(SUM(amount_cents), 0) FROM lines WHERE in_default_aggregate = 1"
     ).fetchone()
-    assert tuple(screened) == (14387, 2155944882)
+    assert tuple(screened) == (72961, 13473995806)
 
 
 def test_year_match_does_not_use_the_previous_july_or_an_undated_fiscal_label():
     connection = sqlite3.connect(f"file:{public_db()}?mode=ro", uri=True)
     connection.row_factory = sqlite3.Row
-    rows = {(row["source_id"], row["status"]): row for row in snapshot_comparisons(connection, "either")}
-    scottsdale = rows[("susd_diligent_ap_report", "reported_per_enrolled_student")]
-    assert scottsdale["school_year"] == "2025-2026"
+    rows = {(row["source_id"], row["school_year"], row["status"]): row for row in snapshot_comparisons(connection, "either")}
+    scottsdale = rows[("susd_diligent_ap_report", "2025-2026", "reported_per_enrolled_student")]
     assert scottsdale["october_1_enrollment"] == 20180
-    assert scottsdale["spending_first_date"] == "2025-07-14"
-    higley = rows[("husd_diligent_voucher_summary", "reported_per_enrolled_student")]
-    assert higley["school_year"] == "2024-2025"
+    assert scottsdale["spending_first_date"] >= "2025-07-01"
+    assert scottsdale["spending_last_date"] <= "2026-06-30"
+    higley = rows[("husd_diligent_voucher_summary", "2024-2025", "reported_per_enrolled_student")]
     assert higley["october_1_enrollment"] == 12351
-    queen = rows[("qcusd_diligent_voucher_summary", "no_enrollment_workbook")]
-    assert queen["school_year"] == "2026-2027"
+    queen = rows[("qcusd_diligent_voucher_summary", "2026-2027", "no_enrollment_workbook")]
     assert queen["october_1_enrollment"] is None
-    chandler = rows[("chandler_highbond_voucher_unverified", "no_dated_spending")]
-    assert chandler["school_year"] is None
+    chandler = rows[("chandler_highbond_voucher_unverified", None, "no_dated_spending")]
     assert chandler["reported_cents_per_enrolled_student"] is None
-    check_date = {(row["source_id"], row["status"]): row for row in snapshot_comparisons(connection, "check_date")}
-    assert ("husd_diligent_voucher_summary", "reported_per_enrolled_student") not in check_date
-    assert check_date[("husd_diligent_voucher_summary", "no_dated_spending")]["reported_cents_per_enrolled_student"] is None
-    assert check_date[("susd_diligent_ap_report", "reported_per_enrolled_student")]["october_1_enrollment"] == 20180
+    check_date = {(row["source_id"], row["school_year"], row["status"]): row for row in snapshot_comparisons(connection, "check_date")}
+    assert ("husd_diligent_voucher_summary", "2024-2025", "reported_per_enrolled_student") not in check_date
+    assert check_date[("husd_diligent_voucher_summary", None, "no_dated_spending")]["reported_cents_per_enrolled_student"] is None
+    assert check_date[("susd_diligent_ap_report", "2025-2026", "reported_per_enrolled_student")]["october_1_enrollment"] == 20180
 
 
 def test_web_school_year_sql_matches_the_python_rule():

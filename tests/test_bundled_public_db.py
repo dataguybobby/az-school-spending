@@ -95,7 +95,7 @@ def test_bundled_database_has_no_private_schema_and_keeps_fixtures():
     screened = connection.execute(
         "SELECT COUNT(*), COALESCE(SUM(amount_cents), 0) FROM lines WHERE in_default_aggregate = 1"
     ).fetchone()
-    assert screened == (14387, 2155944882)
+    assert screened == (72961, 13473995806)
     susd = connection.execute(
         """SELECT total_oct1_enrollment FROM october1_enrollment
            WHERE school_year = '2025-2026' AND lea_entity_id = '4240' AND same_basis_as_2017_18_plus = 1"""

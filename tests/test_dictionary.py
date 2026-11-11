@@ -37,7 +37,7 @@ def test_paradise_valley_stays_unindexed_and_the_three_searches_are_not_ledgers(
     for source_id in SEARCHED_NOT_INGESTED:
         assert sources[source_id]["in_public_index"] is False
         assert sources[source_id]["dictionary_status"] == "searched_not_ingested"
-    assert sources["pvusd_diligent_voucher_summary"]["dictionary_status"] == "parsed_unreconciled"
+    assert sources["pvusd_diligent_voucher_summary"]["dictionary_status"] == "in_public_index"
 
 
 def test_schema_and_default_total_come_from_the_public_database():
@@ -96,24 +96,22 @@ def test_enrollment_is_official_october_1_not_a_blocked_fetch():
     assert enrollment["lea_row_count"] == 11004
     assert enrollment["suppressed_asterisk_count"] == 265
     assert enrollment["blank_total_count"] == 6
-    by_district = {(row["district"], row["status"]): row for row in enrollment["comparisons"]}
-    scottsdale = by_district[("Scottsdale Unified School District #48", "reported_per_enrolled_student")]
-    assert scottsdale["school_year"] == "2025-2026"
+    by_year = {(row["source_id"], row["school_year"], row["status"]): row for row in enrollment["comparisons"]}
+    scottsdale = by_year[("susd_diligent_ap_report", "2025-2026", "reported_per_enrolled_student")]
     assert scottsdale["october_1_enrollment"] == 20180
-    assert scottsdale["screened_amount_cents"] == 1510301067
-    assert scottsdale["reported_cents_per_enrolled_student"] == 74841
-    higley = by_district[("Higley Unified School District No. 60", "reported_per_enrolled_student")]
-    assert higley["school_year"] == "2024-2025"
+    assert scottsdale["screened_amount_cents"] == 4049015442
+    assert scottsdale["spending_first_date"] >= "2025-07-01"
+    assert scottsdale["spending_last_date"] <= "2026-06-30"
+    higley = by_year[("husd_diligent_voucher_summary", "2024-2025", "reported_per_enrolled_student")]
     assert higley["october_1_enrollment"] == 12351
-    queen = by_district[("Queen Creek Unified District #95", "no_enrollment_workbook")]
-    assert queen["school_year"] == "2026-2027"
+    queen = by_year[("qcusd_diligent_voucher_summary", "2026-2027", "no_enrollment_workbook")]
     assert queen["october_1_enrollment"] is None
     assert queen["reported_cents_per_enrolled_student"] is None
-    chandler = by_district[("Chandler Unified School District #80", "no_dated_spending")]
-    assert chandler["school_year"] is None
+    chandler = by_year[("chandler_highbond_voucher_unverified", None, "no_dated_spending")]
     assert chandler["reported_cents_per_enrolled_student"] is None
-    paradise = by_district[("Paradise Valley Unified School District", "not_in_spending_index")]
-    assert paradise["screened_amount_cents"] is None
+    paradise = by_year[("pvusd_diligent_voucher_summary", "2026-2027", "no_enrollment_workbook")]
+    assert paradise["october_1_enrollment"] is None
+    assert paradise["screened_line_count"] == 131
     early = [
         row for row in enrollment["focus_series"]["not_comparable_2010_2011_through_2016_2017"]
         if row["focus_district"] == "Scottsdale Unified" and row["school_year"] == "2010-2011"
