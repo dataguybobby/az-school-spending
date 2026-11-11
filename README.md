@@ -105,7 +105,7 @@ The source repository is https://github.com/dataguybobby/az-school-spending. The
 
 In the Vercel project settings:
 
-- Root Directory: leave empty (the repository root). `package.json` there depends on `next`, and `src` and `public` point at `web/src` and `web/public`.
+- Root Directory: leave empty (the repository root). `package.json` there depends on `next`. The build copies `web/src` and `web/public` into place before `next build`.
 - Framework preset: Next.js
 - Node.js version: 22.x
 - Install command: `npm ci`

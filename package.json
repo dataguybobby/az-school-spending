@@ -6,8 +6,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "node web/scripts/prepare-public-db.mjs && next build",
-    "dev": "node web/scripts/prepare-public-db.mjs && next dev --turbopack",
+    "build": "node scripts/materialize-app.mjs && node web/scripts/prepare-public-db.mjs && next build",
+    "dev": "node scripts/materialize-app.mjs && node web/scripts/prepare-public-db.mjs && next dev --turbopack",
     "start": "next start",
     "lint": "eslint"
   },

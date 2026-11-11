@@ -26,6 +26,10 @@ data/quarantine/
 .vercel/
 .next/
 next-env.d.ts
+
+# Copied from web/src and web/public by scripts/materialize-app.mjs
+/src/
+/public/
 web/.next/
 web/out/
 web/build/
