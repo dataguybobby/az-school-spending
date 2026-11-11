@@ -62,7 +62,7 @@ if (lineColumns.includes("check_number") || lineColumns.includes("check_number_r
   fail("public lines table has a private column");
 }
 const sensitive = db.prepare(
-  "SELECT COUNT(*) AS n FROM lines WHERE lower(description_public) LIKE '%authorized user%' OR upper(description_public) LIKE '% IEP%' OR upper(description_public) LIKE '%IEP %' OR upper(description_public) LIKE '%MEDICAID%'",
+  "SELECT COUNT(*) AS n FROM lines WHERE lower(description_public || ' ' || vendor_raw) LIKE '%authorized user%' OR upper(description_public || ' ' || vendor_raw) LIKE '% IEP%' OR upper(description_public || ' ' || vendor_raw) LIKE '%IEP %' OR upper(description_public || ' ' || vendor_raw) LIKE '%MEDICAID%'",
 ).get();
 if (sensitive.n !== 0) fail(`sensitive descriptions in public lines: ${sensitive.n}`);
 const fixture = db.prepare(

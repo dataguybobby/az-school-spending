@@ -204,13 +204,13 @@ def test_overlap_classifier_and_public_agreement():
     assert filtered["total"] == len(exported)
     assert connection.execute("SELECT COUNT(*) FROM lines WHERE lower(description_public) LIKE '%authorized user%'").fetchone()[0] == 0
     assert connection.execute("SELECT COUNT(*) FROM lines WHERE description_public LIKE '% IEP %' OR description_public LIKE 'IEP %' OR description_public LIKE '% IEP' OR description_public = 'IEP'").fetchone()[0] == 0
-    pv = connection.execute("SELECT printed_total_cents, parsed_total_cents, delta_cents, parsed_outcome, indexed, printed_total_null_reason FROM documents WHERE document_id = 'pvusd_fy26_vouchers_scan'").fetchone()
+    pv = connection.execute("SELECT printed_total_cents, parsed_total_cents, delta_cents, parsed_outcome, indexed, printed_total_null_reason, coverage_note FROM documents WHERE document_id = 'pvusd_fy26_vouchers_scan'").fetchone()
     assert pv["printed_total_cents"] is None
-    assert pv["parsed_total_cents"] is None
     assert pv["delta_cents"] is None
-    assert pv["parsed_outcome"] == "parsed_zero"
+    assert pv["parsed_outcome"] == "parsed_unreconciled"
     assert pv["indexed"] == 0
     assert pv["printed_total_null_reason"]
+    assert "not recorded as zero spending" in (pv["coverage_note"] or "")
 
 
 def test_public_index_hides_check_numbers_and_matches_filters():

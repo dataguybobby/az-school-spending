@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { BarChart } from "@/components/charts";
+import { DistrictBars } from "@/components/district-bars";
+import { StoryCards } from "@/components/story-cards";
+import { VendorTreemap } from "@/components/treemap";
 import { ButtonLink } from "@/components/ui/button";
 import { monthExpr, openDb, orderBy, where, type Filters } from "@/lib/db";
+import { basisLabel } from "@/lib/basis";
 import { dollars } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +50,35 @@ export default async function SpendingPage({
   const overlap = db.prepare("SELECT * FROM overlap_findings").all() as Line[];
   const entities = db.prepare("SELECT DISTINCT entity_name, source_id FROM lines ORDER BY entity_name").all() as Array<{ entity_name: string; source_id: string }>;
   const basis = filters.basis || "either";
+  const districts = db.prepare(
+    `SELECT entity_name, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count, COUNT(DISTINCT document_id) AS documents
+     FROM lines WHERE ${filter.sql} GROUP BY entity_name ORDER BY amount_cents DESC`,
+  ).all(...filter.params) as Array<{ entity_name: string; amount_cents: number; line_count: number; documents: number }>;
+  const vendorParts = db.prepare(
+    `SELECT vendor_key, vendor_raw, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count
+     FROM lines WHERE ${filter.sql} GROUP BY vendor_key, vendor_raw`,
+  ).all(...filter.params) as Array<{ vendor_key: string; vendor_raw: string; amount_cents: number; line_count: number }>;
+  const treemap = treemapSlices(vendorParts);
+  const stories = db.prepare(
+    `SELECT line_id, amount_cents, vendor_raw, description_public, entity_name, check_date, voucher_batch_date, dac_raw
+     FROM lines WHERE in_default_aggregate = 1 AND (
+       (description_public = '24 pack slow rise stress balls' AND amount_cents = 2063)
+       OR (description_public = 'Tisaindor 100PCS Panda Stickers' AND amount_cents = 6469)
+     ) ORDER BY amount_cents`,
+  ).all() as Array<{
+    line_id: string;
+    amount_cents: number;
+    vendor_raw: string;
+    description_public: string;
+    entity_name: string;
+    check_date: string | null;
+    voucher_batch_date: string | null;
+    dac_raw: string | null;
+  }>;
+  const stress = db.prepare(
+    `SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents),0) AS cents, COUNT(DISTINCT entity_name) AS districts, COUNT(DISTINCT vendor_key) AS vendors
+     FROM lines WHERE ${filter.sql} AND item_label = 'stress balls'`,
+  ).get(...filter.params) as { n: number; cents: number; districts: number; vendors: number };
   const unknown = db.prepare(
     basis === "check_date"
       ? "SELECT COUNT(*) AS n FROM lines WHERE check_date IS NULL"
@@ -61,17 +94,28 @@ export default async function SpendingPage({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-ink/10 bg-white p-5">
-        <h1 className="font-serif text-3xl">Reported spending lines</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-ink/80">
-          The figure below is the sum of screened public lines in this filter. It is not unique spend, not the printed report total, and not proof a payment settled.
-          Personal, unknown, and sensitive description rows are withheld. Unresolved shared check dates, if any, are left out of this sum, the charts, and CSV export.
-          A month with no bar was not indexed, not recorded as zero.
-        </p>
-        <p className="mt-3 text-sm">
-          Date basis: {basisLabel(basis)}. <span className="font-semibold">{totals.n.toLocaleString()} public lines</span> in this filter · {dollars(totals.cents)}.
+      <section className="hero-figure rounded-xl border border-ink/10 bg-white p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-copper">Screened public lines</p>
+        <h1 className="mt-2 max-w-3xl font-serif text-4xl leading-tight">Reported spending lines</h1>
+        <p className="mt-4 font-serif text-5xl tracking-tight">{dollars(totals.cents)}</p>
+        <p className="mt-2 text-sm">
+          Date basis: {basisLabel(basis)}. <span className="font-semibold">{totals.n.toLocaleString()} public lines</span> in this filter.
           Across the index, {unknown.n.toLocaleString()} lines have no date on this basis and stay out of a dated filter.
         </p>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-ink/75">
+          This figure is the sum of screened public lines on that date basis. It is not unique spend, not the printed report total, not proof a payment settled, and not a census of districts or of Arizona schools.
+          Personal payees, unknown payees, and sensitive description text are withheld. A month with no bar was not indexed, not recorded as zero.
+        </p>
+        {stress.n > 0 ? (
+          <p className="mt-4 max-w-3xl rounded-lg bg-paper px-3 py-2 text-sm leading-6">
+            In the screened public lines in this filter, {dollars(stress.cents)} was reported on descriptions grouped as stress balls
+            ({stress.n} lines, {stress.districts} district name{stress.districts === 1 ? "" : "s"}, {stress.vendors} vendor key{stress.vendors === 1 ? "" : "s"}).
+            {" "}
+            <Link className="font-semibold text-copper underline" href={`/explore/items/stress-balls${basis === "either" ? "" : `?basis=${basis}`}`}>See the breakdown</Link>
+            {" · "}
+            <Link className="font-semibold text-copper underline" href="/explore">All groups</Link>
+          </p>
+        ) : null}
       </section>
 
       <form className="grid gap-3 rounded-xl border border-ink/10 bg-white p-4 md:grid-cols-4" action="/">
@@ -130,11 +174,15 @@ export default async function SpendingPage({
           empty="No indexed lines have a date on this basis inside the filter."
         />
         <BarChart
-          title="Inferred category"
-          bars={cats.map((cat) => ({ label: cat.category.replaceAll("_", " ").slice(0, 14), amount_cents: cat.amount_cents, note: `${cat.line_count} lines` }))}
+          title="Inferred category, not a budget code"
+          bars={cats.map((cat) => ({ label: cat.category.replaceAll("_", " ").slice(0, 18), amount_cents: cat.amount_cents, note: `${cat.line_count} lines` }))}
           empty="No lines in this filter."
         />
       </div>
+
+      <VendorTreemap slices={treemap} />
+      <DistrictBars rows={districts} />
+      <StoryCards stories={stories} />
 
       <section className="rounded-xl border border-ink/10 bg-white p-4">
         <h2 className="font-semibold">Business vendors in this filter</h2>
@@ -196,7 +244,7 @@ export default async function SpendingPage({
         <ul className="mt-2 space-y-1">
           {documents.map((doc) => (
             <li key={String(doc.document_id)}>
-              {doc.indexed ? "Indexed" : "Not in spending totals"} · {doc.period_label_native || doc.document_id} · {doc.reconciliation_status} · {doc.parsed_outcome} · printed total {doc.printed_total_cents == null ? String(doc.printed_total_null_reason || "not extracted") : dollars(Number(doc.printed_total_cents))} · {doc.public_line_count} default-aggregate lines, {doc.withheld_count} withheld
+              {doc.indexed ? "Indexed" : "Not in spending totals, and not zero spending"} · {doc.period_label_native || doc.document_id} · {doc.reconciliation_status} · {doc.parsed_outcome} · printed total {doc.printed_total_cents == null ? String(doc.printed_total_null_reason || "not extracted") : dollars(Number(doc.printed_total_cents))} · {doc.public_line_count} default-aggregate lines, {doc.withheld_count} withheld
             </li>
           ))}
         </ul>
@@ -210,10 +258,29 @@ export default async function SpendingPage({
   );
 }
 
-function basisLabel(basis: string): string {
-  if (basis === "check_date") return "check date on the AP row";
-  if (basis === "voucher_batch_date") return "voucher batch date (not a check date)";
-  return "check date when present, otherwise voucher batch date";
+function treemapSlices(rows: Array<{ vendor_key: string; vendor_raw: string; amount_cents: number; line_count: number }>) {
+  const grouped = new Map<string, { label: string; amount_cents: number; lines: number; forms: Array<[string, number]> }>();
+  for (const row of rows) {
+    const current = grouped.get(row.vendor_key) ?? { label: row.vendor_raw, amount_cents: 0, lines: 0, forms: [] };
+    current.amount_cents += row.amount_cents;
+    current.lines += row.line_count;
+    current.forms.push([row.vendor_raw, row.line_count]);
+    grouped.set(row.vendor_key, current);
+  }
+  const ranked = [...grouped.values()].sort((left, right) => right.amount_cents - left.amount_cents);
+  for (const row of ranked) {
+    row.label = row.forms.sort((left, right) => right[1] - left[1] || right[0].length - left[0].length)[0][0];
+  }
+  const top = ranked.slice(0, 8).map((row) => ({ label: row.label, amount_cents: row.amount_cents, lines: row.lines }));
+  const rest = ranked.slice(8);
+  if (rest.length > 0) {
+    top.push({
+      label: "Other screened vendors",
+      amount_cents: rest.reduce((sum, row) => sum + row.amount_cents, 0),
+      lines: rest.reduce((sum, row) => sum + row.lines, 0),
+    });
+  }
+  return top;
 }
 
 function pageHref(raw: Record<string, string | undefined>, page: number): string {

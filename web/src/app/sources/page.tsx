@@ -37,6 +37,7 @@ export default async function SourcesPage({
           AZDOR 2026 snapshot: 1,449 site rows and 395 distinct CTDS holder IDs, including closed sites. County directories list 57 Maricopa and 21 Pinal institutional names. None of those numbers is an active-district denominator. Administrative county is not service geography. No Pinal ledger is confirmed beyond Queen Creek administrative metadata.
         </p>
       </section>
+      <SourceDocuments />
       <section className="grid gap-3 md:grid-cols-2">
         <ul className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
           {counts.map((row) => <li key={row.source_status} className="flex justify-between border-b border-ink/5 py-1"><span>{row.source_status}</span><span>{row.n}</span></li>)}
@@ -98,6 +99,33 @@ export default async function SourcesPage({
         </ul>
       </section>
     </div>
+  );
+}
+
+function SourceDocuments() {
+  const db = openDb();
+  const documents = db.prepare(
+    `SELECT d.document_id, s.entity_name, d.url, d.indexed, d.parsed_outcome, d.public_line_count
+     FROM documents d LEFT JOIN sources s ON s.source_id = d.source_id
+     ORDER BY d.indexed DESC, s.entity_name`,
+  ).all() as Array<{ document_id: string; entity_name: string | null; url: string | null; indexed: number; parsed_outcome: string | null; public_line_count: number | null }>;
+  return (
+    <section className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
+      <h2 className="font-semibold">Official documents in this snapshot</h2>
+      <p className="mt-1 text-ink/70">Links open the district or board page. Raw PDFs are not hosted here. An unindexed file is not zero spending.</p>
+      <ul className="mt-3 space-y-2">
+        {documents.map((row) => (
+          <li key={row.document_id}>
+            <span className="font-semibold">{row.indexed ? "Indexed" : "Not indexed"}</span>
+            {" · "}{row.entity_name || row.document_id}
+            {" · "}{row.parsed_outcome}
+            {" · "}{row.public_line_count ?? 0} public lines
+            {row.url ? <> · <a className="font-semibold text-copper underline" href={row.url}>Official source</a></> : null}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3"><a className="font-semibold text-copper underline" href="/methodology">Full source list and methodology</a></p>
+    </section>
   );
 }
 

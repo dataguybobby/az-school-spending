@@ -14,6 +14,7 @@ from pipeline.adapters import ADAPTERS
 from pipeline.classify import apply_override, classify_text, load_overrides
 from pipeline.documents import AMOUNT_SEMANTICS, DOCUMENTS
 from pipeline.fetch import fetch_url, sha256_file, write_sidecar
+from pipeline.items import load_item_overrides, resolve_item
 from pipeline.overlap import analyze_documents
 from pipeline.paths import log_dir, private_db, public_db, raw_dir
 from pipeline.store import connect
@@ -23,6 +24,7 @@ from pipeline.store import PRIVATE_SCHEMA, PUBLIC_SCHEMA, rebuild
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "registry" / "v2" / "sources.json"
 OVERRIDES = ROOT / "registry" / "category_overrides.json"
+ITEM_OVERRIDES = ROOT / "registry" / "item_overrides.json"
 
 logger = logging.getLogger("ledger")
 
@@ -409,9 +411,8 @@ def _build_rows(document, source, parsed, sha: str, overrides) -> dict[str, Any]
             parsed_reason = "parser_emitted_no_lines"
             parsed_outcome = "parsed_zero"
         deltas = [batch.delta_cents for batch in parsed.batches]
-        reconciled = bool(parsed.batches) and all(delta == 0 for delta in deltas) and printed is not None and not parsed.ocr_paper_capture
-        if parsed.ocr_paper_capture:
-            reconciled = False
+        reconciled = bool(parsed.batches) and all(delta == 0 for delta in deltas) and printed is not None
+        if parsed.ocr_paper_capture and not reconciled:
             status = "ocr_paper_capture_not_indexed"
             if parsed_outcome == "parsed_lines":
                 parsed_outcome = "parsed_unreconciled"
@@ -476,8 +477,20 @@ def _build_rows(document, source, parsed, sha: str, overrides) -> dict[str, Any]
         "period_label_native": period_label,
         "period_start": period_start,
         "period_end": period_end,
-        "coverage_note": "Observed document window only. Not continuous coverage of the fiscal year.",
+        "coverage_note": _coverage_note(parsed, reconciled),
     }
+
+
+def _coverage_note(parsed, reconciled: bool) -> str:
+    note = "Observed document window only. Not continuous coverage of the fiscal year."
+    if not getattr(parsed, "ocr_paper_capture", False):
+        return note
+    note += " Paper-capture OCR dates are unreviewed and are not used as transaction dates."
+    if any(str(item).startswith("ocr_date_conflict_unreviewed") for item in getattr(parsed, "warnings", [])):
+        note += " At least one OCR batch date conflicts with the fiscal-year label and stays unreviewed."
+    if not reconciled:
+        note += " Detail lines did not reconcile to the printed voucher totals, so this file is omitted from spending totals and is not recorded as zero spending."
+    return note
 
 
 def _public_payload(document, source, sha, ordinal, raw, entity, entity_type, admin_county, ctds,
@@ -486,6 +499,7 @@ def _public_payload(document, source, sha, ordinal, raw, entity, entity_type, ad
                     document_class, flags, privacy, page, y, date_conflict, overrides) -> dict[str, Any]:
     line_id = _line_id(sha, ordinal, raw)
     category = apply_override(classify_text(description, account), line_id, overrides)
+    item = resolve_item(description, line_id, load_item_overrides(ITEM_OVERRIDES))
     return {
         "line_id": line_id,
         "document_id": document["document_id"],
@@ -525,6 +539,10 @@ def _public_payload(document, source, sha, ordinal, raw, entity, entity_type, ad
         "flags": _flags(flags),
         "date_conflict": 1 if date_conflict else 0,
         "in_default_aggregate": 1,
+        "item_label": item["item_label"],
+        "item_evidence": item["item_evidence"],
+        "item_method": item["item_method"],
+        "item_confidence": item["item_confidence"],
     }
 
 

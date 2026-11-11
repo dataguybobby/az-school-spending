@@ -4,7 +4,7 @@ Local, read-only ledger of Phoenix-area public K-12 accounts payable and voucher
 
 No scheduler is installed or enabled.
 
-The GitHub repository is https://github.com/dataguybobby/az-school-spending. The app is on the `master` branch. GitHub still defaults to the placeholder `main` branch; this import did not have permission to change the default. Set the default branch to `master` before publishing.
+The GitHub repository is https://github.com/dataguybobby/az-school-spending. The default branch is `master`.
 
 ## Setup
 
@@ -60,8 +60,9 @@ Indexed only when the parsed detail lines match the printed total:
 
 Fetched and not indexed:
 
-- Paradise Valley PDF matches the v2 SHA-256 and is a Canon paper-capture scan. The parser emitted no lines (`parsed_zero`). Its printed total is null, reason `no_printed_total_extracted_from_ocr_scan`, not a reported zero. It is not in spending charts.
-- Chandler PDF matches the v2 SHA-256 and is also a paper-capture scan. Extracted lines did not reconcile, so they are not public and are not shown as zero spending.
+- Chandler Unified voucher PDF matches SHA-256 `f77483630293188a322d70a29c40c2c555d2f01d4c4e5af7ada48534741c45b9`. Batches 7290–7294, voucher date 08/19/2026 as printed on the scan, native FY 2025-2026. Detail lines reconcile to the printed voucher totals ($1,035,590.33). P-card merchants and the clearing-account payee stay on one line. OCR batch dates are unreviewed and are not used as transaction dates. Personal and unknown payees are withheld.
+- Paradise Valley PDF matches SHA-256 `56195ff643435ce2369b1d664c75ed84278ed10b0269d701bceda2e65f259e4d`. It is a paper-capture scan. Parsed lines do not reconcile to printed batch totals (`parsed_unreconciled`). The printed total stays null. An OCR reading of 01/21/2028 on batch 1185 conflicts with the FY label and stays unreviewed. It is not in spending totals and it is not zero spending.
+- Dysart’s public portal and the known voucher URL are a fund-total certification, not vendor lines. Deer Valley’s agenda and the attachments fetched from it are board materials, not a vendor ledger. Tempe Union’s virtual library page was fetched and did not link a vendor ledger. None of those three is in the public index.
 
 Gilbert stays an indexed lead from a prior 403, not an ingested body. Mesa stays an aggregate lead, not transaction coverage. ADE's active-LEA spreadsheet was not acquired. The AZDOR 2026 list has 1,449 site rows and 395 CTDS holder IDs, including closed sites. County pages list 57 Maricopa and 21 Pinal names. None of those figures is a coverage denominator.
 
@@ -78,7 +79,7 @@ Not implemented, because this run did not successfully parse them: BoardDocs PDF
 
 Categories are inferred by `phoenix-k12-neutral-2026.11.06`. Amazon is a vendor. Unclassified is the default. Item text is weak evidence. Account titles on voucher rows are stronger and are still not a loaded USFR codebook. `registry/category_overrides.json` can replace a category by `line_id`.
 
-A row is public only when the payee looks like a business and the description does not contain an email, phone, street address, long digit identifier, reimbursement or student context, an authorized user, an IEP or ESY reference, or medicaid/diagnosis/prescription language. Unknown payees are withheld. That also withholds some two- and three-word trade names. DAC text is kept as printed and is not treated as a school location. The default total is the sum of those screened lines. It is not unique spend and it is not the printed report total.
+A row is public only when the payee looks like a business and the description does not contain an email, phone, street address, long digit identifier, reimbursement or student context, an authorized user, an IEP or ESY reference, or medicaid/diagnosis/prescription language. Unknown payees are withheld. That also withholds some two- and three-word trade names. DAC text is kept as printed and is not treated as a school location. The default total is the sum of those screened lines. It is not unique spend and it is not the printed report total. Item groups such as “stress balls” are reviewed description phrases, not budget codes. See the methodology page in the web app.
 
 ## Dates
 
@@ -100,7 +101,7 @@ This workspace did not deploy the site. There is no production URL from this cha
 
 ## Deploy on Vercel later
 
-The source repository is https://github.com/dataguybobby/az-school-spending. Publish the `master` branch. This import did not deploy the site, add a Vercel project, set a custom domain, or enable GitHub Pages. Connect Vercel to that GitHub repository when you are ready to publish, and select `master`. If GitHub still shows `main` as the default branch, switch the default to `master` first.
+The source repository is https://github.com/dataguybobby/az-school-spending. The default branch is `master`. This import did not deploy the site, add a Vercel project, set a custom domain, or enable GitHub Pages. Connect Vercel to that GitHub repository when you are ready to publish, and use `master`.
 
 In the Vercel project settings:
 

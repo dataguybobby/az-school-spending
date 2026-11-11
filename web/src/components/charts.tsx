@@ -22,6 +22,7 @@ export function BarChart({
       ) : (
         <svg viewBox={`0 0 ${width} ${height}`} role="img" className="h-56 w-full">
           <title>{title}</title>
+          <line x1="8" x2={width - 8} y1="170" y2="170" className="stroke-ink/20" />
           {bars.map((bar, index) => {
             const slot = width / bars.length;
             const barWidth = Math.max(slot - 14, 8);
@@ -40,8 +41,16 @@ export function BarChart({
           })}
         </svg>
       )}
+      <ul className="mt-3 grid gap-1 text-xs text-ink/70 sm:grid-cols-2">
+        {bars.map((bar) => (
+          <li key={`${bar.label}-${bar.note || ""}`} className="flex justify-between gap-2">
+            <span>{bar.note || bar.label}</span>
+            <span>{dollars(bar.amount_cents)}</span>
+          </li>
+        ))}
+      </ul>
       <p className="mt-2 text-xs text-ink/60">
-        Months or categories with no indexed lines are omitted. A missing month is not zero spending.
+        Categories are inferred. Months or categories with no indexed lines are omitted. A missing month is not zero spending.
       </p>
     </figure>
   );

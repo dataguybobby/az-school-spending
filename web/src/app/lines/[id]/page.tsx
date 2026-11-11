@@ -51,11 +51,20 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
         <h2 className="font-semibold">Source locator</h2>
         <p className="mt-2">Page {line.source_page}, row {line.source_row}. {line.source_locator}.</p>
         <p className="mt-2">
-          <a className="font-semibold text-copper underline" href={String(line.source_url)}>Official document</a>
+          <a className="font-semibold text-copper underline" href={String(line.source_url)}>Official source document</a>
+          {" · "}
+          <Link className="font-semibold text-copper underline" href="/methodology">Methodology</Link>
         </p>
+        {line.item_label ? (
+          <p className="mt-2">
+            Grouped from description text as “{line.item_label}” (evidence “{line.item_evidence}”, {line.item_method}, confidence {line.item_confidence}).
+            {" "}
+            <Link className="font-semibold text-copper underline" href={`/explore/items/${String(line.item_label).toLowerCase().replaceAll(" ", "-")}`}>Open the group</Link>
+          </p>
+        ) : null}
         <p className="mt-2 text-ink/70">
           {line.amount_semantics}. {document ? `Reconciliation: ${document.reconciliation_status}.` : ""}
-          Check numbers are not shown.
+          Department text is as printed, not a verified location. Check numbers are not shown.
         </p>
       </section>
     </article>

@@ -131,6 +131,13 @@ def parse_voucher_summary_pdf(path: str) -> VoucherParse:
     document = pymupdf.open(path)
     producer = f"{document.metadata.get('producer') or ''} {document.metadata.get('creator') or ''}"
     ocr = "paper capture" in producer.lower() or "ricoh" in producer.lower()
+    if ocr:
+        document.close()
+        # Imported lazily: voucher_ocr imports these dataclasses, and this module
+        # is still the public parser entry point.
+        from pipeline.adapters.voucher_ocr import parse_paper_capture
+
+        return parse_paper_capture(path)
     lines: list[VoucherLine] = []
     warnings: list[str] = []
     skipped: list[int] = []

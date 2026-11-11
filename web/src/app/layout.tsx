@@ -23,13 +23,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Metro School Ledger
               </Link>
             </div>
-            <nav className="flex gap-4 text-sm font-semibold">
+            <nav className="flex flex-wrap gap-4 text-sm font-semibold">
               <Link href="/" className="hover:text-copper">Spending</Link>
+              <Link href="/explore" className="hover:text-copper">Groups</Link>
               <Link href="/sources" className="hover:text-copper">Sources</Link>
+              <Link href="/methodology" className="hover:text-copper">Methodology</Link>
             </nav>
           </div>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+        <footer className="border-t border-ink/10">
+          <div className="mx-auto flex max-w-6xl flex-wrap gap-4 px-4 py-6 text-sm">
+            <Link href="/methodology" className="font-semibold text-copper underline">Methodology</Link>
+            <span className="text-ink/70">Phoenix Dataworks. Not an official government site. Reported and vouchered amounts, not settlement proof.</span>
+          </div>
+        </footer>
       </body>
     </html>
   );

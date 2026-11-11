@@ -90,7 +90,11 @@ CREATE TABLE lines (
   source_locator TEXT,
   flags TEXT,
   date_conflict INTEGER,
-  in_default_aggregate INTEGER
+  in_default_aggregate INTEGER,
+  item_label TEXT,
+  item_evidence TEXT,
+  item_method TEXT,
+  item_confidence REAL
 );
 CREATE VIRTUAL TABLE lines_fts USING fts5(
   line_id UNINDEXED,

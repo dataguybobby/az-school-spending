@@ -71,66 +71,67 @@ function ftsQuery(text: string): string {
   return `"${tokens.join(" ")}"`;
 }
 
-export function where(filters: Filters): { sql: string; params: Array<string | number> } {
-  const clauses = ["in_default_aggregate = 1"];
+export function where(filters: Filters, alias = ""): { sql: string; params: Array<string | number> } {
+  const column = (name: string) => (alias ? `${alias}.${name}` : name);
+  const clauses = [`${column("in_default_aggregate")} = 1`];
   const params: Array<string | number> = [];
   if (filters.source) {
-    clauses.push("source_id = ?");
+    clauses.push(`${column("source_id")} = ?`);
     params.push(filters.source);
   }
   if (filters.vendor) {
-    clauses.push("vendor_raw LIKE ?");
+    clauses.push(`${column("vendor_raw")} LIKE ?`);
     params.push(`%${filters.vendor}%`);
   }
   if (filters.category) {
-    clauses.push("category = ?");
+    clauses.push(`${column("category")} = ?`);
     params.push(filters.category);
   }
   if (filters.confidence) {
-    clauses.push("category_confidence >= ?");
+    clauses.push(`${column("category_confidence")} >= ?`);
     params.push(Number(filters.confidence));
   }
   if (filters.dac) {
-    clauses.push("IFNULL(dac_raw,'') LIKE ?");
+    clauses.push(`IFNULL(${column("dac_raw")},'') LIKE ?`);
     params.push(`%${filters.dac}%`);
   }
   if (filters.account) {
-    clauses.push("IFNULL(account_code_raw,'') LIKE ?");
+    clauses.push(`IFNULL(${column("account_code_raw")},'') LIKE ?`);
     params.push(`%${filters.account}%`);
   }
   if (filters.q) {
-    clauses.push("line_id IN (SELECT line_id FROM lines_fts WHERE lines_fts MATCH ?)");
+    clauses.push(`${column("line_id")} IN (SELECT line_id FROM lines_fts WHERE lines_fts MATCH ?)`);
     params.push(ftsQuery(filters.q));
   }
   const basis = filters.basis || "either";
   if (basis === "check_date") {
-    clauses.push("check_date IS NOT NULL");
+    clauses.push(`${column("check_date")} IS NOT NULL`);
     if (filters.start) {
-      clauses.push("check_date >= ?");
+      clauses.push(`${column("check_date")} >= ?`);
       params.push(filters.start);
     }
     if (filters.end) {
-      clauses.push("check_date <= ?");
+      clauses.push(`${column("check_date")} <= ?`);
       params.push(filters.end);
     }
   } else if (basis === "voucher_batch_date") {
-    clauses.push("voucher_batch_date IS NOT NULL");
+    clauses.push(`${column("voucher_batch_date")} IS NOT NULL`);
     if (filters.start) {
-      clauses.push("voucher_batch_date >= ?");
+      clauses.push(`${column("voucher_batch_date")} >= ?`);
       params.push(filters.start);
     }
     if (filters.end) {
-      clauses.push("voucher_batch_date <= ?");
+      clauses.push(`${column("voucher_batch_date")} <= ?`);
       params.push(filters.end);
     }
   } else if (filters.start || filters.end) {
-    clauses.push("COALESCE(check_date, voucher_batch_date) IS NOT NULL");
+    clauses.push(`COALESCE(${column("check_date")}, ${column("voucher_batch_date")}) IS NOT NULL`);
     if (filters.start) {
-      clauses.push("COALESCE(check_date, voucher_batch_date) >= ?");
+      clauses.push(`COALESCE(${column("check_date")}, ${column("voucher_batch_date")}) >= ?`);
       params.push(filters.start);
     }
     if (filters.end) {
-      clauses.push("COALESCE(check_date, voucher_batch_date) <= ?");
+      clauses.push(`COALESCE(${column("check_date")}, ${column("voucher_batch_date")}) <= ?`);
       params.push(filters.end);
     }
   }

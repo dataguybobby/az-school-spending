@@ -1,0 +1,223 @@
+{
+  "generated_at": "2026-11-11T14:35:33.581950+00:00",
+  "bounded_pages": 10,
+  "bounded_pdfs": 4,
+  "note": "Same-host links only. Not an exhaustive portal index and not a coverage rate.",
+  "results": [
+    {
+      "source_id": "dysart_diligent_voucher_fund_totals",
+      "entity_name": "Dysart Unified School District",
+      "pages_fetched": 6,
+      "pdfs_fetched": 1,
+      "line_item_candidates": 0,
+      "reconciled_line_item_pdfs": 0,
+      "ingest": null,
+      "pages": [
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "bde41a22ddec08e1534df82b3af11389018823f103e1cc989ccb33ba0530efa9",
+          "kind": "html"
+        },
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/Portal",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "8e629f9f7f75505782ec75c551a049ff8b976348dcedceba8782b736505e63bd",
+          "kind": "html"
+        },
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/Portal/VirtualLibrary.aspx",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "abc2a050a89f91f8e2c879e34b8b2ae14ef735c59deb9c5cb188d8056dba11f0",
+          "kind": "html"
+        },
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/portal/members.aspx?id=0",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "b4dc0aecc582cf3e73a368f954ab64f97d48b80a830d1dd49bbd7701efd356c3",
+          "kind": "html"
+        },
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/Portal/DocumentLibrary.aspx?Library=true",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "cc9ec93185cbbb9fe3e4e18de3e62e4d2ca3c162423858c06f817d9acad560fb",
+          "kind": "html"
+        },
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/Portal/Subscribe.aspx",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "2b023006afdb7d6812a989236062fb9d24f208144580951a6cc85bed1fd1c170",
+          "kind": "html"
+        }
+      ],
+      "pdfs": [
+        {
+          "url": "https://dysart.community.diligentoneplatform.com/document/d2d59e07-0d1e-4115-8181-76e48450285a/",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "application/pdf",
+          "sha256": "2a9ab0b8c580a4e27ab9d0e3459a8f425ba62ee9900d13ecd6b0c960fe473efe",
+          "kind": "pdf",
+          "document_class": "voucher_fund_total_cert",
+          "reconciled": false,
+          "parsed_lines": 0
+        }
+      ]
+    },
+    {
+      "source_id": "dvusd_agenda_voucher_approval_partial",
+      "entity_name": "Deer Valley Unified School District",
+      "pages_fetched": 2,
+      "pdfs_fetched": 4,
+      "line_item_candidates": 0,
+      "reconciled_line_item_pdfs": 0,
+      "ingest": null,
+      "pages": [
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "a9ca93f90a10c3767857e26ba844120faa5940b35c924b1a879592ab037f1bb5",
+          "kind": "html"
+        },
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/document/3803/agenda.html",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "0d1f7cb467c3a6fb25c5879cd5c95ce72a772420655664ae699707efc007891d",
+          "kind": "html"
+        }
+      ],
+      "pdfs": [
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/document/e6bd33e3-5172-4687-b9fc-10efbe2af064",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "application/pdf",
+          "sha256": "418bddce813f64c0f12b3a7502b2f0a4e1fdb583c5e8446bedc09b2e1782e029",
+          "kind": "pdf",
+          "document_class": "unclassified_pdf",
+          "reconciled": false,
+          "parsed_lines": 0
+        },
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/document/2b8a788f-cb37-4377-9d69-40a9e4ce22c7",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "application/pdf",
+          "sha256": "4934f9c6c4ea5fd7882a160c31279a93d0be979c6385b4421fdb5f25b62935a8",
+          "kind": "pdf",
+          "document_class": "board_agenda",
+          "reconciled": false,
+          "parsed_lines": 0
+        },
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/document/e432b216-4199-40f8-93b0-0510bc14e27e",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "application/pdf",
+          "sha256": "c3d3c04cb5b036eaf0a538cb48d86bb5378fde3c6df4ffbe687738359347d5e6",
+          "kind": "pdf",
+          "document_class": "unclassified_pdf",
+          "reconciled": false,
+          "parsed_lines": 0
+        },
+        {
+          "url": "https://dvusd.community.diligentoneplatform.com/document/48c7ca3a-c98b-4158-8296-db9d7d9f5fb8",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "application/pdf",
+          "sha256": "570bbc5243573c99e6b05fc6f07cfbe85103447c499b34b07af7d7765e671183",
+          "kind": "pdf",
+          "document_class": "unclassified_pdf",
+          "reconciled": false,
+          "parsed_lines": 0
+        }
+      ]
+    },
+    {
+      "source_id": "scout_tempe_union",
+      "entity_name": "Tempe Union High School District",
+      "pages_fetched": 5,
+      "pdfs_fetched": 0,
+      "line_item_candidates": 0,
+      "reconciled_line_item_pdfs": 0,
+      "ingest": null,
+      "pages": [
+        {
+          "url": "https://tempeunion.community.diligentoneplatform.com/Portal/VirtualLibrary.aspx",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "76e372392ecd73c513456723fc989b5d6e932a3777ba4fd941b6e5588f104690",
+          "kind": "html"
+        },
+        {
+          "url": "https://tempeunion.community.diligentoneplatform.com/",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "e445fba20b24c3568689712fb895310d572470e0b20294f27e183dcb14388312",
+          "kind": "html"
+        },
+        {
+          "url": "https://tempeunion.community.diligentoneplatform.com/Portal",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "7baa6b070d650972d9726754b6213a33f1642ec05ccb7e1c48ccaa62a0c82619",
+          "kind": "html"
+        },
+        {
+          "url": "https://tempeunion.community.diligentoneplatform.com/Portal/DocumentLibrary.aspx?Library=true",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "e299d1441ba830e951a87af5acdc60e0a108cc402682f6e2315442eb8d6e3034",
+          "kind": "html"
+        },
+        {
+          "url": "https://tempeunion.community.diligentoneplatform.com/Portal/Subscribe.aspx",
+          "ok": true,
+          "http_status": 200,
+          "error": null,
+          "content_type": "text/html",
+          "sha256": "a19dc30b8a2ee01e7bbb3890bf584ef4efb93a384e68627d9b04c5ff96e1ab6e",
+          "kind": "html"
+        }
+      ],
+      "pdfs": []
+    }
+  ]
+}

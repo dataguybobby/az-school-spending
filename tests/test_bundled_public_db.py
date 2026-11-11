@@ -62,8 +62,28 @@ def test_bundled_database_has_no_private_schema_and_keeps_fixtures():
         "SELECT printed_total_cents, parsed_outcome, indexed FROM documents WHERE document_id = 'pvusd_fy26_vouchers_scan'"
     ).fetchone()
     assert pv[0] is None
-    assert pv[1] == "parsed_zero"
+    assert pv[1] == "parsed_unreconciled"
     assert pv[2] == 0
+    chandler = connection.execute(
+        "SELECT indexed, delta_cents, printed_total_cents, parsed_total_cents FROM documents WHERE document_id = 'chandler_voucher_aug2026'"
+    ).fetchone()
+    assert chandler[0] == 1
+    assert chandler[1] == 0
+    assert chandler[2] == chandler[3]
+    stress_group = connection.execute(
+        "SELECT COUNT(*), COALESCE(SUM(amount_cents),0) FROM lines WHERE item_label = 'stress balls' AND in_default_aggregate = 1"
+    ).fetchone()
+    assert stress_group == (6, 13018)
+    vendor_sensitive = connection.execute(
+        """
+        SELECT COUNT(*) FROM lines
+        WHERE lower(vendor_raw) LIKE '%authorized user%'
+           OR upper(vendor_raw) LIKE '% IEP%'
+           OR upper(vendor_raw) LIKE '%IEP %'
+           OR upper(vendor_raw) LIKE '%MEDICAID%'
+        """
+    ).fetchone()[0]
+    assert vendor_sensitive == 0
 
 
 def test_prepare_script_opens_fts():

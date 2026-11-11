@@ -10,6 +10,7 @@ from pathlib import Path
 from pipeline.csvsafe import write_csv, write_xlsx
 from pipeline.discover import discover
 from pipeline.ingest import run_ingest
+from pipeline.scout import scout
 from pipeline.paths import public_db
 from pipeline.query import EXPORT_FIELDS, categories, export_rows, monthly, search_lines, vendors
 
@@ -18,6 +19,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="pipeline")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("discover")
+    sub.add_parser("scout")
     sub.add_parser("fetch")
     sub.add_parser("extract")
     sub.add_parser("normalize")
@@ -38,6 +40,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "discover":
         print(json.dumps(discover(), indent=2))
+        return 0
+    if args.command == "scout":
+        print(json.dumps(scout(), indent=2))
         return 0
     if args.command in {"fetch", "extract", "normalize", "classify", "index", "ingest"}:
         report = run_ingest()

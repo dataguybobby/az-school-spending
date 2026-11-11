@@ -99,8 +99,9 @@ def vendor_class(vendor: str | None) -> str:
 def assess_row(vendor: str | None, description: str | None) -> tuple[str, list[str]]:
     """Return ``(privacy_class, reasons)``.
 
-    A business payee is still withheld when the description carries contact
-    data, a long identifier, or personal-reimbursement / student context.
+    A business payee is still withheld when the vendor or description carries
+    contact data, a long identifier, or personal-reimbursement / student context.
+    Sensitive text that OCR glued onto the vendor is quarantined with the row.
     """
     reasons: list[str] = []
     payee = vendor_class(vendor)
@@ -108,7 +109,7 @@ def assess_row(vendor: str | None, description: str | None) -> tuple[str, list[s
         reasons.append("payee_name_pattern")
     elif payee == "unknown":
         reasons.append("payee_unclassified")
-    text = description or ""
+    text = f"{vendor or ''} {description or ''}".strip()
     if _EMAIL.search(text) or _PHONE.search(text) or _SSN.search(text) or _ADDRESS.search(text):
         reasons.append("description_contact_or_address")
     if _LONG_ID.search(text):

@@ -15,3 +15,4 @@ def test_next_production_build_succeeds():
     assert "data/public/ledger.sqlite" in trace
     assert "data/raw" not in trace
     assert "data/private" not in trace
+    assert not list((ROOT / "web").rglob("*.pdf"))

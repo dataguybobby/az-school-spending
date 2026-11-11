@@ -418,5 +418,47 @@
     "queried_on_local_date": "2026-11-06",
     "timezone": "America/Phoenix",
     "time_precision": "individual_query_time_not_recorded; log_compilation_timestamp_only"
+  },
+  {
+    "search_id": "Q031",
+    "source_id": "dysart_diligent_voucher_fund_totals",
+    "query_exact": "bounded fetch https://dysart.community.diligentoneplatform.com/ plus known voucher document",
+    "method": "public_http_same_host_cap",
+    "outcome": "fund_total_cert_not_vendor_lines",
+    "lead_url": "https://dysart.community.diligentoneplatform.com/document/d2d59e07-0d1e-4115-8181-76e48450285a/",
+    "exhaustive_search": false,
+    "null_reason": "no_vendor_line_item_in_bounded_portal_check",
+    "logged_at_utc": "2026-11-11T14:40:09.392861+00:00",
+    "queried_on_local_date": "2026-11-11",
+    "timezone": "America/Phoenix",
+    "time_precision": "scout_run"
+  },
+  {
+    "search_id": "Q032",
+    "source_id": "dvusd_agenda_voucher_approval_partial",
+    "query_exact": "bounded fetch https://dvusd.community.diligentoneplatform.com/document/3803/agenda.html and four document links",
+    "method": "public_http_same_host_cap",
+    "outcome": "agenda_attachments_not_vendor_lines",
+    "lead_url": "https://dvusd.community.diligentoneplatform.com/document/3803/agenda.html",
+    "exhaustive_search": false,
+    "null_reason": "no_vendor_line_item_in_bounded_portal_check",
+    "logged_at_utc": "2026-11-11T14:40:09.392861+00:00",
+    "queried_on_local_date": "2026-11-11",
+    "timezone": "America/Phoenix",
+    "time_precision": "scout_run"
+  },
+  {
+    "search_id": "Q033",
+    "source_id": "scout_tempe_union",
+    "query_exact": "bounded fetch https://tempeunion.community.diligentoneplatform.com/Portal/VirtualLibrary.aspx",
+    "method": "public_http_same_host_cap",
+    "outcome": "library_page_no_vendor_ledger_link",
+    "lead_url": "https://tempeunion.community.diligentoneplatform.com/Portal/VirtualLibrary.aspx",
+    "exhaustive_search": false,
+    "null_reason": "not_found_in_bounded_portal_check",
+    "logged_at_utc": "2026-11-11T14:40:09.392861+00:00",
+    "queried_on_local_date": "2026-11-11",
+    "timezone": "America/Phoenix",
+    "time_precision": "scout_run"
   }
 ]

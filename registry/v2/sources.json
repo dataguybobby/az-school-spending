@@ -195,10 +195,10 @@
       "source_id": "dysart_diligent_voucher_fund_totals",
       "entity_name": "Dysart Unified School District",
       "entity_type": "public_district",
-      "source_status": "confirmed_non_line_item_prior_pass",
-      "access_status": "derived_webfetch_prior_pass",
+      "source_status": "confirmed_non_line_item",
+      "access_status": "portal_and_known_pdf_fetched_fund_total_only",
       "line_item_confirmed": false,
-      "evidence_level": "prior_pass_fund_totals_excerpt",
+      "evidence_level": "voucher_fund_total_cert_not_vendor_lines",
       "official_primary_source": true,
       "discovery_url": "https://dysart.community.diligentoneplatform.com/",
       "document_or_page_url": "https://dysart.community.diligentoneplatform.com/document/d2d59e07-0d1e-4115-8181-76e48450285a/",
@@ -213,15 +213,15 @@
       "coverage_continuity": "not_established",
       "publication_date": null,
       "publication_date_null_reason": "not_observed; report_dates_are_not_publication_dates",
-      "null_reason": null,
+      "null_reason": "no_vendor_line_item_in_bounded_portal_check",
       "legacy_verified_flag": "true",
       "legacy_test_status": "verified_webfetch_fund_totals_only",
       "legacy_period_bounds_not_coverage": {
         "start": "2024-07-01",
         "end": "2025-06-30"
       },
-      "notes": "Original first-pass flags and period bounds retained for audit only, not accepted coverage.",
-      "registry_updated_at_utc": "2026-11-06T21:03:14.262955+00:00"
+      "notes": "2026-11-11 bounded fetch of the Diligent portal, virtual library, and document d2d59e07-0d1e-4115-8181-76e48450285a. That PDF is a voucher fund-total certification, not a vendor account summary. It was not ingested as lines.",
+      "registry_updated_at_utc": "2026-11-11T14:40:09.392861+00:00"
     },
     {
       "source_id": "mesa_boarddocs_expense_warrant_summary",
@@ -359,9 +359,9 @@
       "entity_name": "Deer Valley Unified School District",
       "entity_type": "public_district",
       "source_status": "approval_totals_only_prior_pass",
-      "access_status": "derived_webfetch_prior_pass",
+      "access_status": "agenda_and_sample_attachments_fetched_no_vendor_ledger",
       "line_item_confirmed": false,
-      "evidence_level": "prior_pass_agenda",
+      "evidence_level": "agenda_attachments_are_not_vendor_lines",
       "official_primary_source": true,
       "discovery_url": "https://dvusd.community.diligentoneplatform.com/",
       "document_or_page_url": "https://dvusd.community.diligentoneplatform.com/document/3803/agenda.html",
@@ -376,15 +376,15 @@
       "coverage_continuity": "not_established",
       "publication_date": null,
       "publication_date_null_reason": "not_observed; report_dates_are_not_publication_dates",
-      "null_reason": null,
+      "null_reason": "no_vendor_line_item_in_bounded_portal_check",
       "legacy_verified_flag": "partial",
       "legacy_test_status": "verified_agenda_totals_detail_not_confirmed",
       "legacy_period_bounds_not_coverage": {
         "start": "",
         "end": "2025-05-27"
       },
-      "notes": "Original first-pass flags and period bounds retained for audit only, not accepted coverage.",
-      "registry_updated_at_utc": "2026-11-06T21:03:14.262955+00:00"
+      "notes": "2026-11-11 fetched the portal and agenda 3803, then four linked documents: awards, a curriculum adoption, a textbook letter, and governing-board minutes. None is a vendor AP or voucher line-item ledger. Not ingested.",
+      "registry_updated_at_utc": "2026-11-11T14:40:09.392861+00:00"
     },
     {
       "source_id": "scout_phoenix_union",
@@ -494,9 +494,9 @@
       "entity_name": "Tempe Union High School District",
       "entity_type": "public_district",
       "source_status": "searched_no_source",
-      "access_status": "official_discovery_page_fetched_no_ledger",
+      "access_status": "official_library_page_fetched_no_ledger",
       "line_item_confirmed": false,
-      "evidence_level": "documented_queries_no_official_vendor_ledger_confirmed",
+      "evidence_level": "bounded_portal_fetch_no_vendor_ledger_link",
       "official_primary_source": true,
       "discovery_url": null,
       "document_or_page_url": "https://tempeunion.community.diligentoneplatform.com/Portal/VirtualLibrary.aspx",
@@ -514,15 +514,15 @@
       "coverage_continuity": "not_established",
       "publication_date": null,
       "publication_date_null_reason": "not_observed; report_dates_are_not_publication_dates",
-      "null_reason": "not_found_in_search",
+      "null_reason": "not_found_in_bounded_portal_check",
       "legacy_verified_flag": "false",
       "legacy_test_status": "not_found_in_search_line_item_ledger",
       "legacy_period_bounds_not_coverage": {
         "start": "",
         "end": ""
       },
-      "notes": "Original first-pass flags and period bounds retained for audit only, not accepted coverage.",
-      "registry_updated_at_utc": "2026-11-06T21:03:14.262955+00:00"
+      "notes": "2026-11-11 fetched the Diligent portal and Virtual Library. The HTML did not link a vendor ledger or a voucher account summary. Not ingested. This is not proof that no ledger exists.",
+      "registry_updated_at_utc": "2026-11-11T14:40:09.392861+00:00"
     },
     {
       "source_id": "scout_tempe_elementary",

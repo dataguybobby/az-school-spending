@@ -17,3 +17,26 @@ body {
 input, select {
   background: white;
 }
+
+.hero-figure,
+.story-card {
+  animation: hero-rise 700ms ease both;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-figure,
+  .story-card {
+    animation: none;
+  }
+}
