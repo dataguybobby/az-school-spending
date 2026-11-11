@@ -58,6 +58,7 @@ export default async function MethodologyPage() {
         { href: "#read-vendors", label: "Vendors" },
         { href: "#read-enrollment", label: "Enrollment" },
         { href: "#read-coverage", label: "Coverage" },
+        { href: "#read-sources", label: "Sources" },
         { href: "#read-groups", label: "Groups" },
         { href: "#source-documents", label: "Documents" },
       ]} />
@@ -142,6 +143,16 @@ export default async function MethodologyPage() {
           </p>
           <p className="mt-2">
             When two Scottsdale report headers share a calendar date but the parsed check dates do not overlap, both documents stay in the default sum. A shared check date would be kept out of the default total, the charts, and the CSV. The project coverage window starts 2024-07-01. The ingest does not delete a public line only because its date is earlier.
+          </p>
+        </section>
+
+        <section id="read-sources" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Sources</h3>
+          <p className="mt-2">
+            Registry status and ingestion status are different. Confirmed means a line-item document was identified. Indexed means this run parsed it and the lines matched a printed total. An unindexed file is not zero spending.
+          </p>
+          <p className="mt-2">
+            Searched with no source is a limited search result, not proof that no ledger exists. Unsearched means no query was recorded. Links open the district or board page. Raw PDFs are not hosted here.
           </p>
         </section>
 

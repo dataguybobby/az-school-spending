@@ -121,3 +121,11 @@ def test_queen_creek_may_2026_is_a_real_small_amount():
     assert "groups > 1" in layout
     db = (ROOT / "web" / "src" / "lib" / "db.ts").read_text(encoding="utf-8")
     assert "ledgerSignature" in db
+    methodology = (ROOT / "web" / "src" / "app" / "methodology" / "page.tsx").read_text(encoding="utf-8")
+    assert 'id="read-sources"' in methodology
+    for relative in (
+        "web/src/app/page.tsx",
+        "web/src/app/dictionary/page.tsx",
+        "web/src/app/sources/page.tsx",
+    ):
+        assert 'anchor="read-sources"' in (ROOT / relative).read_text(encoding="utf-8")
