@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import shutil
 import sqlite3
 
+from pipeline.enrollment import load_october1_enrollment
+from pipeline.enrollment import snapshot_comparisons
 from pipeline.paths import public_db
 
 EXPECTED = {
@@ -69,3 +72,30 @@ def test_historic_merge_keeps_existing_lines_and_adds_the_screened_extract():
         """
     ).fetchone()[0]
     assert sensitive == 0
+
+
+def test_enrollment_reload_keeps_the_chandler_supplement_link(tmp_path):
+    destination = tmp_path / "ledger.sqlite"
+    shutil.copy(public_db(), destination)
+    connection = sqlite3.connect(destination)
+    connection.row_factory = sqlite3.Row
+    before = connection.execute(
+        "SELECT COUNT(*), COALESCE(SUM(amount_cents), 0) FROM lines WHERE in_default_aggregate = 1"
+    ).fetchone()
+    load_october1_enrollment(connection)
+    linked = connection.execute(
+        "SELECT lea_entity_id, entity_name FROM october1_index_leas WHERE source_id = ?",
+        ("chandler_highbond_voucher_supplement",),
+    ).fetchone()
+    assert linked["lea_entity_id"] == "4242"
+    assert linked["entity_name"] == "Chandler Unified School District #80"
+    after = connection.execute(
+        "SELECT COUNT(*), COALESCE(SUM(amount_cents), 0) FROM lines WHERE in_default_aggregate = 1"
+    ).fetchone()
+    assert tuple(after) == tuple(before)
+    match = next(
+        row for row in snapshot_comparisons(connection, "either")
+        if row["source_id"] == "chandler_highbond_voucher_supplement" and row["school_year"] == "2025-2026"
+    )
+    assert match["status"] == "reported_per_enrolled_student"
+    assert match["october_1_enrollment"] == 39672

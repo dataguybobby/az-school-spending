@@ -6,6 +6,12 @@
     "lea_entity_id": "4242"
   },
   {
+    "source_id": "chandler_highbond_voucher_supplement",
+    "entity_name": "Chandler Unified School District #80",
+    "focus_district": "Chandler Unified",
+    "lea_entity_id": "4242"
+  },
+  {
     "source_id": "husd_diligent_voucher_summary",
     "entity_name": "Higley Unified School District No. 60",
     "focus_district": "Higley Unified",

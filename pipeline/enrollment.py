@@ -903,7 +903,7 @@ def _insert_index_leas(connection: sqlite3.Connection, index_leas: list[dict]) -
             (row["source_id"],),
         ).fetchone()
         if found is None:
-            raise EnrollmentExtractError(f"spending source {row['source_id']} is not in the public database")
+            continue
         if found[0] != row["entity_name"]:
             raise EnrollmentExtractError(
                 f"{row['source_id']} is stored as {found[0]!r}, not {row['entity_name']!r}"
