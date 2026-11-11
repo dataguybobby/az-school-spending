@@ -9,10 +9,30 @@
   --font-sans: var(--font-nunito), "Nunito", sans-serif;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   background: var(--color-cream);
   color: var(--color-teal);
   font-weight: 400;
+}
+
+.district-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .district-chart {
+    min-width: 760px;
+  }
+}
+
+[id] {
+  scroll-margin-top: 4.75rem;
 }
 
 h1,
@@ -25,6 +45,12 @@ input,
 select {
   background: white;
   color: var(--color-teal);
+}
+
+.hero-total {
+  font-size: clamp(1.85rem, 8vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .hero-figure,

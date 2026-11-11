@@ -1,19 +1,22 @@
 import Link from "next/link";
-import { BarChart } from "@/components/charts";
+import { connection } from "next/server";
 import { CategoryPies } from "@/components/category-pies";
 import { DistrictBars } from "@/components/district-bars";
-import { SpendEnrollmentChart } from "@/components/spend-enrollment-chart";
 import { EnrollmentComparison } from "@/components/enrollment-comparison";
+import { HomeSummary } from "@/components/home-summary";
+import { HowToRead } from "@/components/how-to-read";
+import { SpendEnrollmentChart } from "@/components/spend-enrollment-chart";
+import { SpendingFilters } from "@/components/spending-filters";
 import { StoryCards } from "@/components/story-cards";
 import { VendorTreemap } from "@/components/treemap";
-import { ButtonLink } from "@/components/ui/button";
-import { activeSort, dateBasis, monthExpr, openDb, orderBy, where, type DateBasis, type Filters, type SortDirection, type SortKey } from "@/lib/db";
+import { activeSort, dateBasis, openDb, orderBy, where, type DateBasis, type Filters, type SortDirection, type SortKey } from "@/lib/db";
 import { basisLabel } from "@/lib/basis";
 import { loadDistrictPies, loadSpendChart } from "@/lib/chart-data";
 import { hasNarrowingFilter, loadComparisons } from "@/lib/enrollment";
 import { dollars } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type Line = Record<string, string | number | null>;
 
@@ -22,6 +25,7 @@ export default async function SpendingPage({
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
+  await connection();
   const raw = await searchParams;
   const filters: Filters = { ...raw };
   const db = openDb();
@@ -35,16 +39,6 @@ export default async function SpendingPage({
   const rows = db.prepare(
     `SELECT * FROM lines WHERE ${filter.sql} ORDER BY ${orderBy(filters)} LIMIT ? OFFSET ?`,
   ).all(...filter.params, limit, offset) as Line[];
-  const monthColumn = monthExpr(filters.basis);
-  const months = db.prepare(
-    `SELECT ${monthColumn} AS month, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count
-     FROM lines WHERE ${filter.sql} AND ${monthColumn} IS NOT NULL AND ${monthColumn} != ''
-     GROUP BY month ORDER BY month`,
-  ).all(...filter.params) as Array<{ month: string; amount_cents: number }>;
-  const cats = db.prepare(
-    `SELECT category, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count
-     FROM lines WHERE ${filter.sql} GROUP BY category ORDER BY amount_cents DESC`,
-  ).all(...filter.params) as Array<{ category: string; amount_cents: number; line_count: number }>;
   const vendorRows = db.prepare(
     `SELECT vendor_raw, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count
      FROM lines WHERE ${filter.sql} GROUP BY vendor_key ORDER BY amount_cents DESC LIMIT 8`,
@@ -104,96 +98,20 @@ export default async function SpendingPage({
   return (
     <div className="space-y-6">
       <section className="hero-figure rounded-xl border border-teal/10 bg-page p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
-        <h1 className="mt-2 max-w-3xl font-extrabold text-4xl leading-tight">Reported spending lines</h1>
-        <p className="mt-4 font-extrabold text-5xl tracking-tight">{dollars(totals.cents)}</p>
-        <p className="mt-2 text-sm">
-          Date basis: {basisLabel(basis)}. <span className="font-semibold">{totals.n.toLocaleString()} public lines</span> in this filter.
-          Across the index, {unknown.n.toLocaleString()} lines have no date on this basis and stay out of a dated filter.
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
+        <h1 className="mt-2 font-extrabold text-4xl leading-tight">Reported spending lines</h1>
+        <p className="hero-total mt-4 font-extrabold">{dollars(totals.cents)}</p>
+        <p className="mt-2 text-base">
+          Reported / vouchered. Date basis: {basisLabel(basis)}. <span className="font-semibold">{totals.n.toLocaleString()} public lines</span> in this filter.
+          {unknown.n > 0 ? ` ${unknown.n.toLocaleString()} lines have no date on this basis.` : ""}
+          {" "}
+          <HowToRead anchor="read-totals" />
         </p>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-teal/75">
-          This figure is the sum of screened public lines on that date basis. It is not unique spend, not the printed report total, not proof a payment settled, and not a census of districts or of Arizona schools.
-          Personal payees, unknown payees, and sensitive description text are withheld. A month with no bar was not indexed, not recorded as zero.
-        </p>
-        {stress.n > 0 ? (
-          <p className="mt-4 max-w-3xl rounded-lg bg-cream px-3 py-2 text-sm leading-6">
-            In the screened public lines in this filter, {dollars(stress.cents)} was reported on descriptions grouped as stress balls
-            ({stress.n} lines, {stress.districts} district name{stress.districts === 1 ? "" : "s"}, {stress.vendors} vendor key{stress.vendors === 1 ? "" : "s"}).
-            {" "}
-            <Link className="font-semibold text-teal underline" href={`/explore/items/stress-balls${basis === "either" ? "" : `?basis=${basis}`}`}>See the breakdown</Link>
-            {" · "}
-            <Link className="font-semibold text-teal underline" href="/explore">All groups</Link>
-          </p>
-        ) : null}
       </section>
 
-      <form className="grid gap-3 rounded-xl border border-teal/10 bg-page p-4 md:grid-cols-4" action="/">
-        {sorting.sort !== "date" || sorting.direction !== "desc" ? (
-          <div className="hidden">
-            <input type="hidden" name="sort" value={sorting.sort} />
-            <input type="hidden" name="direction" value={sorting.direction} />
-          </div>
-        ) : null}
-        <label className="text-sm md:col-span-2">Description, vendor, or account
-          <input name="q" defaultValue={filters.q || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">Date basis
-          <select name="basis" defaultValue={basis} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
-            <option value="either">Either labeled date</option>
-            <option value="check_date">Check date only</option>
-            <option value="voucher_batch_date">Voucher batch date only</option>
-          </select>
-        </label>
-        <label className="text-sm">Entity
-          <select name="source" defaultValue={filters.source || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
-            <option value="">All indexed</option>
-            {entities.map((entity) => <option key={entity.source_id} value={entity.source_id}>{entity.entity_name}</option>)}
-          </select>
-        </label>
-        <label className="text-sm">From
-          <input type="date" name="start" defaultValue={filters.start || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">Through
-          <input type="date" name="end" defaultValue={filters.end || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">Vendor contains
-          <input name="vendor" defaultValue={filters.vendor || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">Category
-          <select name="category" defaultValue={filters.category || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
-            <option value="">Any</option>
-            {["unclassified","utilities","communications","insurance","instructional_materials","technology","facilities","transport","food","professional_services","student_support","staff_activities"].map((item) => (
-              <option key={item} value={item}>{item.replaceAll("_", " ")}</option>
-            ))}
-          </select>
-        </label>
-        <label className="text-sm">Minimum category confidence
-          <input name="confidence" defaultValue={filters.confidence || ""} placeholder="0.5" className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">School or department text
-          <input name="dac" defaultValue={filters.dac || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <label className="text-sm">Account code contains
-          <input name="account" defaultValue={filters.account || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
-        </label>
-        <div className="flex flex-wrap items-end gap-2">
-          <button className="rounded-md bg-terracotta px-3 py-2 text-sm font-semibold text-white" type="submit">Apply</button>
-          <ButtonLink href="/?basis=check_date&start=2025-07-01" variant="ghost">Check dates from July 1, 2025</ButtonLink>
-        </div>
-      </form>
+      <HomeSummary vendors={vendorRows} districts={districts} comparisons={enrollmentRows} />
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <BarChart
-          title={basis === "voucher_batch_date" ? "Voucher batch month (not a payment date)" : basis === "check_date" ? "Check-date month" : "Labeled month"}
-          bars={months.map((month) => ({ label: month.month.slice(2), amount_cents: month.amount_cents, note: month.month }))}
-          empty="No indexed lines have a date on this basis inside the filter."
-        />
-        <BarChart
-          title="Inferred category, not a budget code"
-          bars={cats.map((cat) => ({ label: cat.category.replaceAll("_", " ").slice(0, 18), amount_cents: cat.amount_cents, note: `${cat.line_count} lines` }))}
-          empty="No lines in this filter."
-        />
-      </div>
+      <SpendingFilters raw={raw} filters={filters} basis={basis} sorting={sorting} entities={entities} />
 
       <CategoryPies pies={pies} />
       <SpendEnrollmentChart chart={spendChart} />
@@ -204,19 +122,15 @@ export default async function SpendingPage({
         basisName={basisLabel(basis)}
         filterNote={hasNarrowingFilter(filters) ? "The amounts in this section follow the current filter. The October 1 headcount stays the official district total." : null}
       />
+      {stress.n > 0 ? (
+        <p className="rounded-xl border border-teal/10 bg-page px-4 py-3 text-base leading-6">
+          {dollars(stress.cents)} was reported on descriptions grouped as stress balls
+          ({stress.n} lines, {stress.districts} district name{stress.districts === 1 ? "" : "s"}, {stress.vendors} vendor key{stress.vendors === 1 ? "" : "s"}).
+          {" "}
+          <Link className="font-semibold text-teal underline" href={`/explore/items/stress-balls${basis === "either" ? "" : `?basis=${basis}`}`}>See the breakdown</Link>
+        </p>
+      ) : null}
       <StoryCards stories={stories} />
-
-      <section className="rounded-xl border border-teal/10 bg-page p-4">
-        <h2 className="font-semibold">Business vendors in this filter</h2>
-        <ul className="mt-3 grid gap-2 text-sm md:grid-cols-2">
-          {vendorRows.map((vendor) => (
-            <li key={vendor.vendor_raw} className="flex justify-between gap-3 border-b border-teal/5 py-1">
-              <span>{vendor.vendor_raw}</span>
-              <span className="shrink-0 font-semibold">{dollars(vendor.amount_cents)} · {vendor.line_count}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section id="lines" className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
@@ -226,8 +140,8 @@ export default async function SpendingPage({
           </div>
           <a className="text-sm font-semibold text-teal underline" href={`/api/export?${exportQuery.toString()}`}>Download CSV</a>
         </div>
-        <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-y border-teal/10 text-xs uppercase tracking-wide text-teal/60">
+        <table className="w-full min-w-[760px] text-left text-base">
+          <thead className="border-y border-teal/10 text-sm uppercase tracking-wide text-teal/60">
             <tr>
               <SortHeader label="Date used" column="date" sorting={sorting} raw={raw} />
               <th scope="col" className="px-3 py-2">Entity</th>
@@ -266,10 +180,11 @@ export default async function SpendingPage({
 
       <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
         <h2 className="font-semibold">Indexed document windows</h2>
+        <p className="mt-1"><HowToRead anchor="read-sources" /></p>
         <ul className="mt-2 space-y-1">
           {documents.map((doc) => (
             <li key={String(doc.document_id)}>
-              {doc.indexed ? "Indexed" : "Not in spending totals, and not zero spending"} · {doc.period_label_native || doc.document_id} · {doc.reconciliation_status} · {doc.parsed_outcome} · printed total {doc.printed_total_cents == null ? String(doc.printed_total_null_reason || "not extracted") : dollars(Number(doc.printed_total_cents))} · {doc.public_line_count} default-aggregate lines, {doc.withheld_count} withheld
+              {doc.indexed ? "Indexed" : "Not indexed"} · {doc.period_label_native || doc.document_id} · {doc.reconciliation_status} · {doc.parsed_outcome} · printed total {doc.printed_total_cents == null ? String(doc.printed_total_null_reason || "not extracted") : dollars(Number(doc.printed_total_cents))} · {doc.public_line_count} default-aggregate lines, {doc.withheld_count} withheld
             </li>
           ))}
         </ul>

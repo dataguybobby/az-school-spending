@@ -33,7 +33,12 @@ export function activeSort(filters: Filters): { sort: SortKey; direction: SortDi
   return { sort: sortKey(filters.sort), direction };
 }
 
-let cached: DatabaseSync | undefined;
+type CachedLedger = {
+  db: DatabaseSync;
+  signature: string;
+};
+
+let cached: CachedLedger | undefined;
 
 function bundledSource(): string {
   if (process.env.LEDGER_PUBLIC_DB) return process.env.LEDGER_PUBLIC_DB;
@@ -44,25 +49,33 @@ function bundledSource(): string {
   );
 }
 
-function openReadOnlyCopy(source: string): DatabaseSync {
+export function ledgerSignature(source: string): string {
+  const stat = fs.statSync(source);
+  return `${stat.size}:${stat.mtimeMs}`;
+}
+
+function openReadOnlyCopy(source: string, signature: string): DatabaseSync {
   const directory = fs.existsSync("/tmp") ? "/tmp" : os.tmpdir();
   const target = path.join(directory, "metro-school-ledger-public.sqlite");
-  const sourceStat = fs.statSync(source);
-  const stale =
-    !fs.existsSync(target) ||
-    fs.statSync(target).size !== sourceStat.size ||
-    fs.statSync(target).mtimeMs < sourceStat.mtimeMs;
-  if (stale) {
+  const stamp = path.join(directory, "metro-school-ledger-public.signature");
+  const current = fs.existsSync(stamp) ? fs.readFileSync(stamp, "utf8") : "";
+  if (current !== signature || !fs.existsSync(target)) {
     if (fs.existsSync(target)) fs.chmodSync(target, 0o644);
     fs.copyFileSync(source, target);
+    fs.writeFileSync(stamp, signature);
     fs.chmodSync(target, 0o444);
   }
   return new DatabaseSync(`file:${target}?mode=ro&immutable=1`, { readOnly: true });
 }
 
 export function openDb(): DatabaseSync {
-  if (!cached) cached = openReadOnlyCopy(bundledSource());
-  return cached;
+  const source = bundledSource();
+  const signature = ledgerSignature(source);
+  if (!cached || cached.signature !== signature) {
+    cached?.db.close();
+    cached = { db: openReadOnlyCopy(source, signature), signature };
+  }
+  return cached.db;
 }
 
 function ftsQuery(text: string): string {

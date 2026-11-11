@@ -5,5 +5,6 @@ declare module "node:sqlite" {
       all(...params: Array<string | number>): unknown[];
       get(...params: Array<string | number>): unknown;
     };
+    close(): void;
   }
 }

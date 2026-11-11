@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { HowToRead } from "@/components/how-to-read";
 import { openDb } from "@/lib/db";
 import { dollars } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
     <article className="space-y-6">
       <p><Link href="/" className="text-sm font-semibold text-teal">Back to search</Link></p>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wide text-teal">Reported line, not settlement proof</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-teal">Reported line</p>
         <h1 className="font-extrabold text-3xl">{dollars(Number(line.amount_cents))} · {line.vendor_raw}</h1>
         <p className="mt-2 max-w-3xl text-teal/80">{line.description_public}</p>
       </header>
@@ -62,9 +63,9 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
             <Link className="font-semibold text-teal underline" href={`/explore/items/${String(line.item_label).toLowerCase().replaceAll(" ", "-")}`}>Open the group</Link>
           </p>
         ) : null}
-        <p className="mt-2 text-teal/70">
-          {line.amount_semantics}. {document ? `Reconciliation: ${document.reconciliation_status}.` : ""}
-          Department text is as printed, not a verified location. Check numbers are not shown.
+        <p className="mt-2">
+          {line.amount_semantics}. {document ? `Reconciliation: ${document.reconciliation_status}. ` : ""}
+          <HowToRead anchor="read-privacy" />
         </p>
       </section>
     </article>

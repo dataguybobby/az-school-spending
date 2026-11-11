@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import sqlite3
 import subprocess
 from pathlib import Path
+
+from pipeline.paths import public_db
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -17,7 +20,7 @@ def test_chart_helpers_keep_gaps_and_printed_slices():
             "-e",
             r"""
 import { groupPrintedSlices, printedCategoryField, NO_CATEGORY_PRINTED, OTHER_AS_PRINTED } from "./web/src/lib/printed-slices.ts";
-import { spendWithGaps, enrollmentMarks, axisMonths, contiguousSpendSegments, schoolYearForMonth, axisTicks, monthsWithSpend } from "./web/src/lib/spend-series.ts";
+import { spendWithGaps, enrollmentMarks, axisMonths, contiguousSpendSegments, schoolYearForMonth, axisTicks, monthsWithSpend, labelStepFor, monthsToLabel } from "./web/src/lib/spend-series.ts";
 import { schoolYearForDate } from "./web/src/lib/enrollment-match.ts";
 
 if (printedCategoryField(true, true) !== "account_description") throw new Error("account field");
@@ -76,7 +79,45 @@ const shown = monthsWithSpend(
   [[{ month: "2024-07", amountCents: null }, { month: "2024-11", amountCents: 50 }, { month: "2025-07", amountCents: null }]],
 );
 if (shown.join() !== "2024-11") throw new Error("empty months stayed visible " + shown.join());
+if (labelStepFor(14, 6) !== 3) throw new Error("queen creek tick step " + labelStepFor(14, 6));
+if (labelStepFor(6, 6) !== 1) throw new Error("short axis");
+const labeled = monthsToLabel([
+  { month: "2026-04", amountCents: 303450228 },
+  { month: "2026-05", amountCents: 2463780 },
+  { month: "2026-06", amountCents: 292421385 },
+  { month: "2026-08", amountCents: null },
+]);
+if (!labeled.has("2026-05")) throw new Error("May 2026 small amount was not labeled");
+if (labeled.has("2026-04") || labeled.has("2026-06")) throw new Error("large months were labeled");
+if (labeled.has("2026-08")) throw new Error("gap was labeled");
 """,
         ],
         cwd=ROOT,
     )
+
+
+def test_queen_creek_may_2026_is_a_real_small_amount():
+    connection = sqlite3.connect(f"file:{public_db()}?mode=ro", uri=True)
+    row = connection.execute(
+        """
+        SELECT COALESCE(SUM(amount_cents), 0), COUNT(*)
+        FROM lines
+        WHERE source_id = 'qcusd_diligent_voucher_summary'
+          AND in_default_aggregate = 1
+          AND substr(COALESCE(check_date, voucher_batch_date), 1, 7) = '2026-05'
+        """
+    ).fetchone()
+    assert row == (2463780, 15)
+    chart = (ROOT / "web" / "src" / "components" / "spend-enrollment-chart.tsx").read_text(encoding="utf-8")
+    assert "monthsToLabel" in chart
+    assert "district-chart" in chart
+    home = (ROOT / "web" / "src" / "app" / "page.tsx").read_text(encoding="utf-8")
+    assert "await connection()" in home
+    assert "Labeled month" not in home
+    assert "Inferred category" not in home
+    assert "2155944882" not in home
+    layout = (ROOT / "web" / "src" / "app" / "layout.tsx").read_text(encoding="utf-8")
+    assert "COUNT(DISTINCT item_label)" in layout
+    assert "groups > 1" in layout
+    db = (ROOT / "web" / "src" / "lib" / "db.ts").read_text(encoding="utf-8")
+    assert "ledgerSignature" in db

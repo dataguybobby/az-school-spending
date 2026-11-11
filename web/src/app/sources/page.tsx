@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { HowToRead } from "@/components/how-to-read";
+import { PageToc } from "@/components/page-toc";
 import { openDb } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -26,19 +28,21 @@ export default async function SourcesPage({
   const backlog = readBacklog(params.backlog || "");
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h1 className="font-extrabold text-3xl">Source catalog</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-teal/80">
-          The <a className="font-semibold text-teal underline" href="/dictionary">data dictionary</a> is the map of sources, transformations, and aggregations. Registry status and ingestion status are different. Confirmed means a line-item document was identified. Indexed means this run parsed it and the lines matched a printed total.
-          Searched with no source is a limited search result, not proof that no ledger exists. Unsearched means no query was recorded. This is not a complete metro census, and no coverage percentage is shown.
+    <div className="space-y-6 text-base">
+      <header>
+        <h1 className="font-extrabold text-4xl">Source catalog</h1>
+        <p className="mt-3 text-base">
+          Registry rows for this snapshot. <HowToRead anchor="read-coverage" />
         </p>
-        <p className="mt-3 text-sm">
-          AZDOR 2026 snapshot: 1,449 site rows and 395 distinct CTDS holder IDs, including closed sites. County directories list 57 Maricopa and 21 Pinal institutional names. None of those numbers is an active-district denominator. Administrative county is not service geography. No Pinal ledger is confirmed beyond Queen Creek administrative metadata.
-        </p>
-      </section>
+      </header>
+      <PageToc items={[
+        { href: "#documents", label: "Documents" },
+        { href: "#counts", label: "Counts" },
+        { href: "#registry", label: "Registry" },
+        { href: "#backlog", label: "CTDS backlog" },
+      ]} />
       <SourceDocuments />
-      <section className="grid gap-3 md:grid-cols-2">
+      <section id="counts" className="grid gap-3 md:grid-cols-2">
         <ul className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
           {counts.map((row) => <li key={row.source_status} className="flex justify-between border-b border-teal/5 py-1"><span>{row.source_status}</span><span>{row.n}</span></li>)}
         </ul>
@@ -54,9 +58,26 @@ export default async function SourcesPage({
         </select>
         <button className="rounded-md bg-terracotta px-3 py-2 text-sm font-semibold text-white" type="submit">Filter</button>
       </form>
-      <div className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
-        <table className="w-full min-w-[860px] text-left text-sm">
-          <thead className="border-b border-teal/10 text-xs uppercase tracking-wide text-teal/60">
+      <section id="registry">
+      <ul className="space-y-3 md:hidden">
+        {filtered.map((source) => (
+          <li key={String(source.source_id)} className="rounded-xl border border-teal/10 bg-page p-4">
+            <h2 className="font-semibold">{source.entity_name}</h2>
+            <p className="text-sm text-teal/60">{source.entity_type} · {source.document_class}</p>
+            <dl className="mt-2 space-y-1 text-base">
+              <div>Registry status: {source.source_status}</div>
+              <div>Adapter family: {source.adapter_family}</div>
+              <div>Discovery: {source.discovery_state}</div>
+              <div>Ingestion: {source.ingestion_status}</div>
+              <div>Admin county label: {source.admin_county || "Not labeled"}</div>
+              <div>CTDS: {source.lea_ctds || "Not joined"}</div>
+            </dl>
+          </li>
+        ))}
+      </ul>
+      <div className="hidden overflow-x-auto rounded-xl border border-teal/10 bg-page md:block">
+        <table className="w-full text-left text-base">
+          <thead className="border-b border-teal/10 text-sm uppercase tracking-wide text-teal/60">
             <tr>
               <th className="px-3 py-2">Entity</th>
               <th className="px-3 py-2">Registry status</th>
@@ -85,7 +106,8 @@ export default async function SourcesPage({
           </tbody>
         </table>
       </div>
-      <section className="rounded-xl border border-teal/10 bg-page p-4">
+      </section>
+      <section id="backlog" className="rounded-xl border border-teal/10 bg-page p-4">
         <h2 className="font-semibold">CTDS backlog</h2>
         <p className="mt-1 text-sm text-teal/70">Unmatched rows stay unsearched. A name here was not automatically treated as unavailable.</p>
         <form className="mt-3 flex gap-2" action="/sources">
@@ -110,9 +132,9 @@ function SourceDocuments() {
      ORDER BY d.indexed DESC, s.entity_name`,
   ).all() as Array<{ document_id: string; entity_name: string | null; url: string | null; indexed: number; parsed_outcome: string | null; public_line_count: number | null }>;
   return (
-    <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
+    <section id="documents" className="rounded-xl border border-teal/10 bg-page p-4 text-base">
       <h2 className="font-semibold">Official documents in this snapshot</h2>
-      <p className="mt-1 text-teal/70">Links open the district or board page. Raw PDFs are not hosted here. An unindexed file is not zero spending.</p>
+      <p className="mt-1">Links open the district or board page. <HowToRead anchor="read-sources" /></p>
       <ul className="mt-3 space-y-2">
         {documents.map((row) => (
           <li key={row.document_id}>

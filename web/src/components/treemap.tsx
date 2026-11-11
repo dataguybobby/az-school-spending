@@ -1,3 +1,4 @@
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
 
 type Slice = { label: string; amount_cents: number; lines: number };
@@ -10,9 +11,9 @@ export function VendorTreemap({ slices }: { slices: Slice[] }) {
   const rects = layout(slices.filter((slice) => slice.amount_cents > 0), 0, 0, width, height, true);
   return (
     <figure className="rounded-xl border border-teal/10 bg-page p-4">
-      <figcaption className="text-sm font-semibold">Screened vendor spending in this filter</figcaption>
-      <p className="mt-1 text-xs leading-5 text-teal/60">
-        Area is the sum of screened public lines for that vendor. Other screened vendors are grouped. This is not unique spend and not a printed report total.
+      <figcaption className="text-base font-semibold">Screened vendor spending in this filter</figcaption>
+      <p className="mt-1 text-base">
+        Area is the screened amount for that vendor. <HowToRead anchor="read-vendors" />
       </p>
       {rects.length === 0 ? (
         <p className="mt-4 text-sm text-teal/70">No positive screened amounts in this filter.</p>
@@ -30,12 +31,12 @@ export function VendorTreemap({ slices }: { slices: Slice[] }) {
                 className={index % 2 === 0 ? "fill-terracotta" : "fill-gold"}
               />
               {rect.w > 72 && rect.h > 36 ? (
-                <text x={rect.x + 8} y={rect.y + 18} className={index % 2 === 0 ? "fill-cream text-[11px]" : "fill-teal text-[11px]"}>
+                <text x={rect.x + 8} y={rect.y + 20} className={index % 2 === 0 ? "fill-cream text-[14px]" : "fill-teal text-[14px]"}>
                   {rect.label.slice(0, 28)}
                 </text>
               ) : null}
               {rect.w > 72 && rect.h > 52 ? (
-                <text x={rect.x + 8} y={rect.y + 34} className={index % 2 === 0 ? "fill-cream text-[10px]" : "fill-teal text-[10px]"}>
+                <text x={rect.x + 8} y={rect.y + 38} className={index % 2 === 0 ? "fill-cream text-[13px]" : "fill-teal text-[13px]"}>
                   {dollars(rect.amount_cents)}
                 </text>
               ) : null}

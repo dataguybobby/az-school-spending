@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageToc } from "@/components/page-toc";
 import { openDb } from "@/lib/db";
 import { dollars } from "@/lib/utils";
 
@@ -37,85 +38,125 @@ export default async function MethodologyPage() {
   const held = documents.filter((row) => row.indexed !== 1);
 
   return (
-    <article className="space-y-8 text-sm leading-6">
+    <article className="space-y-8 text-base leading-7">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">How to read this ledger</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">How this ledger is built</p>
         <h1 className="mt-2 font-extrabold text-4xl">Methodology</h1>
-        <p className="mt-3 max-w-3xl text-base">
-          Phoenix Dataworks publishes AZ School Spending. It is not an official government site, and it is not a district or state report.
-          The <Link className="font-semibold text-teal underline" href="/dictionary">data dictionary</Link> lists each source, transformation, and aggregation in this snapshot.
+        <p className="mt-3 text-lg">
+          Phoenix Dataworks publishes AZ School Spending. The <Link className="font-semibold text-teal underline" href="/dictionary">data dictionary</Link> lists each source, transformation, and aggregation in this snapshot.
+          {" "}
+          <Link className="font-semibold text-teal underline" href="/about">About this site</Link>.
         </p>
       </header>
+      <PageToc items={[
+        { href: "#caveats", label: "Caveats" },
+        { href: "#read-totals", label: "Totals" },
+        { href: "#read-dates", label: "Dates" },
+        { href: "#read-gaps", label: "Gaps" },
+        { href: "#read-privacy", label: "Privacy" },
+        { href: "#read-categories", label: "Categories" },
+        { href: "#read-vendors", label: "Vendors" },
+        { href: "#read-enrollment", label: "Enrollment" },
+        { href: "#read-coverage", label: "Coverage" },
+        { href: "#read-groups", label: "Groups" },
+        { href: "#source-documents", label: "Documents" },
+      ]} />
 
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">What a line means</h2>
-        <p className="mt-2 max-w-3xl">
-          A line is a reported accounts-payable amount or a vouchered amount taken from an official board document.
-          The amount is what that document printed for the line. It is not proof that a payment settled, cleared a bank, or was the final price.
-        </p>
+      <section id="caveats" className="space-y-6">
+        <h2 className="font-extrabold text-3xl">Caveats & how to read this data</h2>
+
+        <section id="read-totals" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Totals</h3>
+          <p className="mt-2">
+            This figure is the sum of screened public lines on that date basis. It is not unique spend, not the printed report total, not proof a payment settled, and not a census of districts or of Arizona schools.
+          </p>
+          <p className="mt-2">
+            A line is a reported accounts-payable amount or a vouchered amount from an official board document. The amount is what that document printed for the line. It is not proof the payment settled, cleared a bank, or was the final price.
+          </p>
+        </section>
+
+        <section id="read-dates" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Dates</h3>
+          <p className="mt-2">
+            Dates follow the basis you select: check date, voucher batch date, or either labeled date. A voucher batch date is not a check date. Lines with no date on the selected basis stay out of a dated filter. They are not treated as zero.
+          </p>
+        </section>
+
+        <section id="read-gaps" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Gaps</h3>
+          <p className="mt-2">
+            A gap on a chart, or a blank month in a table, means no indexed document for that district in that month. It is not a month of zero spending. The line is not drawn through the gap, and the month is not filled with a number.
+          </p>
+          <p className="mt-2">
+            A small labeled point is a real screened amount. Queen Creek May 2026 is one of those months: the indexed voucher document includes lines dated in May, and the amount is much smaller than the neighboring months.
+          </p>
+        </section>
+
+        <section id="read-privacy" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Privacy</h3>
+          <p className="mt-2">
+            Only screened public lines are in the index. A row stays out when the payee looks personal or unknown, or when the text contains a student name, a street address, a check number, or IEP, ESY, medicaid, diagnosis, or prescription language. Those rows are withheld. Hiding a column is not the control. Raw PDFs are not republished, and check numbers are not shown.
+          </p>
+        </section>
+
+        <section id="read-categories" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Categories</h3>
+          <p className="mt-2">
+            Each pie is one district, grouped by the category text printed on that source. Voucher rows use the account description printed beside the account code. The Scottsdale accounts payable report has no account code, so its pie uses the DAC column as printed. Districts are not merged into one taxonomy. A slice with no printed category is labeled “No category printed.” Slices under 2 percent are grouped as “Other (as printed).”
+          </p>
+          <p className="mt-2">
+            Inferred category, not a budget code. The inferred category is a separate label from the ruleset <span className="font-semibold">phoenix-k12-neutral-2026.11.11</span>. Unclassified is the default. Metered natural gas, water, sewer, and electricity are utilities. An account title printed on the row is stronger evidence than item text. These labels are not USFR codes. Amazon is a vendor, not a category. Department or DAC text is as printed, not a verified school location.
+          </p>
+        </section>
+
+        <section id="read-vendors" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Vendors</h3>
+          <p className="mt-2">
+            Vendor totals are the amount paid to that vendor by indexed districts (reported / vouchered). They are not vendor revenue and not a vendor’s total sales. Coverage is not continuous. The printed payee is the name that appears most often. Vendor keys collapse spacing and punctuation. Personal and unknown payees are not listed. This is not unique spend, not a printed report total, and not complete coverage of that vendor or of any district.
+          </p>
+        </section>
+
+        <section id="read-enrollment" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">October 1 enrollment</h3>
+          <p className="mt-2">
+            October 1 enrollment (ADE headcount) is a headcount of students enrolled on that day. It is not ADM, and it is not part of the screened spending total. A per-student figure is a reported amount in this index per enrolled student. It is not cost per pupil and not total district spending.
+          </p>
+          <p className="mt-2">
+            School year YYYY-(YYYY+1) pairs with spending dated July 1, YYYY through June 30, YYYY+1. School year 2025-2026 pairs with 2025-07-01 through 2026-06-30. The project coverage window still starts 2024-07-01.
+          </p>
+          <p className="mt-2">
+            An asterisk or a blank Total stays null. District totals for 2010-2011 through 2016-2017 are not on the same basis as 2017-2018 onward and are not a continuous series. 2010-2011 has no single all-students LEA total, and those residence pairs are not summed. 2011-2012 through 2016-2017 are district-of-residence subtotals ADE printed in the school tab. A blank or asterisk statewide total stays null and is not a denominator. School years without a loaded workbook are not drawn. Counts from before 2017-2018 are not connected to the later series.
+          </p>
+          <p className="mt-2">
+            <Link className="font-semibold text-teal underline" href="/enrollment">Open the enrollment comparison</Link>.
+          </p>
+        </section>
+
+        <section id="read-coverage" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Coverage</h3>
+          <p className="mt-2">
+            This is not an official government site. The index covers administrative Maricopa and Pinal districts that have been indexed, from July 1, 2024 onward: Chandler, Higley, Paradise Valley, Queen Creek, and Scottsdale. It is not a census of Arizona schools, not every Phoenix school, and not a district’s full year. No coverage percentage is shown.
+          </p>
+          <p className="mt-2">
+            The spending total uses only observed documents whose parsed detail lines reconciled to the printed total on that same document. An unindexed file is not zero spending. Searched with no source is a limited search result, not proof that no ledger exists. Unsearched means no query was recorded. Administrative county is not service geography. AZDOR site counts and county directory names are not an active-district denominator.
+          </p>
+          <p className="mt-2">
+            When two Scottsdale report headers share a calendar date but the parsed check dates do not overlap, both documents stay in the default sum. A shared check date would be kept out of the default total, the charts, and the CSV. The project coverage window starts 2024-07-01. The ingest does not delete a public line only because its date is earlier.
+          </p>
+        </section>
+
+        <section id="read-groups" className="rounded-xl border border-teal/10 bg-page p-5">
+          <h3 className="font-extrabold text-2xl">Groups</h3>
+          <p className="mt-2">
+            Item groups are reviewed phrases in the public description, such as “stress balls.” They are sums of screened public lines, not unique spend, not printed report totals, and not complete district or statewide coverage. They are not budget codes. The line amount is the spend. A not-to-exceed figure printed in a description is not the spend total. Broad words such as “ball” are not groups.
+          </p>
+        </section>
       </section>
 
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">What is in the public index</h2>
-        <p className="mt-2 max-w-3xl">
-          Only screened public lines. A row stays out when the payee looks personal or unknown, or when the text contains a student name, a street address, a check number, or IEP, ESY, medicaid, diagnosis, or prescription language.
-          Those rows are quarantined. Hiding a column is not enough. Raw PDFs are not republished. Each indexed document links to the official board page instead.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">Coverage</h2>
-        <p className="mt-2 max-w-3xl">
-          The spending total uses only observed documents whose parsed detail lines reconciled to the printed total on that same document.
-          This is not a census of Arizona schools, not a census of Phoenix schools, and not a district’s full year.
-          Dates follow the basis you select: check date, or voucher batch date. A voucher batch date is not a check date.
-          Lines with no date on the selected basis stay out of a dated filter. They are not treated as zero.
-          When two Scottsdale report headers share a calendar date but the parsed check dates do not overlap, both documents stay in the default sum.
-          A shared check date would be kept out of the default total, the charts, and the CSV. That overlap note is on the spending page when one exists.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">Categories</h2>
-        <p className="mt-2 max-w-3xl">
-          Categories use the ruleset <span className="font-semibold">phoenix-k12-neutral-2026.11.11</span>. Metered natural gas, water, sewer, and electricity are utilities.
-          An account title printed on the row is stronger evidence than item text. Unclassified is the default.
-          A match on item text is weak, and it does not prove why the district bought the item.
-          Amazon is a vendor, not a category. These labels are not USFR codes.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">Item and vendor groups</h2>
-        <p className="mt-2 max-w-3xl">
-          Vendor keys collapse spacing and punctuation so obvious reprints of the same payee can be summed. The display name is the raw payee string that appears most often for that key.
-          Item groups are a separate layer. A reviewed phrase in the public description, such as “stress balls,” can group those lines.
-          The group stores the canonical label, the matched evidence span, the method, and a confidence. It is resolved from description text, not from an official budget code.
-          Broad words such as “ball” are not groups. A not-to-exceed or ceiling figure printed in a description is not the spend total. The line amount is.
-          Low-confidence and phrase groups stay labeled as grouped from description text.
-          <Link className="ml-1 font-semibold text-teal underline" href="/explore">Open the groups</Link>.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">October 1 enrollment</h2>
-        <p className="mt-2 max-w-3xl">
-          Arizona Department of Education October 1 enrollment is a headcount of students enrolled on that day. It is not ADM, and it is not part of the screened spending total.
-          School year YYYY-(YYYY+1) pairs with spending dated July 1, YYYY through June 30, YYYY+1. School year 2025-2026 pairs with 2025-07-01 through 2026-06-30.
-          The project coverage window still starts 2024-07-01.
-        </p>
-        <p className="mt-2 max-w-3xl">
-          A per-student figure is a reported amount in this index per enrolled student. An asterisk or a blank Total stays null.
-          District totals for 2010-2011 through 2016-2017 are not on the same basis as 2017-2018 onward and are not a continuous series. 2010-2011 has no single all-students LEA total, and those residence pairs are not summed.
-          {" "}
-          <Link className="font-semibold text-teal underline" href="/enrollment">Open the enrollment comparison</Link>.
-        </p>
-      </section>
-
-      <section>
+      <section id="source-documents">
         <h2 className="font-extrabold text-2xl">Source documents</h2>
-        <p className="mt-2 max-w-3xl">
-          Indexed documents are in the spending total. Fetched documents that did not reconcile are listed after them. An unindexed file is not zero spending.
+        <p className="mt-2">
+          Indexed documents are in the spending total. Fetched documents that did not reconcile are listed after them.
         </p>
         <DocumentList title="Indexed" rows={indexed} />
         <DocumentList title="Fetched, not indexed" rows={held} />

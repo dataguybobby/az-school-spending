@@ -1,22 +1,20 @@
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
-import { axisTicks, contiguousSpendSegments, monthsWithSpend, type EnrollmentMark, type SpendPoint } from "@/lib/spend-series";
+import { axisTicks, contiguousSpendSegments, labelStepFor, monthsToLabel, monthsWithSpend, type EnrollmentMark, type SpendPoint } from "@/lib/spend-series";
 import type { DistrictSpend, SpendChart } from "@/lib/chart-data";
 
 const SERIES = ["#0f5c66", "#e07a3d", "#c4922a", "#3d8a84", "#a34b32"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const SPEND_AXIS = "Screened spend per month ($)";
-const ENROLL_AXIS = "October 1 enrollment (students)";
+const ENROLL_AXIS = "ADE headcount";
 
 export function SpendEnrollmentChart({ chart }: { chart: SpendChart }) {
   const valued = monthsWithSpend(chart.months, chart.districts.map((district) => district.points));
   return (
     <section id="spend-over-time" className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">Screened spend by month, with October 1 enrollment</h2>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-teal/75">
-        A gap is a month with no indexed document in this filter, not a month of zero spending. October 1 enrollment (ADE headcount, not ADM) is a separate series.
-      </p>
-      <p className="mt-2 max-w-3xl text-xs leading-5 text-teal/60">
-        Each district has its own panel, so a large month does not flatten a smaller one. Solid marks are screened amounts on the selected date basis. A dashed step, in that same district color, is the official October 1 headcount from July 1 through June 30, with a ring on October 1. School years without a loaded workbook are not drawn. Counts from before 2017-2018 are not connected to the later series. This is not continuous coverage and not cost per pupil.
+      <p className="mt-1 text-base leading-6">
+        A gap is a month with no indexed document. <HowToRead anchor="read-gaps" />
       </p>
       {chart.districts.length === 0 ? (
         <p className="mt-4 text-sm text-teal/70">No indexed lines have a date on this basis inside the filter.</p>
@@ -64,46 +62,48 @@ function DistrictPanel({ district, color }: { district: DistrictSpend; color: st
   const yEnroll = (count: number) => top + innerHeight - (count / enrollCeil) * innerHeight;
   const xCenter = (index: number) => left + index * slot + slot / 2;
   const monthIndex = new Map(months.map((month, index) => [month, index]));
-  const labelStep = months.length > 18 ? 3 : 1;
+  const labelStep = labelStepFor(months.length, 6);
+  const labeled = monthsToLabel(district.points);
   const shortName = shortDistrict(district.district);
 
   return (
     <article className="overflow-x-auto rounded-lg border border-teal/10 p-3">
       <h3 className="font-semibold" style={{ color }}>{district.district}</h3>
-      <p className="text-xs text-teal/60">
+      <p className="text-sm text-teal/70">
         <span className="mr-3 inline-flex items-center gap-1"><span className="inline-block h-2 w-5 rounded-sm" style={{ background: color }} />Screened spend</span>
         {district.enrollment.length > 0 ? (
           <span className="inline-flex items-center gap-1">
             <span className="inline-block h-0 w-5 border-t-2 border-dashed" style={{ borderColor: color }} />
-            {shortName} October 1 enrollment
+            {shortName} October 1 enrollment (ADE headcount)
           </span>
         ) : (
           <span>No October 1 enrollment workbook overlaps these indexed months.</span>
         )}
       </p>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" className="mt-2 h-64 min-w-[640px]">
+      <div className="mt-2 overflow-x-auto">
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" className="district-chart">
         <title>{`${district.district} screened spend per month and October 1 enrollment`}</title>
-        <text x="16" y={top + innerHeight / 2} textAnchor="middle" className="fill-teal text-[11px]" transform={`rotate(-90 16 ${top + innerHeight / 2})`}>
+        <text x="16" y={top + innerHeight / 2} textAnchor="middle" className="fill-teal text-[13px]" transform={`rotate(-90 16 ${top + innerHeight / 2})`}>
           {SPEND_AXIS}
         </text>
         {district.enrollment.length > 0 ? (
-          <text x={width - 16} y={top + innerHeight / 2} textAnchor="middle" className="fill-teal text-[11px]" transform={`rotate(90 ${width - 16} ${top + innerHeight / 2})`}>
+          <text x={width - 16} y={top + innerHeight / 2} textAnchor="middle" className="fill-teal text-[13px]" transform={`rotate(90 ${width - 16} ${top + innerHeight / 2})`}>
             {ENROLL_AXIS}
           </text>
         ) : null}
         {spendTicks.map((tick) => (
           <g key={`spend-${tick}`}>
             <line x1={left} x2={width - right} y1={ySpend(tick)} y2={ySpend(tick)} className="stroke-teal/15" />
-            <text x={left - 8} y={ySpend(tick) + 3} textAnchor="end" className="fill-teal text-[10px]">{compactDollars(tick)}</text>
+            <text x={left - 8} y={ySpend(tick) + 4} textAnchor="end" className="fill-teal text-[13px]">{compactDollars(tick)}</text>
           </g>
         ))}
         {enrollTicks.map((tick) => (
-          <text key={`enroll-${tick}`} x={width - right + 8} y={yEnroll(tick) + 3} className="fill-teal text-[10px]">
+          <text key={`enroll-${tick}`} x={width - right + 8} y={yEnroll(tick) + 4} className="fill-teal text-[13px]">
             {tick.toLocaleString("en-US")}
           </text>
         ))}
         {months.map((month, index) => index % labelStep === 0 ? (
-          <text key={month} x={xCenter(index)} y={height - 16} textAnchor="middle" className="fill-teal text-[10px]">
+          <text key={month} x={xCenter(index)} y={height - 14} textAnchor="middle" className="fill-teal text-[13px]">
             {formatMonth(month)}
           </text>
         ) : null)}
@@ -116,6 +116,9 @@ function DistrictPanel({ district, color }: { district: DistrictSpend; color: st
             xCenter={xCenter}
             ySpend={ySpend}
             district={district.district}
+            labeled={labeled}
+            plotLeft={left}
+            plotRight={width - right}
           />
         ))}
         {district.enrollment.map((mark) => (
@@ -133,6 +136,7 @@ function DistrictPanel({ district, color }: { district: DistrictSpend; color: st
           />
         ))}
       </svg>
+      </div>
     </article>
   );
 }
@@ -144,6 +148,9 @@ function SpendSegment({
   xCenter,
   ySpend,
   district,
+  labeled,
+  plotLeft,
+  plotRight,
 }: {
   segment: SpendPoint[];
   color: string;
@@ -151,6 +158,9 @@ function SpendSegment({
   xCenter: (index: number) => number;
   ySpend: (cents: number) => number;
   district: string;
+  labeled: Set<string>;
+  plotLeft: number;
+  plotRight: number;
 }) {
   const isolated = segment.length === 1;
   const path = segment.map((point, index) => {
@@ -169,9 +179,15 @@ function SpendSegment({
             <circle cx={cx} cy={cy} r={isolated ? 8 : 4} fill={color} stroke="#fbf6ec" strokeWidth={isolated ? 2 : 0}>
               <title>{`${district} ${formatMonth(point.month)}: ${dollars(point.amountCents)}`}</title>
             </circle>
-            {isolated ? (
-              <text x={cx + 12} y={cy - 8} className="text-[11px]" fill={color}>
-                {compactDollars(point.amountCents ?? 0)}
+            {labeled.has(point.month) ? (
+              <text
+                x={cx < plotLeft + 72 ? cx + 10 : cx > plotRight - 72 ? cx - 10 : cx}
+                y={Math.max(cy - 16, 18)}
+                textAnchor={cx < plotLeft + 72 ? "start" : cx > plotRight - 72 ? "end" : "middle"}
+                className="text-[13px]"
+                fill={color}
+              >
+                {exactDollars(point.amountCents ?? 0)}
               </text>
             ) : null}
           </g>
@@ -216,7 +232,7 @@ function EnrollmentStep({
           <title>{`${label}. October 1 enrollment (ADE headcount, not ADM).`}</title>
         </circle>
       )}
-      <text x={labelX} y={y - 8} textAnchor="end" fill={color} className="text-[11px]">
+      <text x={labelX} y={y - 8} textAnchor="end" fill={color} className="text-[13px]">
         {label}
       </text>
     </g>
@@ -227,9 +243,9 @@ function ChartTable({ chart, months }: { chart: SpendChart; months: string[] }) 
   if (months.length === 0) return null;
   return (
     <div className="mt-4 overflow-x-auto">
-      <table className="w-full min-w-[640px] text-left text-xs">
-        <caption className="mb-2 text-left text-teal/70">
-          A blank spend cell is a month with no indexed document, not zero spending. October 1 enrollment is the ADE headcount for the school year that contains the month. It is not a monthly count and not ADM.
+      <table className="w-full min-w-[640px] text-left text-base">
+        <caption className="mb-2 text-left text-teal/80">
+          A blank cell is a gap: no indexed document that month. October 1 enrollment (ADE headcount) is the school-year count, not a monthly count.
         </caption>
         <thead className="border-b border-teal/10 uppercase tracking-wide text-teal/50">
           <tr>
@@ -279,6 +295,11 @@ function shortDistrict(name: string): string {
     .replace(/ School District.*/, "");
 }
 
+function exactDollars(cents: number): string {
+  const sign = cents < 0 ? "-" : "";
+  return `${sign}$${Math.round(Math.abs(cents) / 100).toLocaleString("en-US")}`;
+}
+
 function compactDollars(cents: number): string {
   const sign = cents < 0 ? "-" : "";
   const abs = Math.abs(cents) / 100;
@@ -293,5 +314,5 @@ function compactDollars(cents: number): string {
 
 function formatMonth(month: string): string {
   const index = Number(month.slice(5, 7)) - 1;
-  return `${MONTHS[index] ?? month} ${month.slice(0, 4)}`;
+  return `${MONTHS[index] ?? month} ${month.slice(2, 4)}`;
 }

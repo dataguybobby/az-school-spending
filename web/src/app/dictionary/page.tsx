@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { HowToRead } from "@/components/how-to-read";
+import { PageToc } from "@/components/page-toc";
 import dictionary from "@/data/dictionary.json";
 import { dollars } from "@/lib/utils";
 
@@ -13,50 +15,56 @@ export default function DictionaryPage() {
   const searched = dictionary.sources.filter((row) => row.dictionary_status === "searched_not_ingested");
 
   return (
-    <article className="space-y-8 text-sm leading-6">
+    <article className="space-y-8 text-base leading-7">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Living map of this ledger</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">Living map of this ledger</p>
         <h1 className="mt-2 font-extrabold text-4xl">Data dictionary</h1>
-        <p className="mt-3 max-w-3xl">
-          Phoenix Dataworks publishes AZ School Spending. This page is generated from the public snapshot and the registry.
-          It is not an official government site. {dictionary.geography}
-        </p>
-        <p className="mt-2 max-w-3xl text-teal/80">
-          {dictionary.snapshot.wording} The current screened total is {dollars(dictionary.snapshot.screened_amount_cents)} across {dictionary.snapshot.screened_line_count.toLocaleString()} lines.
+        <p className="mt-3">
+          Generated from the public snapshot and the registry. The screened total in this snapshot is {dollars(dictionary.snapshot.screened_amount_cents)} across {dictionary.snapshot.screened_line_count.toLocaleString()} lines.
           {" "}
-          <Link className="font-semibold text-teal underline" href="/methodology">Methodology</Link>
+          <HowToRead anchor="caveats" />
         </p>
       </header>
+      <PageToc items={[
+        { href: "#scope", label: "Scope" },
+        { href: "#indexed-documents", label: "Indexed" },
+        { href: "#held-documents", label: "Not indexed" },
+        { href: "#searched", label: "Searched" },
+        { href: "#transformations", label: "Transformations" },
+        { href: "#aggregations", label: "Aggregations" },
+        { href: "#october-1", label: "October 1" },
+        { href: "#registry-rows", label: "Registry" },
+      ]} />
 
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
+      <section id="scope" className="rounded-xl border border-teal/10 bg-page p-5">
         <h2 className="font-extrabold text-2xl">Scope</h2>
         <p className="mt-2">{dictionary.scope.window_enforcement}</p>
         <p className="mt-2 text-teal/75">Amount tag on every public line: {dictionary.amount_semantics}.</p>
       </section>
 
-      <section>
+      <section id="indexed-documents">
         <h2 className="font-extrabold text-2xl">Sources in the public index</h2>
         <div className="mt-3 space-y-3">
           {indexed.map((row) => <DocumentCard key={row.document_id} row={row} />)}
         </div>
       </section>
 
-      <section>
+      <section id="held-documents">
         <h2 className="font-extrabold text-2xl">Fetched, not indexed</h2>
-        <p className="mt-1 text-teal/75">An unindexed file is not zero spending. Paradise Valley stays here until a printed total can be reconciled.</p>
+        <p className="mt-1"><HowToRead anchor="read-sources" /></p>
         <div className="mt-3 space-y-3">
           {held.map((row) => <DocumentCard key={row.document_id} row={row} />)}
         </div>
       </section>
 
-      <section>
+      <section id="searched">
         <h2 className="font-extrabold text-2xl">Searched, no vendor ledger ingested</h2>
         <ul className="mt-3 space-y-3">
           {searched.map((row) => <SourceCard key={row.source_id} row={row} />)}
         </ul>
       </section>
 
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
+      <section id="transformations" className="rounded-xl border border-teal/10 bg-page p-5">
         <h2 className="font-extrabold text-2xl">Transformations</h2>
         <ol className="mt-3 space-y-3">
           {dictionary.transformations.map((row) => (
@@ -69,9 +77,9 @@ export default function DictionaryPage() {
         </ol>
       </section>
 
-      <section>
+      <section id="aggregations">
         <h2 className="font-extrabold text-2xl">Aggregations</h2>
-        <p className="mt-1 text-teal/75">DAC or department text is as printed, not a verified school location. Amazon is a vendor, not a category. The site does not label waste or fraud.</p>
+        <p className="mt-1"><HowToRead anchor="read-categories" /></p>
         <div className="mt-3 space-y-3">
           {dictionary.aggregations.map((row) => (
             <article key={row.id} className="rounded-xl border border-teal/10 bg-page p-4">
@@ -88,8 +96,8 @@ export default function DictionaryPage() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">October 1 enrollment</h2>
+      <section id="october-1" className="rounded-xl border border-teal/10 bg-page p-5">
+        <h2 className="font-extrabold text-2xl">October 1 enrollment (ADE headcount)</h2>
         <p className="mt-2">{dictionary.enrollment.what_it_is}</p>
         <p className="mt-2">{dictionary.enrollment.note}</p>
         <p className="mt-2">{dictionary.enrollment.year_match_rule}</p>
@@ -119,11 +127,11 @@ export default function DictionaryPage() {
         </ul>
       </section>
 
-      <section>
+      <section id="registry-rows">
         <h2 className="font-extrabold text-2xl">Registry rows</h2>
         <p className="mt-1 text-teal/75">{dictionary.sources.length} registry rows are in this snapshot. A row without a hash was not fetched as a document file.</p>
         <div className="mt-3 overflow-x-auto rounded-xl border border-teal/10 bg-page">
-          <table className="w-full min-w-[760px] text-left text-xs">
+          <table className="w-full min-w-[760px] text-left text-base">
             <thead className="border-b border-teal/10 uppercase tracking-wide text-teal/60">
               <tr>
                 <th className="px-3 py-2">Name</th>
