@@ -67,6 +67,7 @@ def test_aggregation_wording_is_still_on_the_page_that_claims_it():
         "story_cards",
         "item_group",
         "vendor_group",
+        "vendor_leaderboard",
         "fts_search",
         "csv_export",
         "october1_enrollment_comparison",
