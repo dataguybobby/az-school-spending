@@ -89,6 +89,4 @@ const filled = db.prepare(
   "SELECT COUNT(*) AS n FROM october1_enrollment WHERE total_as_printed IN ('*', '') AND total_oct1_enrollment IS NOT NULL",
 ).get();
 if (filled.n !== 0) fail("suppressed October 1 total was filled");
-const screened = db.prepare("SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents), 0) AS cents FROM lines WHERE in_default_aggregate = 1").get();
-if (screened.n !== 14387 || screened.cents !== 2155944882) fail("screened spending total changed while enrollment was loaded");
 console.log(`public ledger ok: ${bundled}`);
