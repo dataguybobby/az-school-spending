@@ -69,19 +69,54 @@ def test_aggregation_wording_is_still_on_the_page_that_claims_it():
         "vendor_group",
         "fts_search",
         "csv_export",
+        "october1_enrollment_comparison",
+        "october1_enrollment_series",
     } <= ids
     for row in payload["aggregations"]:
         surface = (WEB / row["surface"].removeprefix("web/src/")).read_text(encoding="utf-8")
         assert row["public_wording"] in surface or _wording_parts_present(row["public_wording"], surface)
-        assert "in_default_aggregate" in row["filter"] or row["id"] == "story_cards"
+        assert "in_default_aggregate" in row["filter"] or row["id"] in {"story_cards", "october1_enrollment_series"}
 
 
-def test_enrollment_was_not_invented():
+def test_enrollment_is_official_october_1_not_a_blocked_fetch():
     enrollment = build_dictionary()["enrollment"]
-    assert enrollment["status"] == "not_fetched"
-    assert enrollment["http_status"] == 403
-    assert enrollment["headcount"] is None
+    assert enrollment["status"] == "ingested"
+    assert enrollment["http_status"] is None
+    assert enrollment["null_reason"] is None
+    assert enrollment["measure"] == "october_1_headcount"
+    assert "not_fetched" not in json.dumps(enrollment)
+    assert "http_403" not in json.dumps(enrollment)
     assert "azed.gov/accountability-research/data" in enrollment["official_url"]
+    assert enrollment["per_student_label"] == "reported amount in this index per enrolled student"
+    assert "2025-07-01 through 2026-06-30" in enrollment["year_match_rule"]
+    assert enrollment["coverage_window_start"] == "2024-07-01"
+    assert enrollment["lea_row_count"] == 11004
+    assert enrollment["suppressed_asterisk_count"] == 265
+    assert enrollment["blank_total_count"] == 6
+    by_district = {(row["district"], row["status"]): row for row in enrollment["comparisons"]}
+    scottsdale = by_district[("Scottsdale Unified School District #48", "reported_per_enrolled_student")]
+    assert scottsdale["school_year"] == "2025-2026"
+    assert scottsdale["october_1_enrollment"] == 20180
+    assert scottsdale["screened_amount_cents"] == 1510301067
+    assert scottsdale["reported_cents_per_enrolled_student"] == 74841
+    higley = by_district[("Higley Unified School District No. 60", "reported_per_enrolled_student")]
+    assert higley["school_year"] == "2024-2025"
+    assert higley["october_1_enrollment"] == 12351
+    queen = by_district[("Queen Creek Unified District #95", "no_enrollment_workbook")]
+    assert queen["school_year"] == "2026-2027"
+    assert queen["october_1_enrollment"] is None
+    assert queen["reported_cents_per_enrolled_student"] is None
+    chandler = by_district[("Chandler Unified School District #80", "no_dated_spending")]
+    assert chandler["school_year"] is None
+    assert chandler["reported_cents_per_enrolled_student"] is None
+    paradise = by_district[("Paradise Valley Unified School District", "not_in_spending_index")]
+    assert paradise["screened_amount_cents"] is None
+    early = [
+        row for row in enrollment["focus_series"]["not_comparable_2010_2011_through_2016_2017"]
+        if row["focus_district"] == "Scottsdale Unified" and row["school_year"] == "2010-2011"
+    ]
+    assert sorted(row["october_1_enrollment"] for row in early) == [1, 2, 26210]
+    assert sum(row["october_1_enrollment"] for row in early if row["lea_id_matches_known_entity_id"]) == 26210
 
 
 def _wording_parts_present(wording: str, surface: str) -> bool:

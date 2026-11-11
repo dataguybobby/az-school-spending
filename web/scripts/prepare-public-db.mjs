@@ -16,6 +16,14 @@ const allowedTables = new Set([
   "lines_fts_data",
   "lines_fts_docsize",
   "lines_fts_idx",
+  "october1_enrollment",
+  "october1_extracts",
+  "october1_focus",
+  "october1_index_leas",
+  "october1_screened_by_school_year",
+  "october1_screened_undated",
+  "october1_unmatched_charters",
+  "october1_workbooks",
   "overlap_findings",
   "sources",
 ]);
@@ -73,4 +81,14 @@ if (!fixture || fixture.amount_cents !== 2063 || fixture.dac_raw !== "Mohave Mid
 }
 const fts = db.prepare("SELECT COUNT(*) AS n FROM lines_fts WHERE lines_fts MATCH ?").get('"panda stickers"');
 if (!fts || fts.n < 1) fail("FTS query failed on bundled public database");
+const susd = db.prepare(
+  "SELECT total_oct1_enrollment AS n FROM october1_enrollment WHERE school_year = '2025-2026' AND lea_entity_id = '4240' AND same_basis_as_2017_18_plus = 1",
+).get();
+if (!susd || susd.n !== 20180) fail("Scottsdale 2025-2026 October 1 enrollment missing");
+const filled = db.prepare(
+  "SELECT COUNT(*) AS n FROM october1_enrollment WHERE total_as_printed IN ('*', '') AND total_oct1_enrollment IS NOT NULL",
+).get();
+if (filled.n !== 0) fail("suppressed October 1 total was filled");
+const screened = db.prepare("SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents), 0) AS cents FROM lines WHERE in_default_aggregate = 1").get();
+if (screened.n !== 14387 || screened.cents !== 2155944882) fail("screened spending total changed while enrollment was loaded");
 console.log(`public ledger ok: ${bundled}`);

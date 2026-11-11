@@ -13,6 +13,7 @@ from typing import Any
 from pipeline.adapters import ADAPTERS
 from pipeline.classify import apply_override, classify_text, load_overrides
 from pipeline.documents import AMOUNT_SEMANTICS, DOCUMENTS
+from pipeline.enrollment import load_october1_enrollment
 from pipeline.fetch import fetch_url, sha256_file, write_sidecar
 from pipeline.items import load_item_overrides, resolve_item
 from pipeline.overlap import analyze_documents
@@ -242,6 +243,7 @@ def run_ingest(documents: list[dict[str, Any]] | None = None) -> dict[str, Any]:
              finding["verdict"], finding["recurring_different_date_keys"], finding["recurring_different_date_line_count"],
              finding["recurring_different_date_cents"], finding["included_in_default_total"], finding["note"]),
         )
+    load_october1_enrollment(public, commit=False)
     private.commit()
     public.commit()
     private.close()

@@ -12,6 +12,7 @@ import sqlite3
 from pathlib import Path
 
 from pipeline.documents import AMOUNT_SEMANTICS, DOCUMENTS
+from pipeline.enrollment import dictionary_enrollment
 from pipeline.paths import public_db
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,7 @@ def build_dictionary(database: Path | None = None) -> dict[str, object]:
         "private_tables_not_in_this_snapshot": _private_tables(),
         "note": "The web app opens only data/public/ledger.sqlite. data/private is gitignored and is not a public table.",
     }
+    enrollment = dictionary_enrollment(connection)
     connection.close()
     scope = registry.get("scope") or {}
     return {
@@ -74,9 +76,10 @@ def build_dictionary(database: Path | None = None) -> dict[str, object]:
             "window_basis": scope.get("window_basis"),
             "claim_all": scope.get("claim_all"),
             "window_enforcement": (
-                "school year 2025 in this project means a transaction date on or after 2024-07-01. "
+                "The project coverage window starts 2024-07-01. Spending on or after that date is inside the window. "
                 "The registry records that start. The ingest does not delete a public line only because its date is earlier. "
-                f"In this public snapshot, screened lines with a check date or voucher batch date before 2024-07-01: {before_window}."
+                f"In this public snapshot, screened lines with a check date or voucher batch date before 2024-07-01: {before_window}. "
+                "October 1 school year 2025-2026 is a separate comparison: it pairs only with spending dated 2025-07-01 through 2026-06-30."
             ),
         },
         "snapshot": {
@@ -94,7 +97,7 @@ def build_dictionary(database: Path | None = None) -> dict[str, object]:
         "sources": [_source(row, by_source, documents) for row in source_rows],
         "transformations": _transformations(),
         "aggregations": _aggregations(),
-        "enrollment": _enrollment(),
+        "enrollment": enrollment,
     }
 
 
@@ -285,6 +288,15 @@ def _transformations() -> list[dict[str, object]]:
             ),
             "code": "pipeline/classify.py and pipeline/items.py",
         },
+        {
+            "id": "october1_enrollment",
+            "step": (
+                "Load the ADE October 1 extracts into the public database. An asterisk or a blank Total stays null. "
+                "2010-2011 residence pairs are not summed. School year YYYY-(YYYY+1) pairs with spending dated July 1, YYYY through June 30, YYYY+1. "
+                "Screened spending amounts are not changed."
+            ),
+            "code": "pipeline/enrollment.py load_october1_enrollment",
+        },
     ]
 
 
@@ -370,23 +382,22 @@ def _aggregations() -> list[dict[str, object]]:
             "public_wording": "Download CSV",
             "surface": "web/src/app/page.tsx",
         },
+        {
+            "id": "october1_enrollment_comparison",
+            "grain": "one indexed district and one school year, joined to a single ADE October 1 LEA total",
+            "filter": "in_default_aggregate = 1; the school year comes from the selected date basis; 2017-2018 onward uses the LEA by Grade total; asterisks stay null and are not summed",
+            "date_basis": "either, unless the page selects check date or voucher batch date. A missing date is not assigned a school year from the fiscal-year label.",
+            "public_wording": "Reported amount in this index per enrolled student. October 1 enrollment is a headcount, not ADM. It is not cost per pupil and not total district spending.",
+            "surface": "web/src/components/enrollment-comparison.tsx",
+        },
+        {
+            "id": "october1_enrollment_series",
+            "grain": "ADE October 1 LEA total for the five districts linked to this index",
+            "filter": "official printed Total for those entity ids; suppressed and blank totals stay null; 2010-2011 residence pairs are not summed",
+            "date_basis": "October 1 of the named school year. This series is not a spending date.",
+            "public_wording": "District totals for 2010-2011 through 2016-2017 are not on the same basis as 2017-2018 onward and are not a continuous series.",
+            "surface": "web/src/app/enrollment/page.tsx",
+        },
     ]
 
 
-def _enrollment() -> dict[str, object]:
-    return {
-        "source_id": "ade_october_1_enrollment",
-        "official_url": "https://www.azed.gov/accountability-research/data",
-        "what_it_is": "ADE Accountability October 1 enrollment, LEA or district and school. This is not ADM.",
-        "status": "not_fetched",
-        "http_status": 403,
-        "headcount": None,
-        "null_reason": "http_403_cloudflare_challenge",
-        "note": (
-            "An ordinary GET of the official page returned HTTP 403 and a Cloudflare challenge. "
-            "That response was not bypassed. No enrollment file was downloaded and no headcount was invented. "
-            "A per-enrolled-student figure is not on the site. If a later fetch succeeds, it must be year-matched "
-            "and labeled as reported amount in this index per enrolled student, not total cost per pupil. "
-            "Salaries are not in this AP extract, and the index is not full-district coverage."
-        ),
-    }

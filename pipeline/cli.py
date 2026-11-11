@@ -9,10 +9,12 @@ from pathlib import Path
 
 from pipeline.csvsafe import write_csv, write_xlsx
 from pipeline.dictionary import build_dictionary, write_dictionary
+from pipeline.enrollment import load_october1_enrollment
 from pipeline.discover import discover
 from pipeline.ingest import run_ingest
 from pipeline.scout import scout
 from pipeline.paths import public_db
+from pipeline.store import connect
 from pipeline.query import EXPORT_FIELDS, categories, export_rows, monthly, search_lines, vendors
 
 
@@ -22,6 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("discover")
     sub.add_parser("scout")
     sub.add_parser("dictionary")
+    sub.add_parser("enrollment")
     sub.add_parser("fetch")
     sub.add_parser("extract")
     sub.add_parser("normalize")
@@ -45,6 +48,19 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "scout":
         print(json.dumps(scout(), indent=2))
+        return 0
+    if args.command == "enrollment":
+        connection = connect(public_db())
+        summary = load_october1_enrollment(connection)
+        connection.close()
+        payload = build_dictionary()
+        registry_path, web_path = write_dictionary(payload)
+        print(json.dumps({
+            "registry": str(registry_path),
+            "web": str(web_path),
+            **summary,
+            "enrollment": payload["enrollment"]["status"],
+        }, indent=2))
         return 0
     if args.command == "dictionary":
         payload = build_dictionary()

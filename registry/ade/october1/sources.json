@@ -1,0 +1,1793 @@
+{
+ "generated_from": "/workspace/ade-accountability-research-data (official ADE downloads; manifest.json)",
+ "years_extracted": [
+  "2010-2011",
+  "2011-2012",
+  "2012-2013",
+  "2013-2014",
+  "2014-2015",
+  "2015-2016",
+  "2016-2017",
+  "2017-2018",
+  "2018-2019",
+  "2019-2020",
+  "2020-2021",
+  "2021-2022",
+  "2022-2023",
+  "2023-2024",
+  "2024-2025",
+  "2025-2026"
+ ],
+ "failed_or_not_found": [],
+ "unmatched_focus_candidates": [
+  "Archway Classical Academy Chandler",
+  "Archway Classical Academy Scottsdale",
+  "Benjamin Franklin Charter School - Queen Creek",
+  "Chandler Preparatory Academy",
+  "Heritage Academy Queen Creek, Inc.",
+  "LEAD Charter Schools dba Leading Edge Academy Queen Creek",
+  "Leading Edge Academy Queen Creek",
+  "Legacy Traditional School - Chandler",
+  "Legacy Traditional School - North Chandler",
+  "Legacy Traditional School - Queen Creek",
+  "PLC Arts Academy at Scottsdale, Inc.",
+  "Scottsdale Country Day School",
+  "Scottsdale Horizons Charter School",
+  "Scottsdale Preparatory Academy",
+  "Self Development Scottsdale Academy"
+ ],
+ "excluded": {
+  "reason": "Not October 1 enrollment workbooks; excluded per scope",
+  "files": [
+   "COVID Impact Longitudinal Enrollment.xlsx (COVID-impact analysis file)",
+   "COVID Impact Enrollment and Mobility Presentation.pptx",
+   "COVID Impact Enrollment and Mobility Resource.pdf",
+   "all assessment / AIMS / AzMERIT / AZELLA / graduation / dropout files"
+  ]
+ },
+ "sources": [
+  {
+   "original_filename": "october_1_2010.2011_enrollment_count.xlsx",
+   "school_year_official": "2010-2011",
+   "school_year_label_evidence": "title row: '2010-2011 October 1 Enrollment by School and Grade'",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "2010-2011 October 1 Enrollment by School and Grade",
+   "sha256": "1887edbc71295fe7f88c5ae941066149ebb2c33bfdbcb8d417514c436faa83e9",
+   "byte_size": 1226237,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october_1_2010.2011_enrollment_count.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountyGrade",
+    "CountySexEthnic",
+    "SchoolGrade",
+    "SchoolSexEthnic",
+    "TypeGrade",
+    "TypeSexEthnic"
+   ],
+   "tabs_used": [
+    "SchoolGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolGrade)",
+   "header_as_printed": [
+    "DistrictName",
+    "DistrictID",
+    "SchoolName",
+    "SchoolID",
+    "KG",
+    "PS",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "UE",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "Attending LEA name x district-of-residence ID: one subtotal row per (LEA, residence district) pair; ADE printed NO single all-students LEA total in this file",
+   "row_counts": {
+    "lea": 1046,
+    "school": 2679
+   },
+   "null_total_counts": {
+    "lea": 0,
+    "school": 0
+   },
+   "statewide_total_as_printed": "1071887",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: Attending LEA name x district-of-residence ID: one subtotal row per (LEA, residence district) pair; ADE printed NO single all-students LEA total in this file",
+    "This early file prints small counts (e.g., 1, 2) without '*' suppression; values kept exactly as ADE published them.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "october_1_2011.2012_enrollment_count.xlsx",
+   "school_year_official": "2011-2012",
+   "school_year_label_evidence": "title row: '2011-2012 October 1 Enrollment by School and Grade'",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "2011-2012 October 1 Enrollment by School and Grade",
+   "sha256": "cda9deef6aaafe6e40710911cd2014f881750468d5bd9e1d4411c7ab6c396539",
+   "byte_size": 1110939,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october_1_2011.2012_enrollment_count.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountyGrade",
+    "CountyGenderEthnicity",
+    "SchoolGrade",
+    "SchholGenderEthnicity",
+    "TypeGrade",
+    "TypeGenderEthncity"
+   ],
+   "tabs_used": [
+    "SchoolGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolGrade)",
+   "header_as_printed": [
+    "District Entity ID",
+    "District or Charter Holder",
+    "School Entity ID",
+    "School Name",
+    "PS",
+    "KG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "UE",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 607,
+    "school": 2518
+   },
+   "null_total_counts": {
+    "lea": 0,
+    "school": 0
+   },
+   "statewide_total_as_printed": "1083348",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "This early file prints small counts (e.g., 1, 2) without '*' suppression; values kept exactly as ADE published them.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "october-1-2012-2013.enrollment_count.xlsx",
+   "school_year_official": "2012-2013",
+   "school_year_label_evidence": "title row: '2012-2013 October 1 Enrollment by School and Grade'",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "2012-2013 October 1 Enrollment by School and Grade",
+   "sha256": "eb8c8c3b90bb12483016b0faee88f4b89625f3b27e490ec2ad84e5abcbe83ffe",
+   "byte_size": 1100594,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october-1-2012-2013.enrollment_count.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountybyGrade",
+    "CountybyGenderandEthnicity",
+    "SchoolbyGrade",
+    "SchoolbyGenderandEthnicity",
+    "TypebyGrade",
+    "TypebyGenderandEthnicity"
+   ],
+   "tabs_used": [
+    "SchoolbyGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolbyGrade)",
+   "header_as_printed": [
+    "District of Residence Entity ID",
+    "District or Charter Holder",
+    "School Entity ID",
+    "School Name",
+    "CTDS",
+    "PS",
+    "KG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "UE",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 610,
+    "school": 2159
+   },
+   "null_total_counts": {
+    "lea": 0,
+    "school": 0
+   },
+   "statewide_total_as_printed": "1096040",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "This early file prints small counts (e.g., 1, 2) without '*' suppression; values kept exactly as ADE published them.",
+    "CTDS stored as numbers in this workbook, so leading zeros are not printed; kept as stored.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "october_1_2013.2014_enrollment_count.xls",
+   "school_year_official": "2013-2014",
+   "school_year_label_evidence": "title row: 'October 1 2013 Enrollment: School By Grade' (an Oct 1, 2013 snapshot falls in school year 2013-2014; filename also says 2013.2014)",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "October 1 2013 Enrollment: School By Grade",
+   "sha256": "3350eb357c341b45e98200ac8dd65f3307bf0def738c7ebc55331e7fd1d8ac1b",
+   "byte_size": 3724288,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october_1_2013.2014_enrollment_count.xls",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountyGrade",
+    "CountyGenderEthnic",
+    "SchoolGrade",
+    "SchoolGenderEthnic",
+    "TypeGrade",
+    "TypeGenderEthnic"
+   ],
+   "tabs_used": [
+    "SchoolGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolGrade)",
+   "header_as_printed": [
+    "District of Residence Entity ID",
+    "District or Charter Holder",
+    "SchoolEntityName",
+    "SchoolEntityID",
+    "SchoolCTDS",
+    "PS",
+    "KG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "UE",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 630,
+    "school": 2106
+   },
+   "null_total_counts": {
+    "lea": 14,
+    "school": 123
+   },
+   "statewide_total_as_printed": "1102319",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "8 school rows share an LEA ID + School Entity ID with another row (ADE printed the same entity ID under two school/LEA name variants); all rows kept as printed with source_row.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "october_1_2014.2015_enrollment_count.xls",
+   "school_year_official": "2014-2015",
+   "school_year_label_evidence": "title row: 'October 1, 2014 Enrollment: School by Grade' (Oct 1, 2014 snapshot = school year 2014-2015)",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "October 1, 2014 Enrollment: School by Grade",
+   "sha256": "251b74edf374d079a7c9a3c9a4cb30f55404d3eefd95a56555c67c080a4a9f6f",
+   "byte_size": 3536896,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october_1_2014.2015_enrollment_count.xls",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountyGrade",
+    "CountyGenderEthnic",
+    "SchoolByGender",
+    "SchoolGrade",
+    "SchoolbyEthnicity",
+    "TypeGenderEthnic",
+    "TypeGrade"
+   ],
+   "tabs_used": [
+    "SchoolGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolGrade)",
+   "header_as_printed": [
+    "DistrictofResidenceEntityName",
+    "DistrictofResidenceEntityID",
+    "SchoolEntityName",
+    "SchoolEntityID",
+    "SchoolCTDS",
+    "KG",
+    "PS",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "UE",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 637,
+    "school": 2121
+   },
+   "null_total_counts": {
+    "lea": 6,
+    "school": 116
+   },
+   "statewide_total_as_printed": "1116143",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "Some rows have every grade as '*' and a BLANK Total cell (6 LEA subtotal rows, 116 school rows); left null with reason 'blank cell in source'.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "october-1-fy16-enrollment.xlsx",
+   "school_year_official": "2015-2016",
+   "school_year_label_evidence": "title row: 'October 1, 2015 Enrollment: School by Grade' (Oct 1, 2015 snapshot = school year 2015-2016; filename says fy16)",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "October 1, 2015 Enrollment: School by Grade",
+   "sha256": "9f408f6f424ba88a1824560908dbaf15628a8a745f41dc4b5ee16ac975914690",
+   "byte_size": 4083761,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2017/06/october-1-fy16-enrollment.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountybyGrade",
+    "CountybyGender&Ethnicity",
+    "SchoolbyGrade",
+    "SchoolByGender",
+    "SchoolbySubgroup",
+    "TypebyGrade",
+    "TypebyGender&Ethnicity"
+   ],
+   "tabs_used": [
+    "SchoolbyGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolbyGrade)",
+   "header_as_printed": [
+    "DistrictofResidenceEntityName",
+    "DistrictofResidenceEntityID",
+    "SchoolEntityName",
+    "SchoolEntityID",
+    "SchoolCTDS",
+    "PS",
+    "KG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 643,
+    "school": 2088
+   },
+   "null_total_counts": {
+    "lea": 9,
+    "school": 96
+   },
+   "statewide_total_as_printed": "1124423",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "October12016EnrollmentFile.xlsx",
+   "school_year_official": "2016-2017",
+   "school_year_label_evidence": "title row: 'October 1, 2016 Enrollment: School by Grade' (Oct 1, 2016 snapshot = school year 2016-2017)",
+   "fiscal_year_values_printed": null,
+   "title_as_printed": "October 1, 2016 Enrollment: School by Grade",
+   "sha256": "c3fe01fefd16bd735d04fe0e4594b72474f7b485cb5b62e13f16d3de6f30ab77",
+   "byte_size": 1601630,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2020/09/October12016EnrollmentFile.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "CountybyGrade",
+    "CountybyGender&Ethnicity",
+    "SchoolbyGrade",
+    "SchoolbyGender",
+    "SchoolbySubgroup",
+    "TypebyGrade",
+    "TypebyGender&Ethnicity"
+   ],
+   "tabs_used": [
+    "SchoolbyGrade"
+   ],
+   "official_total_column": "'Total' (last column of SchoolbyGrade)",
+   "header_as_printed": [
+    "DistrictofResidenceEntityName",
+    "DistrictofResidenceEntityID",
+    "SchoolEntityName",
+    "SchoolEntityID",
+    "SchoolCTDS",
+    "PS",
+    "KG",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "Total"
+   ],
+   "lea_grouping_basis": "District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+   "row_counts": {
+    "lea": 656,
+    "school": 2721
+   },
+   "null_total_counts": {
+    "lea": 12,
+    "school": 645
+   },
+   "statewide_total_as_printed": "1030653",
+   "cross_tab_total_check": null,
+   "data_quality_notes": [
+    "No LEA tab in this workbook. LEA rows are the LEA subtotal rows ADE printed inside the school-by-grade tab (school name blank or '_'); they were NOT computed by summing schools.",
+    "Grouping basis: District of residence grouping (header printed as district-of-residence / district-or-charter-holder); subtotal can include resident students attending schools outside the LEA; NOT the same basis as 2017-18+ LEA tab",
+    "Statewide total printed 1,030,653 vs 1,124,423 in the Oct 1, 2015 file; drop observed as printed, not explained in the workbook. Many school rows are district-of-residence placements with '*' totals (645 null school rows).",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "2017-2018 October 1 Public Enrollment File UPDATED 2021 V2.xlsx",
+   "school_year_official": "2017-2018",
+   "school_year_label_evidence": "Fiscal Year column printed '2018' on every row; no in-workbook dictionary; ADE's own data dictionaries in later files define Fiscal Year N as school year (N-1)-N; ADE filename says 2017-2018",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2018"
+    ],
+    "School by Grade": [
+     "2018"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "909c983cbcd3a3e42ce0830186f6bd380b291a9e82b6f0bf468fa1710c40bac4",
+   "byte_size": 1815683,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2021/05/2017-2018%20October%201%20Public%20Enrollment%20File%20UPDATED%202021%20V2.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 736,
+    "school": 2013
+   },
+   "null_total_counts": {
+    "lea": 51,
+    "school": 62
+   },
+   "statewide_total_as_printed": "",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 685,
+      "mismatches": 42,
+      "max_abs_diff": 84,
+      "examples": [
+       [
+        "Academy Del Sol, Inc.",
+        "90199",
+        606,
+        605
+       ],
+       [
+        "Amphitheater Unified District",
+        "4406",
+        13653,
+        13654
+       ],
+       [
+        "Arizona Community Development Corporation",
+        "79947",
+        1980,
+        1978
+       ]
+      ]
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 685,
+      "mismatches": 73,
+      "max_abs_diff": 216,
+      "examples": [
+       [
+        "American Charter Schools Foundation d.b.a. Sun Valley High School",
+        "79877",
+        491,
+        489
+       ],
+       [
+        "Amphitheater Unified District",
+        "4406",
+        13653,
+        13652
+       ],
+       [
+        "Arizona State School for the Deaf and Blind",
+        "6393",
+        780,
+        779
+       ]
+      ]
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Observed LEA-level Total mismatches between tabs (see cross_tab_total_check). Consistent with ADE's note: 'Due to missing data in some variables for student characteristics submitted by schools, the \"Total\" columns may not match precisely from one tab to another.' The LEA by Grade Total is used as the official total.",
+    "Statewide 'Arizona' row Total printed as ''; left null (grade columns are printed).",
+    "73 school rows share an LEA ID + School Entity ID with another row (ADE printed the same entity ID under two school/LEA name variants); all rows kept as printed with source_row.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "October 1 Enrollment 2018 -2019 UPDATED 2021 V2.xlsx",
+   "school_year_official": "2018-2019",
+   "school_year_label_evidence": "Fiscal Year column printed '2019'; no in-workbook dictionary; ADE convention FY N = (N-1)-N; ADE filename says 2018-2019",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2019"
+    ],
+    "School by Grade": [
+     "2019"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "9a0e4b1e4707b8724d6a14b4f1a97e107eb84f6a1697c3b6ddf0404278452b6f",
+   "byte_size": 1786108,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2021/05/October%201%20Enrollment%202018%20-2019%20UPDATED%202021%20V2.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Notes",
+    "School by Grade",
+    "School By Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 727,
+    "school": 1971
+   },
+   "null_total_counts": {
+    "lea": 40,
+    "school": 19
+   },
+   "statewide_total_as_printed": "",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 687,
+      "mismatches": 44,
+      "max_abs_diff": 51,
+      "examples": [
+       [
+        "Willcox Unified District",
+        "4170",
+        1111,
+        1110
+       ],
+       [
+        "Sierra Vista Unified District",
+        "4175",
+        5588,
+        5589
+       ],
+       [
+        "Flagstaff Unified District",
+        "4192",
+        9633,
+        9640
+       ]
+      ]
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 687,
+      "mismatches": 48,
+      "max_abs_diff": 51,
+      "examples": [
+       [
+        "Chinle Unified District",
+        "4158",
+        3484,
+        3483
+       ],
+       [
+        "Sierra Vista Unified District",
+        "4175",
+        5588,
+        5589
+       ],
+       [
+        "Flagstaff Unified District",
+        "4192",
+        9633,
+        9640
+       ]
+      ]
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Observed LEA-level Total mismatches between tabs (see cross_tab_total_check). Consistent with ADE's note: 'Due to missing data in some variables for student characteristics submitted by schools, the \"Total\" columns may not match precisely from one tab to another.' The LEA by Grade Total is used as the official total.",
+    "Statewide 'Arizona' row Total printed as ''; left null (grade columns are printed).",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "OctoberEnroll_FY2020_Redacted UPDATED 2021 V2.xlsx",
+   "school_year_official": "2019-2020",
+   "school_year_label_evidence": "Fiscal Year column printed '2020'; Notes tab is an image/empty; ADE convention FY N = (N-1)-N (ADE's FY21 file notes refer to adding county data 'to the 2019-2020 school year')",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2020"
+    ],
+    "School by Grade": [
+     "2020"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "e533ec29ef410df8627b74eba83cfb00f72fa4b6755b06819aa1e9381382a37d",
+   "byte_size": 2345878,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2021/05/OctoberEnroll_FY2020_Redacted%20UPDATED%202021%20V2.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Notes",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 725,
+    "school": 2250
+   },
+   "null_total_counts": {
+    "lea": 43,
+    "school": 98
+   },
+   "statewide_total_as_printed": "",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 682,
+      "mismatches": 43,
+      "max_abs_diff": 75,
+      "examples": [
+       [
+        "THE ACES",
+        "7407",
+        719,
+        720
+       ],
+       [
+        "Amphitheater Unified District",
+        "4406",
+        13391,
+        13384
+       ],
+       [
+        "Avondale Elementary District",
+        "4272",
+        5759,
+        5768
+       ]
+      ]
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 644,
+      "mismatches": 33,
+      "max_abs_diff": 58,
+      "examples": [
+       [
+        "THE ACES",
+        "7407",
+        719,
+        720
+       ],
+       [
+        "Avondale Elementary District",
+        "4272",
+        5759,
+        5768
+       ],
+       [
+        "Buckeye Elementary District",
+        "4269",
+        5536,
+        5541
+       ]
+      ]
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Observed LEA-level Total mismatches between tabs (see cross_tab_total_check). Consistent with ADE's note: 'Due to missing data in some variables for student characteristics submitted by schools, the \"Total\" columns may not match precisely from one tab to another.' The LEA by Grade Total is used as the official total.",
+    "Statewide 'Arizona' row Total printed as ''; left null (grade columns are printed).",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "FY21 Oct 1 Enrollment Redacted Formatted UPDATED V2.xlsx",
+   "school_year_official": "2020-2021",
+   "school_year_label_evidence": "Fiscal Year column printed '2021'; Notes text box in this workbook calls it 'the October 1 Accountability 2020-2021 public file'",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2021"
+    ],
+    "School by Grade": [
+     "2021"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "3368bc83255231ca7c1803d528b81b16ac4a688d1e222eff457c0d3d631c8df9",
+   "byte_size": 2388168,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2021/05/FY21%20Oct%201%20Enrollment%20Redacted%20Formatted%20UPDATED%20V2.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Notes",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 720,
+    "school": 2316
+   },
+   "null_total_counts": {
+    "lea": 37,
+    "school": 224
+   },
+   "statewide_total_as_printed": "*",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 683,
+      "mismatches": 30,
+      "max_abs_diff": 79,
+      "examples": [
+       [
+        "Avondale Elementary District",
+        "4272",
+        5621,
+        5628
+       ],
+       [
+        "Buckeye Elementary District",
+        "4269",
+        5258,
+        5267
+       ],
+       [
+        "Casa Grande Elementary District",
+        "4446",
+        6134,
+        6143
+       ]
+      ]
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 683,
+      "mismatches": 30,
+      "max_abs_diff": 79,
+      "examples": [
+       [
+        "Avondale Elementary District",
+        "4272",
+        5621,
+        5628
+       ],
+       [
+        "Buckeye Elementary District",
+        "4269",
+        5258,
+        5267
+       ],
+       [
+        "Casa Grande Elementary District",
+        "4446",
+        6134,
+        6143
+       ]
+      ]
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Observed LEA-level Total mismatches between tabs (see cross_tab_total_check). Consistent with ADE's note: 'Due to missing data in some variables for student characteristics submitted by schools, the \"Total\" columns may not match precisely from one tab to another.' The LEA by Grade Total is used as the official total.",
+    "Notes: ADE states 'Multiple Races' was overreported by ~17,000 students (1.5%) in this 2020-2021 file and the file will not be replaced; Income Eligibility 1&2 lower due to COVID-19. Does not affect the grade-tab Total used here.",
+    "Statewide 'Arizona' row Total printed as '*'; left null (grade columns are printed).",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "OctoberEnroll_2022_Redacted Formatted.xlsx",
+   "school_year_official": "2021-2022",
+   "school_year_label_evidence": "Fiscal Year column printed '2022'; Data Dictionary tab: 'Fiscal year 2022 refers to the 2021-2022 school year'",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2022"
+    ],
+    "School by Grade": [
+     "2022"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "8c3f9a191b19209d14b8347da72cfe62d13100ef7ddb458abdfd394588463807",
+   "byte_size": 2482533,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2022/04/OctoberEnroll_2022_Redacted%20Formatted.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Notes",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "LEA by Subgroup",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity",
+    "Type by Subgroup",
+    "Sheet Dictionary",
+    "Data Dictionary"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "PS",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 724,
+    "school": 2418
+   },
+   "null_total_counts": {
+    "lea": 39,
+    "school": 245
+   },
+   "statewide_total_as_printed": "*",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 685,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 685,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Subgroup": {
+      "compared_both_numeric": 685,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Notes tab text box (verbatim): 'Due to missing data in some variables for student characteristics submitted by schools, the \u201cTotal\u201d columns may not match precisely from one tab to another.'",
+    "Statewide 'Arizona' row Total printed as '*'; left null (grade columns are printed).",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "Oct1Enrollment2023_publish[1].xlsx",
+   "school_year_official": "2022-2023",
+   "school_year_label_evidence": "Fiscal Year column printed '2023'; Report Introduction: 'Fiscal Year 2023 October 1 Enrollment ... enrolled in Arizona Public Schools on October 1, 2022'. (Its Data Dictionary example text says 'Fiscal year 2024 refers to the 2023-2024 school year' - a generic example, not this file's year.)",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2023"
+    ],
+    "School by Grade": [
+     "2023"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "9fa634cff0fac7fb0f3d0ba46745b386dd0a332f726f5d0a35a305718adc6cba",
+   "byte_size": 1755767,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2024/01/Oct1Enrollment2023_publish%5B1%5D.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Report Introduction",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "LEA by Subgroup",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity",
+    "Type by Subgroup",
+    "Sheet Dictionary",
+    "Data Dictionary"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08",
+     "09",
+     "10",
+     "11",
+     "12",
+     "KG",
+     "PS",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08",
+     "09",
+     "10",
+     "11",
+     "12",
+     "KG",
+     "PS",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 642,
+    "school": 2047
+   },
+   "null_total_counts": {
+    "lea": 5,
+    "school": 24
+   },
+   "statewide_total_as_printed": "1125925",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 638,
+      "mismatches": 5,
+      "max_abs_diff": 38,
+      "examples": [
+       [
+        "Arizona",
+        "Arizona",
+        1125925,
+        1125887
+       ],
+       [
+        "Maricopa Unified School District",
+        "4441",
+        8697,
+        8696
+       ],
+       [
+        "Reid Traditional Schools' Painted Rock Academy Inc.",
+        "91317",
+        473,
+        467
+       ]
+      ]
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 638,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Subgroup": {
+      "compared_both_numeric": 638,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     }
+    }
+   },
+   "data_quality_notes": [
+    "Observed LEA-level Total mismatches between tabs (see cross_tab_total_check). Consistent with ADE's note: 'Due to missing data in some variables for student characteristics submitted by schools, the \"Total\" columns may not match precisely from one tab to another.' The LEA by Grade Total is used as the official total.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "Oct1Enrollment2024_publish_updated.xlsx",
+   "school_year_official": "2023-2024",
+   "school_year_label_evidence": "Fiscal Year column printed '2024'; Report Introduction: 'Fiscal Year 2024 October 1 Enrollment ... on October 1, 2023'; Data Dictionary: 'Fiscal year 2024 refers to the 2023-2024 school year'",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2024"
+    ],
+    "School by Grade": [
+     "2024"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "abcc33effea5423594769fcf519081fb532c08922022febac15da8cfb532fb56",
+   "byte_size": 1734497,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2024/12/Oct1Enrollment2024_publish_updated.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Report Introduction",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "LEA by Subgroup",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity",
+    "Type by Subgroup",
+    "Sheet Dictionary",
+    "Data Dictionary"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 644,
+    "school": 2071
+   },
+   "null_total_counts": {
+    "lea": 5,
+    "school": 30
+   },
+   "statewide_total_as_printed": "1113609",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 639,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 634,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Subgroup": {
+      "compared_both_numeric": 634,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     }
+    }
+   },
+   "data_quality_notes": [
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "Oct1EnrollmentFY2025.xlsx",
+   "school_year_official": "2024-2025",
+   "school_year_label_evidence": "Fiscal Year column printed '2025'; Introduction: 'Fiscal Year 2025 October 1 Enrollment ... on October 1, 2024'; Data Dictionary: 'Fiscal year 2025 refers to the 2024-2025 school year'",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2025"
+    ],
+    "School by Grade": [
+     "2025"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "a41cc8d6572c6621277ae860c8dfb632b9a638a00f9bfe6efb0b420986da142b",
+   "byte_size": 1911079,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2025/04/Oct1EnrollmentFY2025.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Introduction",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "LEA by Subgroup",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity",
+    "Type by Subgroup",
+    "Data Dictionary",
+    "Subgroup Dictionary"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 640,
+    "school": 2063
+   },
+   "null_total_counts": {
+    "lea": 10,
+    "school": 33
+   },
+   "statewide_total_as_printed": "1099612",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 630,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 628,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Subgroup": {
+      "compared_both_numeric": 628,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     }
+    }
+   },
+   "data_quality_notes": [
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  },
+  {
+   "original_filename": "Oct1EnrollmentFY2026.xlsx",
+   "school_year_official": "2025-2026",
+   "school_year_label_evidence": "Introduction: 'School Year 2025-2026 October 1 Enrollment ... on October 1, 2025'; Fiscal Year column printed '2026'; Data Dictionary: 'Fiscal year 2026 refers to the 2025-2026 school year'",
+   "fiscal_year_values_printed": {
+    "LEA by Grade": [
+     "2026"
+    ],
+    "School by Grade": [
+     "2026"
+    ]
+   },
+   "title_as_printed": null,
+   "sha256": "53ef44bc8fd580feff325ef31acc69f38e91328c02806037ec67fc63f3c1ab11",
+   "byte_size": 1879591,
+   "official_source_url": "https://www.azed.gov/sites/default/files/2026/02/Oct1EnrollmentFY2026.xlsx",
+   "listing_page": "https://www.azed.gov/accountability-research/data",
+   "status": "parsed",
+   "tabs_in_workbook": [
+    "Introduction",
+    "School by Grade",
+    "School by Gender",
+    "School by Ethnicity",
+    "School by Subgroup",
+    "LEA by Grade",
+    "LEA by Gender",
+    "LEA by Ethnicity",
+    "LEA by Subgroup",
+    "County by Grade",
+    "County by Gender",
+    "County by Ethnicity",
+    "County by Subgroup",
+    "Type by Grade",
+    "Type by Gender",
+    "Type by Ethnicity",
+    "Type by Subgroup",
+    "Data Dictionary",
+    "Subgroup Dictionary"
+   ],
+   "tabs_used": [
+    "LEA by Grade",
+    "School by Grade"
+   ],
+   "official_total_column": {
+    "LEA by Grade": "'Total' (last column)",
+    "School by Grade": "'Total' (last column)"
+   },
+   "header_as_printed": {
+    "LEA by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ],
+    "School by Grade": [
+     "Fiscal Year",
+     "LEA Name",
+     "LEA Entity ID",
+     "School Name",
+     "School Entity ID",
+     "KG",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12",
+     "PS",
+     "Total"
+    ]
+   },
+   "lea_grouping_basis": "LEA by Grade tab (LEA Name / LEA Entity ID)",
+   "row_counts": {
+    "lea": 617,
+    "school": 2040
+   },
+   "null_total_counts": {
+    "lea": 0,
+    "school": 0
+   },
+   "statewide_total_as_printed": "1073531",
+   "cross_tab_total_check": {
+    "method": "LEA by Grade 'Total' vs 'Total' in other LEA tabs (Subgroup='All Students' where applicable), joined on LEA Name + LEA Entity ID, numeric rows only",
+    "results": {
+     "LEA by Gender": {
+      "compared_both_numeric": 618,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Ethnicity": {
+      "compared_both_numeric": 618,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     },
+     "LEA by Subgroup": {
+      "compared_both_numeric": 605,
+      "mismatches": 0,
+      "max_abs_diff": 0,
+      "examples": []
+     }
+    }
+   },
+   "data_quality_notes": [
+    "ADE changed the redaction rule: '*' only where a protected subgroup has 10 or fewer students; small grade/total counts are printed. No Total cells were '*' in the LEA or School by Grade tabs.",
+    "County is not printed in the LEA/School by-grade tabs; county-level totals exist only in separate County tabs (not extracted per LEA)."
+   ]
+  }
+ ]
+}

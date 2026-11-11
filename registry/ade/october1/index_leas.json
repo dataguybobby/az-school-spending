@@ -1,0 +1,32 @@
+[
+  {
+    "source_id": "chandler_highbond_voucher_unverified",
+    "entity_name": "Chandler Unified School District #80",
+    "focus_district": "Chandler Unified",
+    "lea_entity_id": "4242"
+  },
+  {
+    "source_id": "husd_diligent_voucher_summary",
+    "entity_name": "Higley Unified School District No. 60",
+    "focus_district": "Higley Unified",
+    "lea_entity_id": "4248"
+  },
+  {
+    "source_id": "qcusd_diligent_voucher_summary",
+    "entity_name": "Queen Creek Unified District #95",
+    "focus_district": "Queen Creek Unified",
+    "lea_entity_id": "4245"
+  },
+  {
+    "source_id": "susd_diligent_ap_report",
+    "entity_name": "Scottsdale Unified School District #48",
+    "focus_district": "Scottsdale Unified",
+    "lea_entity_id": "4240"
+  },
+  {
+    "source_id": "pvusd_diligent_voucher_summary",
+    "entity_name": "Paradise Valley Unified School District",
+    "focus_district": "Paradise Valley Unified",
+    "lea_entity_id": "4241"
+  }
+]

@@ -77,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <nav className="flex flex-wrap gap-4 text-sm font-semibold text-teal">
               <Link href="/" className="hover:text-terracotta">Spending</Link>
+              <Link href="/enrollment" className="hover:text-terracotta">Enrollment</Link>
               <Link href="/explore" className="hover:text-terracotta">Groups</Link>
               <Link href="/sources" className="hover:text-terracotta">Sources</Link>
               <Link href="/dictionary" className="hover:text-terracotta">Dictionary</Link>

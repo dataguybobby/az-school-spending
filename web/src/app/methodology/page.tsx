@@ -97,6 +97,21 @@ export default async function MethodologyPage() {
         </p>
       </section>
 
+      <section className="rounded-xl border border-teal/10 bg-page p-5">
+        <h2 className="font-extrabold text-2xl">October 1 enrollment</h2>
+        <p className="mt-2 max-w-3xl">
+          Arizona Department of Education October 1 enrollment is a headcount of students enrolled on that day. It is not ADM, and it is not part of the screened spending total.
+          School year YYYY-(YYYY+1) pairs with spending dated July 1, YYYY through June 30, YYYY+1. School year 2025-2026 pairs with 2025-07-01 through 2026-06-30.
+          The project coverage window still starts 2024-07-01.
+        </p>
+        <p className="mt-2 max-w-3xl">
+          A per-student figure is a reported amount in this index per enrolled student. An asterisk or a blank Total stays null.
+          District totals for 2010-2011 through 2016-2017 are not on the same basis as 2017-2018 onward and are not a continuous series. 2010-2011 has no single all-students LEA total, and those residence pairs are not summed.
+          {" "}
+          <Link className="font-semibold text-teal underline" href="/enrollment">Open the enrollment comparison</Link>.
+        </p>
+      </section>
+
       <section>
         <h2 className="font-extrabold text-2xl">Source documents</h2>
         <p className="mt-2 max-w-3xl">

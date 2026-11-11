@@ -64,6 +64,8 @@ Fetched and not indexed:
 - Paradise Valley PDF matches SHA-256 `56195ff643435ce2369b1d664c75ed84278ed10b0269d701bceda2e65f259e4d`. It is a paper-capture scan. Parsed lines do not reconcile to printed batch totals (`parsed_unreconciled`). The printed total stays null. An OCR reading of 01/21/2028 on batch 1185 conflicts with the FY label and stays unreviewed. It is not in spending totals and it is not zero spending.
 - Dysart’s public portal and the known voucher URL are a fund-total certification, not vendor lines. Deer Valley’s agenda and the attachments fetched from it are board materials, not a vendor ledger. Tempe Union’s virtual library page was fetched and did not link a vendor ledger. None of those three is in the public index.
 
+Official ADE October 1 enrollment for 2010-2011 through 2025-2026 is loaded beside the spending index. It is a headcount, not ADM. School year 2025-2026 pairs with spending dated 2025-07-01 through 2026-06-30. The coverage window still starts 2024-07-01. A per-student figure is a reported amount in this index per enrolled student. `python3 -m pipeline enrollment` reloads the extracts without changing screened line amounts. `python3 -m pipeline ingest` reloads them after a spending rebuild.
+
 Gilbert stays an indexed lead from a prior 403, not an ingested body. Mesa stays an aggregate lead, not transaction coverage. ADE's active-LEA spreadsheet was not acquired. The AZDOR 2026 list has 1,449 site rows and 395 CTDS holder IDs, including closed sites. County pages list 57 Maricopa and 21 Pinal names. None of those figures is a coverage denominator.
 
 ## Adapters

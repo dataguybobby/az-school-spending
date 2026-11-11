@@ -89,15 +89,34 @@ export default function DictionaryPage() {
       </section>
 
       <section className="rounded-xl border border-teal/10 bg-page p-5">
-        <h2 className="font-extrabold text-2xl">Enrollment, not yet ingested</h2>
+        <h2 className="font-extrabold text-2xl">October 1 enrollment</h2>
+        <p className="mt-2">{dictionary.enrollment.what_it_is}</p>
         <p className="mt-2">{dictionary.enrollment.note}</p>
+        <p className="mt-2">{dictionary.enrollment.year_match_rule}</p>
+        <p className="mt-2 text-teal/75">{dictionary.enrollment.coverage_note} {dictionary.enrollment.not_comparable_series}</p>
         <p className="mt-2">
           <a className="font-semibold text-teal underline" href={dictionary.enrollment.official_url}>Official ADE page</a>
           {" · "}status {dictionary.enrollment.status}
-          {" · "}HTTP {dictionary.enrollment.http_status}
-          {" · "}headcount {dictionary.enrollment.headcount == null ? "null" : dictionary.enrollment.headcount}
-          {" · "}{dictionary.enrollment.null_reason}
+          {" · "}{dictionary.enrollment.lea_row_count.toLocaleString()} LEA rows
+          {" · "}{dictionary.enrollment.suppressed_asterisk_count} suppressed asterisks left null
+          {" · "}{dictionary.enrollment.blank_total_count} blank totals left null
+          {" · "}
+          <Link className="font-semibold text-teal underline" href="/enrollment">Enrollment comparison</Link>
         </p>
+        <ul className="mt-4 space-y-3">
+          {dictionary.enrollment.comparisons.map((row) => (
+            <li key={`${row.source_id}-${row.school_year ?? "undated"}-${row.status}`} className="rounded-lg border border-teal/10 px-3 py-2">
+              <p className="font-semibold">{row.district}</p>
+              <p>
+                {row.school_year ? `School year ${row.school_year}` : "No school year assigned"}
+                {row.october_1_enrollment == null ? "" : ` · October 1 enrollment ${row.october_1_enrollment.toLocaleString()}`}
+                {row.screened_amount_cents == null ? "" : ` · screened amount ${dollars(row.screened_amount_cents)}`}
+                {row.reported_cents_per_enrolled_student == null ? "" : ` · ${dollars(row.reported_cents_per_enrolled_student)} ${row.label}`}
+              </p>
+              {row.enrollment_null_reason ? <p className="text-teal/70">{row.enrollment_null_reason}</p> : null}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section>
