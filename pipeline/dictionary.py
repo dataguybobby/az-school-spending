@@ -359,6 +359,14 @@ def _aggregations() -> list[dict[str, object]]:
             "surface": "web/src/app/explore/page.tsx",
         },
         {
+            "id": "vendor_leaderboard",
+            "grain": "vendor_key; display name is the vendor_raw that occurs most often; other printed forms stay visible when the key groups more than one",
+            "filter": "in_default_aggregate = 1, plus district, date basis, date range, and vendor-name search. Withheld payees are not public rows.",
+            "date_basis": "either, unless the page selects check date or voucher batch date. First and last date use that basis and ignore null dates.",
+            "public_wording": "Amount paid to vendor by indexed districts (reported / vouchered). These documents show what the indexed districts paid. They are not vendor revenue and not a vendor's total sales. Coverage is not continuous.",
+            "surface": "web/src/app/vendors/page.tsx",
+        },
+        {
             "id": "vendor_group",
             "grain": "vendor_key; display name is the vendor_raw that occurs most often",
             "filter": "in_default_aggregate = 1 and the selected date basis",

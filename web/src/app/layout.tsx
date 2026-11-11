@@ -79,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/" className="hover:text-terracotta">Spending</Link>
               <Link href="/enrollment" className="hover:text-terracotta">Enrollment</Link>
               <Link href="/explore" className="hover:text-terracotta">Groups</Link>
+              <Link href="/vendors" className="hover:text-terracotta">Vendors</Link>
               <Link href="/sources" className="hover:text-terracotta">Sources</Link>
               <Link href="/dictionary" className="hover:text-terracotta">Dictionary</Link>
               <Link href="/methodology" className="hover:text-terracotta">Methodology</Link>
