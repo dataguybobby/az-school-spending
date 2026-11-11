@@ -19,12 +19,19 @@ export type Filters = {
   page?: string;
 };
 
-const SORTS: Record<string, string> = {
-  date: "COALESCE(check_date, voucher_batch_date)",
-  amount: "amount_cents",
-  vendor: "vendor_raw",
-  entity: "entity_name",
-};
+export type SortKey = "date" | "amount" | "vendor" | "entity";
+export type SortDirection = "asc" | "desc";
+export type DateBasis = "check_date" | "voucher_batch_date" | "either";
+
+export function dateBasis(value: string | undefined): DateBasis {
+  if (value === "check_date" || value === "voucher_batch_date") return value;
+  return "either";
+}
+
+export function activeSort(filters: Filters): { sort: SortKey; direction: SortDirection } {
+  const direction = filters.direction?.toLowerCase() === "asc" ? "asc" : "desc";
+  return { sort: sortKey(filters.sort), direction };
+}
 
 let cached: DatabaseSync | undefined;
 
@@ -132,9 +139,58 @@ export function where(filters: Filters, alias = ""): { sql: string; params: Arra
 }
 
 export function orderBy(filters: Filters): string {
-  const column = SORTS[filters.sort || "date"] ?? SORTS.date;
-  const direction = filters.direction === "asc" ? "ASC" : "DESC";
-  return `${column} ${direction}, line_id ASC`;
+  const active = activeSort(filters);
+  return `${sortColumn(active.sort, dateBasis(filters.basis))} ${sqlDirection(active.direction)} NULLS LAST, line_id ASC`;
+}
+
+function sortKey(value: string | undefined): SortKey {
+  if (value === "amount" || value === "vendor" || value === "entity" || value === "date") return value;
+  return "date";
+}
+
+function dateColumn(basis: DateBasis): string {
+  switch (basis) {
+    case "check_date":
+      return "check_date";
+    case "voucher_batch_date":
+      return "voucher_batch_date";
+    case "either":
+      return "COALESCE(check_date, voucher_batch_date)";
+    default: {
+      const unreachable: never = basis;
+      return unreachable;
+    }
+  }
+}
+
+function sortColumn(sort: SortKey, basis: DateBasis): string {
+  switch (sort) {
+    case "date":
+      return dateColumn(basis);
+    case "amount":
+      return "amount_cents";
+    case "vendor":
+      return "vendor_raw";
+    case "entity":
+      return "entity_name";
+    default: {
+      const unreachable: never = sort;
+      return unreachable;
+    }
+  }
+}
+
+function sqlDirection(direction: SortDirection): "ASC" | "DESC" {
+  switch (direction) {
+    case "asc":
+      return "ASC";
+    case "desc":
+      return "DESC";
+    default: {
+      const unreachable: never = direction;
+      return unreachable;
+    }
+  }
 }
 
 export function monthExpr(basis: string | undefined): string {

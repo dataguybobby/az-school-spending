@@ -4,7 +4,7 @@ import { DistrictBars } from "@/components/district-bars";
 import { StoryCards } from "@/components/story-cards";
 import { VendorTreemap } from "@/components/treemap";
 import { ButtonLink } from "@/components/ui/button";
-import { monthExpr, openDb, orderBy, where, type Filters } from "@/lib/db";
+import { activeSort, dateBasis, monthExpr, openDb, orderBy, where, type DateBasis, type Filters, type SortDirection, type SortKey } from "@/lib/db";
 import { basisLabel } from "@/lib/basis";
 import { dollars } from "@/lib/utils";
 
@@ -50,6 +50,7 @@ export default async function SpendingPage({
   const overlap = db.prepare("SELECT * FROM overlap_findings").all() as Line[];
   const entities = db.prepare("SELECT DISTINCT entity_name, source_id FROM lines ORDER BY entity_name").all() as Array<{ entity_name: string; source_id: string }>;
   const basis = filters.basis || "either";
+  const sorting = activeSort(filters);
   const districts = db.prepare(
     `SELECT entity_name, SUM(amount_cents) AS amount_cents, COUNT(*) AS line_count, COUNT(DISTINCT document_id) AS documents
      FROM lines WHERE ${filter.sql} GROUP BY entity_name ORDER BY amount_cents DESC`,
@@ -119,6 +120,12 @@ export default async function SpendingPage({
       </section>
 
       <form className="grid gap-3 rounded-xl border border-teal/10 bg-page p-4 md:grid-cols-4" action="/">
+        {sorting.sort !== "date" || sorting.direction !== "desc" ? (
+          <div className="hidden">
+            <input type="hidden" name="sort" value={sorting.sort} />
+            <input type="hidden" name="direction" value={sorting.direction} />
+          </div>
+        ) : null}
         <label className="text-sm md:col-span-2">Description, vendor, or account
           <input name="q" defaultValue={filters.q || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
@@ -196,19 +203,22 @@ export default async function SpendingPage({
         </ul>
       </section>
 
-      <section className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
+      <section id="lines" className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
-          <h2 className="font-semibold">Lines</h2>
+          <div>
+            <h2 className="font-semibold">Lines</h2>
+            <p className="text-xs text-teal/70">{sortStatus(sorting.sort, sorting.direction, dateBasis(basis))}</p>
+          </div>
           <a className="text-sm font-semibold text-teal underline" href={`/api/export?${exportQuery.toString()}`}>Download CSV</a>
         </div>
         <table className="w-full min-w-[760px] text-left text-sm">
           <thead className="border-y border-teal/10 text-xs uppercase tracking-wide text-teal/60">
             <tr>
-              <th className="px-3 py-2">Date used</th>
-              <th className="px-3 py-2">Entity</th>
-              <th className="px-3 py-2">Vendor</th>
-              <th className="px-3 py-2">Description</th>
-              <th className="px-3 py-2">Amount</th>
+              <SortHeader label="Date used" column="date" sorting={sorting} raw={raw} />
+              <th scope="col" className="px-3 py-2">Entity</th>
+              <th scope="col" className="px-3 py-2">Vendor</th>
+              <th scope="col" className="px-3 py-2">Description</th>
+              <SortHeader label="Amount" column="amount" sorting={sorting} raw={raw} />
             </tr>
           </thead>
           <tbody>
@@ -289,5 +299,96 @@ function pageHref(raw: Record<string, string | undefined>, page: number): string
     if (value && key !== "page") params.set(key, value);
   }
   params.set("page", String(page));
-  return `/?${params.toString()}`;
+  return `/?${params.toString()}#lines`;
+}
+
+function sortHref(raw: Record<string, string | undefined>, sort: "date" | "amount", direction: SortDirection): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(raw)) {
+    if (!value || key === "sort" || key === "direction") continue;
+    params.set(key, value);
+  }
+  if (!(sort === "date" && direction === "desc")) {
+    params.set("sort", sort);
+    params.set("direction", direction);
+  }
+  const query = params.toString();
+  return query ? `/?${query}#lines` : "/#lines";
+}
+
+function SortHeader({
+  label,
+  column,
+  sorting,
+  raw,
+}: {
+  label: string;
+  column: "date" | "amount";
+  sorting: { sort: SortKey; direction: SortDirection };
+  raw: Record<string, string | undefined>;
+}) {
+  const isActive = sorting.sort === column;
+  const nextDirection: SortDirection = isActive && sorting.direction === "desc" ? "asc" : "desc";
+  const currentPhrase = columnPhrase(column, sorting.direction);
+  const nextPhrase = columnPhrase(column, nextDirection);
+  return (
+    <th scope="col" aria-sort={isActive ? (sorting.direction === "asc" ? "ascending" : "descending") : "none"} className="px-3 py-2">
+      <Link
+        href={sortHref(raw, column, nextDirection)}
+        className={isActive ? "font-semibold text-teal underline decoration-2 underline-offset-2" : "underline decoration-teal/30 underline-offset-2 hover:text-teal"}
+      >
+        {label}
+        {isActive ? <span aria-hidden="true">{sorting.direction === "asc" ? " ↑" : " ↓"}</span> : null}
+        <span className="sr-only">
+          {isActive ? `, sorted ${currentPhrase}. Activate to sort ${nextPhrase}.` : `. Activate to sort ${nextPhrase}.`}
+        </span>
+      </Link>
+    </th>
+  );
+}
+
+function columnPhrase(column: "date" | "amount", direction: SortDirection): string {
+  const order = direction === "asc";
+  switch (column) {
+    case "amount":
+      return order ? "smallest first" : "largest first";
+    case "date":
+      return order ? "oldest first" : "newest first";
+    default: {
+      const unreachable: never = column;
+      return unreachable;
+    }
+  }
+}
+
+function sortStatus(sort: SortKey, direction: SortDirection, basis: DateBasis): string {
+  switch (sort) {
+    case "amount":
+      return direction === "asc" ? "Sorted by amount, smallest first." : "Sorted by amount, largest first.";
+    case "vendor":
+      return direction === "asc" ? "Sorted by vendor, A to Z." : "Sorted by vendor, Z to A.";
+    case "entity":
+      return direction === "asc" ? "Sorted by entity, A to Z." : "Sorted by entity, Z to A.";
+    case "date":
+      return `Sorted by ${dateSortLabel(basis)}, ${direction === "asc" ? "oldest first" : "newest first"}.`;
+    default: {
+      const unreachable: never = sort;
+      return unreachable;
+    }
+  }
+}
+
+function dateSortLabel(basis: DateBasis): string {
+  switch (basis) {
+    case "check_date":
+      return "check date";
+    case "voucher_batch_date":
+      return "voucher batch date";
+    case "either":
+      return "check date when present, otherwise voucher batch date";
+    default: {
+      const unreachable: never = basis;
+      return unreachable;
+    }
+  }
 }

@@ -35,7 +35,6 @@ EXPORT_FIELDS = [
 ]
 
 _SORTS = {
-    "date": "COALESCE(check_date, voucher_batch_date)",
     "amount": "amount_cents",
     "vendor": "vendor_raw",
     "entity": "entity_name",
@@ -112,10 +111,19 @@ def _fts_query(text: str) -> str:
     return '"' + " ".join(tokens) + '"'
 
 
+def _date_sort_column(basis: object) -> str:
+    if basis == "check_date":
+        return "check_date"
+    if basis == "voucher_batch_date":
+        return "voucher_batch_date"
+    return "COALESCE(check_date, voucher_batch_date)"
+
+
 def _order(filters: dict[str, Any]) -> str:
-    column = _SORTS.get(str(filters.get("sort") or "date"), _SORTS["date"])
+    sort = str(filters.get("sort") or "date")
+    column = _SORTS.get(sort, _date_sort_column(filters.get("basis")))
     direction = "ASC" if str(filters.get("direction") or "desc").lower() == "asc" else "DESC"
-    return f"{column} {direction}, line_id ASC"
+    return f"{column} {direction} NULLS LAST, line_id ASC"
 
 
 def search_lines(connection: sqlite3.Connection, filters: dict[str, Any]) -> dict[str, Any]:
