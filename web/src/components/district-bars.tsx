@@ -1,3 +1,4 @@
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
 
 type District = { entity_name: string; amount_cents: number; line_count: number; documents: number };
@@ -7,8 +8,8 @@ export function DistrictBars({ rows }: { rows: District[] }) {
   return (
     <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">Observed documents, side by side</h2>
-      <p className="mt-1 max-w-3xl text-xs leading-5 text-teal/65">
-        Each bar is the screened public lines from the documents ingested for that district. Districts are not complete, not on the same calendar, and not comparable coverage. A missing district was not indexed. This is not a ranking of all Phoenix spending and not a share of any population.
+      <p className="mt-1 text-base">
+        Screened lines from indexed documents. <HowToRead anchor="read-coverage" />
       </p>
       {rows.length === 0 ? (
         <p className="mt-4 text-sm text-teal/70">No screened lines are in the default total.</p>
@@ -16,7 +17,7 @@ export function DistrictBars({ rows }: { rows: District[] }) {
         <ul className="mt-4 space-y-3">
           {rows.map((row) => (
             <li key={row.entity_name}>
-              <div className="flex items-baseline justify-between gap-3 text-sm">
+              <div className="flex items-baseline justify-between gap-3 text-base">
                 <span className="font-semibold">{row.entity_name}</span>
                 <span className="shrink-0">{dollars(row.amount_cents)}</span>
               </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HowToRead } from "@/components/how-to-read";
 import { basisLabel, withBasis } from "@/lib/basis";
 import { openDb, where, type Filters } from "@/lib/db";
 import { dollars } from "@/lib/utils";
@@ -34,9 +35,8 @@ export default async function ExplorePage({
       <header>
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
         <h1 className="mt-2 font-extrabold text-4xl">Groups</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6">
-          Totals below use the date basis “{basisLabel(basis)}”. They are sums of screened public lines, not unique spend, not printed report totals, and not complete district or statewide coverage.
-          Item groups come from description text. <Link className="font-semibold text-teal underline" href="/methodology">Methodology</Link>.
+        <p className="mt-3 text-base leading-7">
+          Date basis: {basisLabel(basis)}. <HowToRead anchor="read-groups" />
         </p>
         <form className="mt-4 flex flex-wrap gap-2" action="/explore">
           <select name="basis" defaultValue={basis} className="rounded-md border border-teal/15 px-3 py-2 text-sm">
@@ -50,7 +50,7 @@ export default async function ExplorePage({
 
       <section>
         <h2 className="font-extrabold text-2xl">Item groups</h2>
-        <p className="mt-1 text-sm text-teal/70">A reviewed phrase only. Lines that do not match a phrase stay ungrouped.</p>
+        <p className="mt-1 text-base">A reviewed phrase in the description.</p>
         {items.length === 0 ? <p className="mt-3 text-sm">No item group has lines on this date basis.</p> : (
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             {items.map((item) => (
@@ -73,7 +73,7 @@ export default async function ExplorePage({
 
       <section>
         <h2 className="font-extrabold text-2xl">Vendors</h2>
-        <p className="mt-1 text-sm text-teal/70">Display names prefer the payee text that occurs most often for that key. Amazon remains a vendor.</p>
+        <p className="mt-1 text-base">Printed payee that appears most often. <HowToRead anchor="read-vendors" /></p>
         <ul className="mt-4 divide-y divide-teal/10 rounded-xl border border-teal/10 bg-page">
           {vendors.map((vendor) => (
             <li key={vendor.vendor_key} className="flex flex-wrap items-baseline justify-between gap-3 px-4 py-3 text-sm">

@@ -38,8 +38,11 @@ if (dateExpr("either") !== "COALESCE(check_date, voucher_batch_date)") throw new
 def test_leaderboard_totals_match_screened_lines_and_hide_personal_payees():
     page = (ROOT / "web" / "src" / "app" / "vendors" / "page.tsx").read_text(encoding="utf-8")
     assert "Amount paid to vendor by indexed districts (reported / vouchered)" in page
-    assert "They are not vendor revenue and not a vendor's total sales." in page
-    assert "Coverage is not continuous." in page
+    assert "Top 25" in page
+    assert 'raw.all === "1"' in page
+    methodology = (ROOT / "web" / "src" / "app" / "methodology" / "page.tsx").read_text(encoding="utf-8")
+    assert "not vendor revenue" in methodology
+    assert "Coverage is not continuous." in methodology
     connection = sqlite3.connect(f"file:{public_db()}?mode=ro", uri=True)
     sensitive = connection.execute(
         """
@@ -62,9 +65,9 @@ def test_leaderboard_totals_match_screened_lines_and_hide_personal_payees():
         WHERE in_default_aggregate = 1 AND vendor_key = 'RENAISSANCELEARNINGINC'
         """
     ).fetchone()
-    assert row[0] == 36427297
-    assert row[1] == 32
-    assert row[2] == 2
+    assert row[0] == 63615816
+    assert row[1] == 95
+    assert row[2] == 4
     assert row[3] is not None and row[4] is not None and row[3] <= row[4]
     forms = connection.execute(
         """
@@ -74,4 +77,4 @@ def test_leaderboard_totals_match_screened_lines_and_hide_personal_payees():
         """
     ).fetchall()
     assert forms[0][0] == "RENAISSANCE LEARNING, INC"
-    assert len(forms) == 2
+    assert len(forms) == 3

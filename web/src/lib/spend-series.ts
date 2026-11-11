@@ -111,6 +111,24 @@ export function monthsWithSpend(
   );
 }
 
+export function labelStepFor(count: number, maxLabels = 8): number {
+  if (count <= maxLabels) return 1;
+  return Math.ceil(count / maxLabels);
+}
+
+export function monthsToLabel(points: SpendPoint[], ratio = 0.12): Set<string> {
+  const present = points.filter((point): point is SpendPoint & { amountCents: number } => point.amountCents != null);
+  const peak = Math.max(...present.map((point) => Math.abs(point.amountCents)), 1);
+  const labeled = new Set<string>();
+  for (const segment of contiguousSpendSegments(points)) {
+    if (segment.length === 1 && segment[0].amountCents != null) labeled.add(segment[0].month);
+  }
+  for (const point of present) {
+    if (Math.abs(point.amountCents) <= peak * ratio) labeled.add(point.month);
+  }
+  return labeled;
+}
+
 export function contiguousSpendSegments(points: SpendPoint[]): SpendPoint[][] {
   const segments: SpendPoint[][] = [];
   let current: SpendPoint[] = [];

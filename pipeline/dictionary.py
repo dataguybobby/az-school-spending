@@ -319,15 +319,15 @@ def _aggregations() -> list[dict[str, object]]:
             "filter": "in_default_aggregate = 1, plus the selected date basis and any search filters",
             "date_basis": "either, unless the page selects check date or voucher batch date",
             "public_wording": "This figure is the sum of screened public lines on that date basis. It is not unique spend, not the printed report total, not proof a payment settled, and not a census of districts or of Arizona schools.",
-            "surface": "web/src/app/page.tsx",
+            "surface": "web/src/app/methodology/page.tsx",
         },
         {
             "id": "month_chart",
             "grain": "calendar month of the selected date basis",
             "filter": "in_default_aggregate = 1 and the month expression is not null",
             "date_basis": "check date, voucher batch date, or check date when present otherwise voucher batch date",
-            "public_wording": "A month with no bar was not indexed, not recorded as zero.",
-            "surface": "web/src/app/page.tsx",
+            "public_wording": "A gap is a month with no indexed document.",
+            "surface": "web/src/components/spend-enrollment-chart.tsx",
         },
         {
             "id": "category_chart",
@@ -335,14 +335,14 @@ def _aggregations() -> list[dict[str, object]]:
             "filter": "in_default_aggregate = 1 and the page filters",
             "date_basis": "same as the page filter; the chart does not relabel the basis",
             "public_wording": "Inferred category, not a budget code",
-            "surface": "web/src/app/page.tsx",
+            "surface": "web/src/app/methodology/page.tsx",
         },
         {
             "id": "vendor_treemap",
             "grain": "vendor_key, top 8 by amount_cents, remainder labeled Other screened vendors",
             "filter": "in_default_aggregate = 1 and the page filters",
             "date_basis": "same as the page filter",
-            "public_wording": "Area is the sum of screened public lines for that vendor. Other screened vendors are grouped. This is not unique spend and not a printed report total.",
+            "public_wording": "Area is the screened amount for that vendor.",
             "surface": "web/src/components/treemap.tsx",
         },
         {
@@ -350,7 +350,7 @@ def _aggregations() -> list[dict[str, object]]:
             "grain": "entity_name on the indexed document",
             "filter": "in_default_aggregate = 1 and the page filters",
             "date_basis": "same as the page filter",
-            "public_wording": "Each bar is the screened public lines from the documents ingested for that district. Districts are not complete, not on the same calendar, and not comparable coverage. A missing district was not indexed. This is not a ranking of all Phoenix spending and not a share of any population.",
+            "public_wording": "Screened lines from indexed documents.",
             "surface": "web/src/components/district-bars.tsx",
         },
         {
@@ -358,7 +358,7 @@ def _aggregations() -> list[dict[str, object]]:
             "grain": "two fixed public lines, not a ranked sample",
             "filter": "in_default_aggregate = 1 AND ((description_public = '24 pack slow rise stress balls' AND amount_cents = 2063) OR (description_public = 'Tisaindor 100PCS Panda Stickers' AND amount_cents = 6469))",
             "date_basis": "the line's own check date or voucher batch date, labeled on the card",
-            "public_wording": "Each card is one screened public line. It is not a finding, not proof a payment settled, and not the whole vendor or district.",
+            "public_wording": "One screened public line each.",
             "surface": "web/src/components/story-cards.tsx",
         },
         {
@@ -367,14 +367,14 @@ def _aggregations() -> list[dict[str, object]]:
             "filter": "in_default_aggregate = 1 AND item_label IS NOT NULL, plus the selected date basis",
             "date_basis": "either, unless the groups page selects check date or voucher batch date",
             "public_wording": "They are sums of screened public lines, not unique spend, not printed report totals, and not complete district or statewide coverage.",
-            "surface": "web/src/app/explore/page.tsx",
+            "surface": "web/src/app/methodology/page.tsx",
         },
         {
             "id": "vendor_leaderboard",
             "grain": "vendor_key; display name is the vendor_raw that occurs most often; other printed forms stay visible when the key groups more than one",
             "filter": "in_default_aggregate = 1, plus district, date basis, date range, and vendor-name search. Withheld payees are not public rows.",
             "date_basis": "either, unless the page selects check date or voucher batch date. First and last date use that basis and ignore null dates.",
-            "public_wording": "Amount paid to vendor by indexed districts (reported / vouchered). These documents show what the indexed districts paid. They are not vendor revenue and not a vendor's total sales. Coverage is not continuous.",
+            "public_wording": "Amount paid to vendor by indexed districts (reported / vouchered).",
             "surface": "web/src/app/vendors/page.tsx",
         },
         {
@@ -383,15 +383,15 @@ def _aggregations() -> list[dict[str, object]]:
             "filter": "in_default_aggregate = 1 and the selected date basis",
             "date_basis": "either, unless the groups page selects check date or voucher batch date",
             "public_wording": "This is not unique spend, not a printed report total, and not complete coverage of that vendor or of any district.",
-            "surface": "web/src/app/explore/vendors/[key]/page.tsx",
+            "surface": "web/src/app/methodology/page.tsx",
         },
         {
             "id": "fts_search",
             "grain": "public line",
             "filter": "in_default_aggregate = 1 AND line_id IN (SELECT line_id FROM lines_fts WHERE lines_fts MATCH ?)",
             "date_basis": "same as the page filter",
-            "public_wording": "Description, vendor, or account",
-            "surface": "web/src/app/page.tsx",
+            "public_wording": "Description or vendor",
+            "surface": "web/src/components/spending-filters.tsx",
         },
         {
             "id": "csv_export",
@@ -406,7 +406,7 @@ def _aggregations() -> list[dict[str, object]]:
             "grain": "printed account description, or the DAC column when that source prints no account code",
             "filter": "in_default_aggregate = 1 and the page filters. The inferred category column is not used. Vendor is not a category. Slices under 2 percent are grouped as Other (as printed). A blank printed field stays No category printed.",
             "date_basis": "same as the page filter",
-            "public_wording": "Each pie is one district's screened lines, grouped by the category text printed on that source. Different districts are not merged into one taxonomy. A slice with no printed category is labeled No category printed.",
+            "public_wording": "Grouped by the category text printed on that source.",
             "surface": "web/src/components/category-pies.tsx",
         },
         {
@@ -414,7 +414,7 @@ def _aggregations() -> list[dict[str, object]]:
             "grain": "month of the selected date basis, plus October 1 enrollment for each comparable school year that overlaps an indexed month",
             "filter": "in_default_aggregate = 1 and the page filters. A month with no indexed document on the selected date basis is null, not zero. Enrollment is drawn only when one comparable LEA total is loaded for that school year.",
             "date_basis": "check date, voucher batch date, or check date when present otherwise voucher batch date",
-            "public_wording": "A gap is a month with no indexed document in this filter, not a month of zero spending. October 1 enrollment (ADE headcount, not ADM) is a separate series.",
+            "public_wording": "A gap is a month with no indexed document.",
             "surface": "web/src/components/spend-enrollment-chart.tsx",
         },
         {
@@ -422,7 +422,7 @@ def _aggregations() -> list[dict[str, object]]:
             "grain": "one indexed district and one school year, joined to a single ADE October 1 LEA total",
             "filter": "in_default_aggregate = 1; the school year comes from the selected date basis; 2017-2018 onward uses the LEA by Grade total; asterisks stay null and are not summed",
             "date_basis": "either, unless the page selects check date or voucher batch date. A missing date is not assigned a school year from the fiscal-year label.",
-            "public_wording": "Reported amount in this index per enrolled student. October 1 enrollment is a headcount, not ADM. It is not cost per pupil and not total district spending.",
+            "public_wording": "Reported amount in this index per enrolled student.",
             "surface": "web/src/components/enrollment-comparison.tsx",
         },
         {
@@ -431,7 +431,7 @@ def _aggregations() -> list[dict[str, object]]:
             "filter": "official printed Total for those entity ids; suppressed and blank totals stay null; 2010-2011 residence pairs are not summed",
             "date_basis": "October 1 of the named school year. This series is not a spending date.",
             "public_wording": "District totals for 2010-2011 through 2016-2017 are not on the same basis as 2017-2018 onward and are not a continuous series.",
-            "surface": "web/src/app/enrollment/page.tsx",
+            "surface": "web/src/app/methodology/page.tsx",
         },
     ]
 

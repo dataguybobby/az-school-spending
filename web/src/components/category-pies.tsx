@@ -1,19 +1,15 @@
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
 import { formatShare, NO_CATEGORY_PRINTED, OTHER_AS_PRINTED, type PieSlice } from "@/lib/printed-slices";
 import type { DistrictPie } from "@/lib/chart-data";
 
 const FILLS = ["#0f5c66", "#e07a3d", "#c4922a", "#3d8a84", "#a34b32", "#6e8b3d", "#1f4e5a", "#8a6a2f"];
-const PIE_WORDING = "Each pie is one district's screened lines, grouped by the category text printed on that source. Different districts are not merged into one taxonomy. A slice with no printed category is labeled No category printed.";
-
 export function CategoryPies({ pies }: { pies: DistrictPie[] }) {
   return (
     <section id="category-pies" className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">Printed category, one district at a time</h2>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-teal/75">
-        {PIE_WORDING}
-      </p>
-      <p className="mt-2 max-w-3xl text-xs leading-5 text-teal/60">
-        Voucher rows use the account description printed beside the account code. The Scottsdale accounts payable report has no account code; its pie uses the DAC column as printed. The inferred category is not used here. Amazon is a vendor, not a category. Slices under 2 percent are grouped as Other (as printed).
+      <p className="mt-1 text-base leading-6">
+        Grouped by the category text printed on that source. <HowToRead anchor="read-categories" />
       </p>
       {pies.length === 0 ? (
         <p className="mt-4 text-sm text-teal/70">No screened lines in this filter.</p>
@@ -36,7 +32,7 @@ function DistrictPieChart({ pie }: { pie: DistrictPie }) {
       <p className="text-xs text-teal/60">{pie.fieldLabel} · {dollars(pie.totalCents)}</p>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
         <PieSvg title={`${pie.district} ${pie.fieldLabel}`} slices={wedges} total={wedgeTotal} colors={colors} />
-        <ul className="min-w-0 flex-1 space-y-1 text-xs">
+          <ul className="min-w-0 flex-1 space-y-1 text-sm">
           {pie.slices.map((slice) => (
             <li key={slice.label} className="flex items-start justify-between gap-2">
               <span className="flex min-w-0 items-start gap-2">
@@ -89,7 +85,7 @@ function SliceTable({ pie }: { pie: DistrictPie }) {
   const other = pie.slices.find((slice) => slice.label === OTHER_AS_PRINTED);
   return (
     <div className="mt-3 overflow-x-auto">
-      <table className="w-full text-left text-xs">
+      <table className="w-full text-left text-sm">
         <caption className="mb-1 text-left text-teal/60">{pie.fieldLabel}. Share uses the screened total for this district in the filter.</caption>
         <thead className="border-b border-teal/10 uppercase tracking-wide text-teal/50">
           <tr>

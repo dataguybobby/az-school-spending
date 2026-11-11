@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
 
 type Story = {
@@ -17,8 +18,8 @@ export function StoryCards({ stories }: { stories: Story[] }) {
   return (
     <section>
       <h2 className="font-extrabold text-2xl">Lines you can open</h2>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-teal/70">
-        Each card is one screened public line. It is not a finding, not proof a payment settled, and not the whole vendor or district.
+      <p className="mt-1 text-base">
+        One screened public line each. <HowToRead anchor="read-totals" />
       </p>
       <ul className="mt-4 grid gap-3 md:grid-cols-3">
         {stories.map((story) => (

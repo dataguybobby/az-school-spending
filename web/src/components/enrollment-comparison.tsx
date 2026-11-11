@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HowToRead } from "@/components/how-to-read";
 import { dollars } from "@/lib/utils";
 import { formatIsoDate, type ComparisonStatus } from "@/lib/enrollment-match";
 import type { ComparisonRecord } from "@/lib/enrollment";
@@ -15,13 +16,11 @@ export function EnrollmentComparison({
   return (
     <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">October 1 enrollment beside this index</h2>
-      <p className="mt-1 max-w-3xl text-sm leading-6 text-teal/75">
-        Reported amount in this index per enrolled student. October 1 enrollment is a headcount, not ADM. It is not cost per pupil and not total district spending.
-      </p>
-      <p className="mt-2 max-w-3xl text-xs leading-5 text-teal/65">
-        Date basis: {basisName}. School year YYYY-(YYYY+1) uses spending dated July 1, YYYY through June 30, YYYY+1. School year 2025-2026 uses 2025-07-01 through 2026-06-30.
-        {" "}
-        <Link className="font-semibold text-teal underline" href="/enrollment">Full October 1 series</Link>
+      <p className="mt-1 text-base leading-6">
+        Reported amount in this index per enrolled student. October 1 enrollment (ADE headcount). Date basis: {basisName}.{" "}
+        <HowToRead anchor="read-enrollment" />
+        {" · "}
+        <Link className="font-semibold text-teal underline" href="/enrollment">Full series</Link>
       </p>
       {filterNote ? <p className="mt-2 max-w-3xl text-xs leading-5 text-teal/65">{filterNote}</p> : null}
       {rows.length === 0 ? (

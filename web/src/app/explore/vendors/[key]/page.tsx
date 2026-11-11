@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { HowToRead } from "@/components/how-to-read";
 import { basisLabel, withBasis } from "@/lib/basis";
 import { monthExpr, openDb, where, type Filters } from "@/lib/db";
 import { dollars } from "@/lib/utils";
@@ -64,12 +65,12 @@ export default async function VendorGroupPage({
         <Link className="font-semibold text-teal" href="/methodology">Methodology</Link>
       </p>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Vendor, not a category</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">Reported / vouchered</p>
         <h1 className="mt-2 font-extrabold text-4xl">{display}</h1>
         <p className="mt-3 font-extrabold text-5xl">{dollars(total.cents)}</p>
-        <p className="mt-3 max-w-3xl text-sm leading-6">
-          In the screened public lines in this ledger, {dollars(total.cents)} was reported for this vendor key.
-          Date basis: {basisLabel(basis)}. {total.n} lines. This is not unique spend, not a printed report total, and not complete coverage of that vendor or of any district.
+        <p className="mt-3 text-base leading-7">
+          {dollars(total.cents)} was reported for this vendor key. Date basis: {basisLabel(basis)}. {total.n} lines.{" "}
+          <HowToRead anchor="read-vendors" />
         </p>
       </header>
       <SimpleList title="Printed payee forms collapsed into this key" rows={forms} />

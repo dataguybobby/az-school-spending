@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HowToRead } from "@/components/how-to-read";
 import { basisLabel } from "@/lib/basis";
 import { openDb, type Filters } from "@/lib/db";
 import { dollars } from "@/lib/utils";
@@ -15,7 +16,7 @@ import {
 export const dynamic = "force-dynamic";
 
 const LABEL = "Amount paid to vendor by indexed districts (reported / vouchered)";
-const NOTE = "These documents show what the indexed districts paid. They are not vendor revenue and not a vendor's total sales. Coverage is not continuous.";
+const TOP = 25;
 
 export default async function VendorsPage({
   searchParams,
@@ -27,6 +28,7 @@ export default async function VendorsPage({
   const basis = filters.basis || "either";
   const sorting = { sort: vendorSort(raw.sort), direction: sortDirection(raw.direction) };
   const search = raw.q || "";
+  const showAll = raw.all === "1";
   const page = Math.max(Number(raw.page || "1"), 1);
   const db = openDb();
   const districts = db.prepare(
@@ -35,7 +37,7 @@ export default async function VendorsPage({
   const ranked = loadVendorLeaderboard(db, filters, search).sort(vendorOrder(sorting.sort, sorting.direction));
   const pageSize = vendorPageSize();
   const pages = Math.max(Math.ceil(ranked.length / pageSize), 1);
-  const visible = ranked.slice((page - 1) * pageSize, page * pageSize);
+  const visible = showAll ? ranked.slice((page - 1) * pageSize, page * pageSize) : ranked.slice(0, TOP);
   const exportQuery = new URLSearchParams();
   for (const [key, value] of Object.entries(raw)) {
     if (value && key !== "page") exportQuery.set(key, value);
@@ -45,10 +47,14 @@ export default async function VendorsPage({
     <div className="space-y-6">
       <header>
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
-        <h1 className="mt-2 max-w-3xl font-extrabold text-4xl leading-tight">{LABEL}</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6">{NOTE}</p>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-teal/75">
-          {ranked.length.toLocaleString("en-US")} vendor groups on date basis {basisLabel(basis)}. The printed payee is the name that appears most often. A second line appears when punctuation or spacing collapsed more than one printed form into the same group. Personal and unknown payees are not in this list.
+        <h1 className="mt-2 font-extrabold text-4xl leading-tight">{LABEL}</h1>
+        <p className="mt-3 text-base leading-7">
+          {showAll ? "All" : `Top ${Math.min(TOP, ranked.length)} of`} {ranked.length.toLocaleString("en-US")} vendor groups on date basis {basisLabel(basis)}.{" "}
+          {ranked.length > TOP ? (
+            <Link className="font-semibold text-teal underline" href={viewHref(raw, !showAll)}>{showAll ? "Top 25" : "Show all"}</Link>
+          ) : null}
+          {" "}
+          <HowToRead anchor="read-vendors" />
         </p>
       </header>
 
@@ -91,8 +97,8 @@ export default async function VendorsPage({
         <p className="text-sm text-teal/70">No screened vendor lines match this filter.</p>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
-          <table className="w-full min-w-[860px] text-left text-sm">
-            <thead className="border-b border-teal/10 text-xs uppercase tracking-wide text-teal/60">
+          <table className="w-full min-w-[860px] text-left text-base">
+            <thead className="border-b border-teal/10 text-sm uppercase tracking-wide text-teal/60">
               <tr>
                 <SortHeader label="Vendor" column="vendor" sorting={sorting} raw={raw} />
                 <SortHeader label="Amount paid" column="amount" sorting={sorting} raw={raw} />
@@ -109,10 +115,20 @@ export default async function VendorsPage({
         </div>
       )}
 
-      <nav className="flex flex-wrap items-center gap-3 text-sm" aria-label="Vendor pages">
-        <span>Page {Math.min(page, pages)} of {pages}</span>
-        {page > 1 ? <Link className="font-semibold text-teal underline" href={pageHref(raw, page - 1)}>Previous</Link> : null}
-        {page < pages ? <Link className="font-semibold text-teal underline" href={pageHref(raw, page + 1)}>Next</Link> : null}
+      <nav className="flex flex-wrap items-center gap-3 text-base" aria-label="Vendor pages">
+        {showAll ? (
+          <>
+            <span>All vendors. Page {Math.min(page, pages)} of {pages}.</span>
+            {page > 1 ? <Link className="font-semibold text-teal underline" href={pageHref(raw, page - 1)}>Previous</Link> : null}
+            {page < pages ? <Link className="font-semibold text-teal underline" href={pageHref(raw, page + 1)}>Next</Link> : null}
+            <Link className="font-semibold text-teal underline" href={viewHref(raw, false)}>Top 25</Link>
+          </>
+        ) : (
+          <span>
+            Top {Math.min(TOP, ranked.length)} of {ranked.length.toLocaleString("en-US")}.
+            {ranked.length > TOP ? <> <Link className="font-semibold text-teal underline" href={viewHref(raw, true)}>Show all</Link></> : null}
+          </span>
+        )}
       </nav>
     </div>
   );
@@ -182,6 +198,17 @@ function sortHref(raw: Record<string, string | undefined>, sort: VendorSort, dir
     params.set("sort", sort);
     params.set("direction", direction);
   }
+  const query = params.toString();
+  return query ? `/vendors?${query}` : "/vendors";
+}
+
+function viewHref(raw: Record<string, string | undefined>, showAll: boolean): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(raw)) {
+    if (!value || key === "page" || key === "all") continue;
+    params.set(key, value);
+  }
+  if (showAll) params.set("all", "1");
   const query = params.toString();
   return query ? `/vendors?${query}` : "/vendors";
 }

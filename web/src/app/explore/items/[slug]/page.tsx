@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { HowToRead } from "@/components/how-to-read";
 import { basisLabel, withBasis } from "@/lib/basis";
 import { monthExpr, openDb, where, type Filters } from "@/lib/db";
 import { dollars } from "@/lib/utils";
@@ -82,15 +83,15 @@ export default async function ItemGroupPage({
         </p>
         <h1 className="mt-2 font-extrabold text-4xl">{label}</h1>
         <p className="mt-3 font-extrabold text-5xl">{dollars(total.cents)}</p>
-        <p className="mt-3 max-w-3xl text-sm leading-6">
-          In the screened public lines in this ledger, {dollars(total.cents)} was reported on descriptions grouped as {label}.
-          Date basis: {basisLabel(basis)}. {total.n} lines. This is not unique spend, not a printed report total, and not complete district or statewide coverage.
+        <p className="mt-3 text-base leading-7">
+          {dollars(total.cents)} was reported on descriptions grouped as {label}. Date basis: {basisLabel(basis)}. {total.n} lines.{" "}
+          <HowToRead anchor="read-groups" />
         </p>
       </header>
-      <Breakdown title="District on the line" rows={districts} note="The district named on the indexed document. Not a statewide total." />
-      <Breakdown title="Department or site text, as printed" rows={sites} note="DAC or department text is copied as printed. It is not a verified location and it is not a map." />
-      <Breakdown title={basis === "check_date" ? "Check-date month" : basis === "voucher_batch_date" ? "Voucher-batch month" : "Labeled month"} rows={months} note="Months with no grouped line are omitted. A missing month is not zero." />
-      <Breakdown title="Vendor, as printed" rows={vendors} note="Amazon and any other payee here is a vendor, not a category." />
+      <Breakdown title="District on the line" rows={districts} />
+      <Breakdown title="Department or site text, as printed" rows={sites} />
+      <Breakdown title={basis === "check_date" ? "Check-date month" : basis === "voucher_batch_date" ? "Voucher-batch month" : "Labeled month"} rows={months} />
+      <Breakdown title="Vendor, as printed" rows={vendors} />
       <section className="rounded-xl border border-teal/10 bg-page p-4">
         <h2 className="font-semibold">Source documents</h2>
         <ul className="mt-3 space-y-2 text-sm">
@@ -148,11 +149,10 @@ function grouped(db: ReturnType<typeof openDb>, expression: string, sql: string,
   ).all(...params) as MoneyRow[];
 }
 
-function Breakdown({ title, rows, note }: { title: string; rows: MoneyRow[]; note: string }) {
+function Breakdown({ title, rows }: { title: string; rows: MoneyRow[] }) {
   return (
     <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">{title}</h2>
-      <p className="mt-1 text-xs text-teal/60">{note}</p>
       {rows.length === 0 ? <p className="mt-2 text-sm">No dated rows in this slice.</p> : (
         <ul className="mt-3 space-y-1 text-sm">
           {rows.map((row) => (
