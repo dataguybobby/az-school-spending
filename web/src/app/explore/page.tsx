@@ -32,36 +32,36 @@ export default async function ExplorePage({
   return (
     <div className="space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-copper">Screened public lines</p>
-        <h1 className="mt-2 font-serif text-4xl">Groups</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
+        <h1 className="mt-2 font-extrabold text-4xl">Groups</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6">
           Totals below use the date basis “{basisLabel(basis)}”. They are sums of screened public lines, not unique spend, not printed report totals, and not complete district or statewide coverage.
-          Item groups come from description text. <Link className="font-semibold text-copper underline" href="/methodology">Methodology</Link>.
+          Item groups come from description text. <Link className="font-semibold text-teal underline" href="/methodology">Methodology</Link>.
         </p>
         <form className="mt-4 flex flex-wrap gap-2" action="/explore">
-          <select name="basis" defaultValue={basis} className="rounded-md border border-ink/15 px-3 py-2 text-sm">
+          <select name="basis" defaultValue={basis} className="rounded-md border border-teal/15 px-3 py-2 text-sm">
             <option value="either">Either labeled date</option>
             <option value="check_date">Check date only</option>
             <option value="voucher_batch_date">Voucher batch date only</option>
           </select>
-          <button className="rounded-md bg-copper px-3 py-2 text-sm font-semibold text-white" type="submit">Apply basis</button>
+          <button className="rounded-md bg-terracotta px-3 py-2 text-sm font-semibold text-white" type="submit">Apply basis</button>
         </form>
       </header>
 
       <section>
-        <h2 className="font-serif text-2xl">Item groups</h2>
-        <p className="mt-1 text-sm text-ink/70">A reviewed phrase only. Lines that do not match a phrase stay ungrouped.</p>
+        <h2 className="font-extrabold text-2xl">Item groups</h2>
+        <p className="mt-1 text-sm text-teal/70">A reviewed phrase only. Lines that do not match a phrase stay ungrouped.</p>
         {items.length === 0 ? <p className="mt-3 text-sm">No item group has lines on this date basis.</p> : (
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             {items.map((item) => (
-              <li key={item.item_label} className="rounded-xl border border-ink/10 bg-white p-4">
-                <Link className="font-serif text-3xl text-copper underline" href={withBasis(`/explore/items/${slug(item.item_label)}`, basis)}>
+              <li key={item.item_label} className="rounded-xl border border-teal/10 bg-page p-4">
+                <Link className="font-extrabold text-3xl text-teal underline" href={withBasis(`/explore/items/${slug(item.item_label)}`, basis)}>
                   {dollars(item.cents)}
                 </Link>
                 <p className="mt-2 text-sm">
                   In the screened public lines in this ledger, {dollars(item.cents)} was reported on descriptions grouped as {item.item_label}.
                 </p>
-                <p className="mt-2 text-xs text-ink/60">
+                <p className="mt-2 text-xs text-teal/60">
                   {item.n} lines · {item.item_method === "manual_override" ? "reviewer override" : "grouped from description text"}
                   {item.confidence == null ? "" : ` · confidence ${item.confidence}`}
                 </p>
@@ -72,12 +72,12 @@ export default async function ExplorePage({
       </section>
 
       <section>
-        <h2 className="font-serif text-2xl">Vendors</h2>
-        <p className="mt-1 text-sm text-ink/70">Display names prefer the payee text that occurs most often for that key. Amazon remains a vendor.</p>
-        <ul className="mt-4 divide-y divide-ink/10 rounded-xl border border-ink/10 bg-white">
+        <h2 className="font-extrabold text-2xl">Vendors</h2>
+        <p className="mt-1 text-sm text-teal/70">Display names prefer the payee text that occurs most often for that key. Amazon remains a vendor.</p>
+        <ul className="mt-4 divide-y divide-teal/10 rounded-xl border border-teal/10 bg-page">
           {vendors.map((vendor) => (
             <li key={vendor.vendor_key} className="flex flex-wrap items-baseline justify-between gap-3 px-4 py-3 text-sm">
-              <Link className="font-semibold text-copper underline" href={withBasis(`/explore/vendors/${vendor.vendor_key}`, basis)}>
+              <Link className="font-semibold text-teal underline" href={withBasis(`/explore/vendors/${vendor.vendor_key}`, basis)}>
                 {vendor.label}
               </Link>
               <span>{dollars(vendor.cents)} · {vendor.n} lines{vendor.forms > 1 ? ` · ${vendor.forms} printed forms` : ""}</span>

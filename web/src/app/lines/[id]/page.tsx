@@ -15,11 +15,11 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
   const document = db.prepare("SELECT * FROM documents WHERE document_id = ?").get(String(line.document_id)) as Line | undefined;
   return (
     <article className="space-y-6">
-      <p><Link href="/" className="text-sm font-semibold text-copper">Back to search</Link></p>
+      <p><Link href="/" className="text-sm font-semibold text-teal">Back to search</Link></p>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wide text-copper">Reported line, not settlement proof</p>
-        <h1 className="font-serif text-3xl">{dollars(Number(line.amount_cents))} · {line.vendor_raw}</h1>
-        <p className="mt-2 max-w-3xl text-ink/80">{line.description_public}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-teal">Reported line, not settlement proof</p>
+        <h1 className="font-extrabold text-3xl">{dollars(Number(line.amount_cents))} · {line.vendor_raw}</h1>
+        <p className="mt-2 max-w-3xl text-teal/80">{line.description_public}</p>
       </header>
       <section className="grid gap-4 md:grid-cols-3">
         <Card title="As printed" rows={[
@@ -47,22 +47,22 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
           ["Flags", line.flags || "None"],
         ]} />
       </section>
-      <section className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
+      <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
         <h2 className="font-semibold">Source locator</h2>
         <p className="mt-2">Page {line.source_page}, row {line.source_row}. {line.source_locator}.</p>
         <p className="mt-2">
-          <a className="font-semibold text-copper underline" href={String(line.source_url)}>Official source document</a>
+          <a className="font-semibold text-teal underline" href={String(line.source_url)}>Official source document</a>
           {" · "}
-          <Link className="font-semibold text-copper underline" href="/methodology">Methodology</Link>
+          <Link className="font-semibold text-teal underline" href="/methodology">Methodology</Link>
         </p>
         {line.item_label ? (
           <p className="mt-2">
             Grouped from description text as “{line.item_label}” (evidence “{line.item_evidence}”, {line.item_method}, confidence {line.item_confidence}).
             {" "}
-            <Link className="font-semibold text-copper underline" href={`/explore/items/${String(line.item_label).toLowerCase().replaceAll(" ", "-")}`}>Open the group</Link>
+            <Link className="font-semibold text-teal underline" href={`/explore/items/${String(line.item_label).toLowerCase().replaceAll(" ", "-")}`}>Open the group</Link>
           </p>
         ) : null}
-        <p className="mt-2 text-ink/70">
+        <p className="mt-2 text-teal/70">
           {line.amount_semantics}. {document ? `Reconciliation: ${document.reconciliation_status}.` : ""}
           Department text is as printed, not a verified location. Check numbers are not shown.
         </p>
@@ -73,12 +73,12 @@ export default async function LinePage({ params }: { params: Promise<{ id: strin
 
 function Card({ title, rows }: { title: string; rows: Array<[string, unknown]> }) {
   return (
-    <section className="rounded-xl border border-ink/10 bg-white p-4">
+    <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">{title}</h2>
       <dl className="mt-3 space-y-2 text-sm">
         {rows.map(([label, value]) => (
           <div key={label}>
-            <dt className="text-xs uppercase tracking-wide text-ink/50">{label}</dt>
+            <dt className="text-xs uppercase tracking-wide text-teal/50">{label}</dt>
             <dd className="break-words">{String(value ?? "—")}</dd>
           </div>
         ))}

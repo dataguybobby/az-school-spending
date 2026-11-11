@@ -17,8 +17,8 @@ export function ButtonLink({
       className={cn(
         "inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
         variant === "solid"
-          ? "bg-copper text-white hover:bg-copper/90 focus-visible:outline-copper"
-          : "border border-ink/15 bg-white text-ink hover:bg-paper",
+          ? "bg-terracotta text-white hover:bg-terracotta/90 focus-visible:outline-terracotta"
+          : "border border-teal/15 bg-page text-teal hover:bg-cream",
       )}
     >
       {children}

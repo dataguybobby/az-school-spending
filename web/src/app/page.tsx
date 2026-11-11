@@ -94,58 +94,58 @@ export default async function SpendingPage({
 
   return (
     <div className="space-y-6">
-      <section className="hero-figure rounded-xl border border-ink/10 bg-white p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-copper">Screened public lines</p>
-        <h1 className="mt-2 max-w-3xl font-serif text-4xl leading-tight">Reported spending lines</h1>
-        <p className="mt-4 font-serif text-5xl tracking-tight">{dollars(totals.cents)}</p>
+      <section className="hero-figure rounded-xl border border-teal/10 bg-page p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Screened public lines</p>
+        <h1 className="mt-2 max-w-3xl font-extrabold text-4xl leading-tight">Reported spending lines</h1>
+        <p className="mt-4 font-extrabold text-5xl tracking-tight">{dollars(totals.cents)}</p>
         <p className="mt-2 text-sm">
           Date basis: {basisLabel(basis)}. <span className="font-semibold">{totals.n.toLocaleString()} public lines</span> in this filter.
           Across the index, {unknown.n.toLocaleString()} lines have no date on this basis and stay out of a dated filter.
         </p>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-ink/75">
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-teal/75">
           This figure is the sum of screened public lines on that date basis. It is not unique spend, not the printed report total, not proof a payment settled, and not a census of districts or of Arizona schools.
           Personal payees, unknown payees, and sensitive description text are withheld. A month with no bar was not indexed, not recorded as zero.
         </p>
         {stress.n > 0 ? (
-          <p className="mt-4 max-w-3xl rounded-lg bg-paper px-3 py-2 text-sm leading-6">
+          <p className="mt-4 max-w-3xl rounded-lg bg-cream px-3 py-2 text-sm leading-6">
             In the screened public lines in this filter, {dollars(stress.cents)} was reported on descriptions grouped as stress balls
             ({stress.n} lines, {stress.districts} district name{stress.districts === 1 ? "" : "s"}, {stress.vendors} vendor key{stress.vendors === 1 ? "" : "s"}).
             {" "}
-            <Link className="font-semibold text-copper underline" href={`/explore/items/stress-balls${basis === "either" ? "" : `?basis=${basis}`}`}>See the breakdown</Link>
+            <Link className="font-semibold text-teal underline" href={`/explore/items/stress-balls${basis === "either" ? "" : `?basis=${basis}`}`}>See the breakdown</Link>
             {" · "}
-            <Link className="font-semibold text-copper underline" href="/explore">All groups</Link>
+            <Link className="font-semibold text-teal underline" href="/explore">All groups</Link>
           </p>
         ) : null}
       </section>
 
-      <form className="grid gap-3 rounded-xl border border-ink/10 bg-white p-4 md:grid-cols-4" action="/">
+      <form className="grid gap-3 rounded-xl border border-teal/10 bg-page p-4 md:grid-cols-4" action="/">
         <label className="text-sm md:col-span-2">Description, vendor, or account
-          <input name="q" defaultValue={filters.q || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input name="q" defaultValue={filters.q || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">Date basis
-          <select name="basis" defaultValue={basis} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2">
+          <select name="basis" defaultValue={basis} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
             <option value="either">Either labeled date</option>
             <option value="check_date">Check date only</option>
             <option value="voucher_batch_date">Voucher batch date only</option>
           </select>
         </label>
         <label className="text-sm">Entity
-          <select name="source" defaultValue={filters.source || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2">
+          <select name="source" defaultValue={filters.source || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
             <option value="">All indexed</option>
             {entities.map((entity) => <option key={entity.source_id} value={entity.source_id}>{entity.entity_name}</option>)}
           </select>
         </label>
         <label className="text-sm">From
-          <input type="date" name="start" defaultValue={filters.start || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input type="date" name="start" defaultValue={filters.start || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">Through
-          <input type="date" name="end" defaultValue={filters.end || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input type="date" name="end" defaultValue={filters.end || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">Vendor contains
-          <input name="vendor" defaultValue={filters.vendor || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input name="vendor" defaultValue={filters.vendor || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">Category
-          <select name="category" defaultValue={filters.category || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2">
+          <select name="category" defaultValue={filters.category || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
             <option value="">Any</option>
             {["unclassified","instructional_materials","technology","facilities","transport","food","professional_services","student_support","staff_activities"].map((item) => (
               <option key={item} value={item}>{item.replaceAll("_", " ")}</option>
@@ -153,16 +153,16 @@ export default async function SpendingPage({
           </select>
         </label>
         <label className="text-sm">Minimum category confidence
-          <input name="confidence" defaultValue={filters.confidence || ""} placeholder="0.5" className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input name="confidence" defaultValue={filters.confidence || ""} placeholder="0.5" className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">School or department text
-          <input name="dac" defaultValue={filters.dac || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input name="dac" defaultValue={filters.dac || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <label className="text-sm">Account code contains
-          <input name="account" defaultValue={filters.account || ""} className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2" />
+          <input name="account" defaultValue={filters.account || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2" />
         </label>
         <div className="flex flex-wrap items-end gap-2">
-          <button className="rounded-md bg-copper px-3 py-2 text-sm font-semibold text-white" type="submit">Apply</button>
+          <button className="rounded-md bg-terracotta px-3 py-2 text-sm font-semibold text-white" type="submit">Apply</button>
           <ButtonLink href="/?basis=check_date&start=2025-07-01" variant="ghost">Check dates from July 1, 2025</ButtonLink>
         </div>
       </form>
@@ -184,11 +184,11 @@ export default async function SpendingPage({
       <DistrictBars rows={districts} />
       <StoryCards stories={stories} />
 
-      <section className="rounded-xl border border-ink/10 bg-white p-4">
+      <section className="rounded-xl border border-teal/10 bg-page p-4">
         <h2 className="font-semibold">Business vendors in this filter</h2>
         <ul className="mt-3 grid gap-2 text-sm md:grid-cols-2">
           {vendorRows.map((vendor) => (
-            <li key={vendor.vendor_raw} className="flex justify-between gap-3 border-b border-ink/5 py-1">
+            <li key={vendor.vendor_raw} className="flex justify-between gap-3 border-b border-teal/5 py-1">
               <span>{vendor.vendor_raw}</span>
               <span className="shrink-0 font-semibold">{dollars(vendor.amount_cents)} · {vendor.line_count}</span>
             </li>
@@ -196,13 +196,13 @@ export default async function SpendingPage({
         </ul>
       </section>
 
-      <section className="overflow-x-auto rounded-xl border border-ink/10 bg-white">
+      <section className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <h2 className="font-semibold">Lines</h2>
-          <a className="text-sm font-semibold text-copper underline" href={`/api/export?${exportQuery.toString()}`}>Download CSV</a>
+          <a className="text-sm font-semibold text-teal underline" href={`/api/export?${exportQuery.toString()}`}>Download CSV</a>
         </div>
         <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-y border-ink/10 text-xs uppercase tracking-wide text-ink/60">
+          <thead className="border-y border-teal/10 text-xs uppercase tracking-wide text-teal/60">
             <tr>
               <th className="px-3 py-2">Date used</th>
               <th className="px-3 py-2">Entity</th>
@@ -213,17 +213,17 @@ export default async function SpendingPage({
           </thead>
           <tbody>
             {rows.length === 0 ? (
-              <tr><td colSpan={5} className="px-3 py-6 text-ink/70">No public lines match. That can mean the date basis excludes voucher rows, or the period was not indexed.</td></tr>
+              <tr><td colSpan={5} className="px-3 py-6 text-teal/70">No public lines match. That can mean the date basis excludes voucher rows, or the period was not indexed.</td></tr>
             ) : rows.map((row) => (
-              <tr key={String(row.line_id)} className="border-b border-ink/5 align-top">
+              <tr key={String(row.line_id)} className="border-b border-teal/5 align-top">
                 <td className="px-3 py-2 whitespace-nowrap">
                   {row.check_date ? <span>Check {row.check_date}</span> : <span>Batch {row.voucher_batch_date || "unknown"}</span>}
                 </td>
                 <td className="px-3 py-2">{row.entity_name}</td>
                 <td className="px-3 py-2">{row.vendor_raw}</td>
                 <td className="px-3 py-2">
-                  <Link className="font-semibold text-copper underline" href={`/lines/${row.line_id}`}>{row.description_public}</Link>
-                  <div className="text-xs text-ink/60">{row.category} · {row.dac_raw || row.account_code_raw || "no DAC or account"}</div>
+                  <Link className="font-semibold text-teal underline" href={`/lines/${row.line_id}`}>{row.description_public}</Link>
+                  <div className="text-xs text-teal/60">{row.category} · {row.dac_raw || row.account_code_raw || "no DAC or account"}</div>
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap font-semibold">{dollars(Number(row.amount_cents))}</td>
               </tr>
@@ -233,13 +233,13 @@ export default async function SpendingPage({
         <div className="flex items-center justify-between px-4 py-3 text-sm">
           <span>Page {page} of {pages}</span>
           <span className="flex gap-3">
-            {page > 1 ? <Link className="font-semibold text-copper" href={pageHref(raw, page - 1)}>Previous</Link> : null}
-            {page < pages ? <Link className="font-semibold text-copper" href={pageHref(raw, page + 1)}>Next</Link> : null}
+            {page > 1 ? <Link className="font-semibold text-teal" href={pageHref(raw, page - 1)}>Previous</Link> : null}
+            {page < pages ? <Link className="font-semibold text-teal" href={pageHref(raw, page + 1)}>Next</Link> : null}
           </span>
         </div>
       </section>
 
-      <section className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
+      <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
         <h2 className="font-semibold">Indexed document windows</h2>
         <ul className="mt-2 space-y-1">
           {documents.map((doc) => (
@@ -249,7 +249,7 @@ export default async function SpendingPage({
           ))}
         </ul>
         {overlap.map((finding) => (
-          <p key={String(finding.left_document_id) + String(finding.right_document_id)} className="mt-3 text-ink/80">
+          <p key={String(finding.left_document_id) + String(finding.right_document_id)} className="mt-3 text-teal/80">
             {finding.verdict}: {finding.note} Recurring different-date keys kept: {finding.recurring_different_date_keys}. Rows on the shared header dates: {finding.rows_on_shared_header_dates}.
           </p>
         ))}

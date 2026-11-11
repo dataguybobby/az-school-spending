@@ -71,17 +71,17 @@ export default async function ItemGroupPage({
   return (
     <article className="space-y-6">
       <p className="text-sm">
-        <Link className="font-semibold text-copper" href={withBasis("/explore", basis)}>Groups</Link>
+        <Link className="font-semibold text-teal" href={withBasis("/explore", basis)}>Groups</Link>
         {" · "}
-        <Link className="font-semibold text-copper" href="/methodology">Methodology</Link>
+        <Link className="font-semibold text-teal" href="/methodology">Methodology</Link>
       </p>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-copper">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">
           {meta.item_method === "manual_override" ? "Reviewer override" : "Grouped from description text"}
           {meta.confidence == null ? "" : ` · confidence ${meta.confidence}`}
         </p>
-        <h1 className="mt-2 font-serif text-4xl">{label}</h1>
-        <p className="mt-3 font-serif text-5xl">{dollars(total.cents)}</p>
+        <h1 className="mt-2 font-extrabold text-4xl">{label}</h1>
+        <p className="mt-3 font-extrabold text-5xl">{dollars(total.cents)}</p>
         <p className="mt-3 max-w-3xl text-sm leading-6">
           In the screened public lines in this ledger, {dollars(total.cents)} was reported on descriptions grouped as {label}.
           Date basis: {basisLabel(basis)}. {total.n} lines. This is not unique spend, not a printed report total, and not complete district or statewide coverage.
@@ -91,24 +91,24 @@ export default async function ItemGroupPage({
       <Breakdown title="Department or site text, as printed" rows={sites} note="DAC or department text is copied as printed. It is not a verified location and it is not a map." />
       <Breakdown title={basis === "check_date" ? "Check-date month" : basis === "voucher_batch_date" ? "Voucher-batch month" : "Labeled month"} rows={months} note="Months with no grouped line are omitted. A missing month is not zero." />
       <Breakdown title="Vendor, as printed" rows={vendors} note="Amazon and any other payee here is a vendor, not a category." />
-      <section className="rounded-xl border border-ink/10 bg-white p-4">
+      <section className="rounded-xl border border-teal/10 bg-page p-4">
         <h2 className="font-semibold">Source documents</h2>
         <ul className="mt-3 space-y-2 text-sm">
           {documents.map((row) => (
             <li key={row.label} className="flex flex-wrap justify-between gap-2">
               <span>
                 {row.label}
-                {row.url ? <> · <a className="font-semibold text-copper underline" href={row.url}>Official source</a></> : null}
+                {row.url ? <> · <a className="font-semibold text-teal underline" href={row.url}>Official source</a></> : null}
               </span>
               <span>{dollars(row.cents)} · {row.n}</span>
             </li>
           ))}
         </ul>
       </section>
-      <section className="overflow-x-auto rounded-xl border border-ink/10 bg-white">
+      <section className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
         <h2 className="px-4 py-3 font-semibold">Lines</h2>
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-y border-ink/10 text-xs uppercase tracking-wide text-ink/60">
+          <thead className="border-y border-teal/10 text-xs uppercase tracking-wide text-teal/60">
             <tr>
               <th className="px-3 py-2">When</th>
               <th className="px-3 py-2">District</th>
@@ -119,13 +119,13 @@ export default async function ItemGroupPage({
           </thead>
           <tbody>
             {lines.map((line) => (
-              <tr key={line.line_id} className="border-b border-ink/5 align-top">
+              <tr key={line.line_id} className="border-b border-teal/5 align-top">
                 <td className="px-3 py-2 whitespace-nowrap">{line.check_date ? `Check ${line.check_date}` : line.voucher_batch_date ? `Batch ${line.voucher_batch_date}` : "No confirmed date"}</td>
-                <td className="px-3 py-2">{line.entity_name}<div className="text-xs text-ink/55">{line.dac_raw || "No department text"}</div></td>
+                <td className="px-3 py-2">{line.entity_name}<div className="text-xs text-teal/55">{line.dac_raw || "No department text"}</div></td>
                 <td className="px-3 py-2">{line.vendor_raw}</td>
                 <td className="px-3 py-2">
-                  <Link className="font-semibold text-copper underline" href={`/lines/${line.line_id}`}>{line.description_public}</Link>
-                  <div className="text-xs text-ink/55">Evidence “{line.item_evidence}”</div>
+                  <Link className="font-semibold text-teal underline" href={`/lines/${line.line_id}`}>{line.description_public}</Link>
+                  <div className="text-xs text-teal/55">Evidence “{line.item_evidence}”</div>
                 </td>
                 <td className="px-3 py-2 font-semibold">{dollars(line.amount_cents)}</td>
               </tr>
@@ -150,13 +150,13 @@ function grouped(db: ReturnType<typeof openDb>, expression: string, sql: string,
 
 function Breakdown({ title, rows, note }: { title: string; rows: MoneyRow[]; note: string }) {
   return (
-    <section className="rounded-xl border border-ink/10 bg-white p-4">
+    <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">{title}</h2>
-      <p className="mt-1 text-xs text-ink/60">{note}</p>
+      <p className="mt-1 text-xs text-teal/60">{note}</p>
       {rows.length === 0 ? <p className="mt-2 text-sm">No dated rows in this slice.</p> : (
         <ul className="mt-3 space-y-1 text-sm">
           {rows.map((row) => (
-            <li key={row.label} className="flex justify-between gap-3 border-b border-ink/5 py-1">
+            <li key={row.label} className="flex justify-between gap-3 border-b border-teal/5 py-1">
               <span>{row.label}</span>
               <span className="shrink-0">{dollars(row.cents)} · {row.n}</span>
             </li>

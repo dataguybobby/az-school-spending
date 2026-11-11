@@ -1,6 +1,6 @@
-# Metro School Ledger
+# AZ School Spending
 
-Local, read-only ledger of Phoenix-area public K-12 accounts payable and voucher lines. It starts from official Scottsdale, Higley, and Queen Creek PDFs. It does not claim every metro district is covered, and it does not turn voucher or AP lines into proof that a payment settled.
+Phoenix Dataworks publishes this read-only ledger of public K-12 accounts payable and voucher lines. It starts from official Scottsdale, Higley, Queen Creek, and Chandler documents. It does not claim every metro district is covered, and it does not turn voucher or AP lines into proof that a payment settled. It is not an official government site.
 
 No scheduler is installed or enabled.
 

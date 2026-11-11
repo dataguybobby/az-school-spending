@@ -1,21 +1,30 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-paper: #f3ecdf;
-  --color-ink: #1c1712;
-  --color-copper: #9a3412;
-  --color-pine: #1f4d3a;
-  --font-sans: var(--font-sans-body);
-  --font-serif: var(--font-serif-display);
+  --color-cream: #fef7e7;
+  --color-page: #fbf6ec;
+  --color-teal: #0f5c66;
+  --color-terracotta: #e07a3d;
+  --color-gold: #f4b942;
+  --font-sans: var(--font-nunito), "Nunito", sans-serif;
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-cream);
+  color: var(--color-teal);
+  font-weight: 400;
 }
 
-input, select {
+h1,
+h2,
+.wordmark {
+  font-weight: 800;
+}
+
+input,
+select {
   background: white;
+  color: var(--color-teal);
 }
 
 .hero-figure,

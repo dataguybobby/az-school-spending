@@ -9,13 +9,13 @@ export function VendorTreemap({ slices }: { slices: Slice[] }) {
   const height = 280;
   const rects = layout(slices.filter((slice) => slice.amount_cents > 0), 0, 0, width, height, true);
   return (
-    <figure className="rounded-xl border border-ink/10 bg-white p-4">
+    <figure className="rounded-xl border border-teal/10 bg-page p-4">
       <figcaption className="text-sm font-semibold">Screened vendor spending in this filter</figcaption>
-      <p className="mt-1 text-xs leading-5 text-ink/60">
+      <p className="mt-1 text-xs leading-5 text-teal/60">
         Area is the sum of screened public lines for that vendor. Other screened vendors are grouped. This is not unique spend and not a printed report total.
       </p>
       {rects.length === 0 ? (
-        <p className="mt-4 text-sm text-ink/70">No positive screened amounts in this filter.</p>
+        <p className="mt-4 text-sm text-teal/70">No positive screened amounts in this filter.</p>
       ) : (
         <svg viewBox={`0 0 ${width} ${height}`} role="img" className="mt-3 h-72 w-full">
           <title>Vendor treemap of screened public lines</title>
@@ -27,15 +27,15 @@ export function VendorTreemap({ slices }: { slices: Slice[] }) {
                 width={Math.max(rect.w - 2, 0)}
                 height={Math.max(rect.h - 2, 0)}
                 rx="4"
-                className={index % 2 === 0 ? "fill-copper/85" : "fill-pine/80"}
+                className={index % 2 === 0 ? "fill-terracotta" : "fill-gold"}
               />
               {rect.w > 72 && rect.h > 36 ? (
-                <text x={rect.x + 8} y={rect.y + 18} className="fill-white text-[11px]">
+                <text x={rect.x + 8} y={rect.y + 18} className={index % 2 === 0 ? "fill-cream text-[11px]" : "fill-teal text-[11px]"}>
                   {rect.label.slice(0, 28)}
                 </text>
               ) : null}
               {rect.w > 72 && rect.h > 52 ? (
-                <text x={rect.x + 8} y={rect.y + 34} className="fill-white text-[10px]">
+                <text x={rect.x + 8} y={rect.y + 34} className={index % 2 === 0 ? "fill-cream text-[10px]" : "fill-teal text-[10px]"}>
                   {dollars(rect.amount_cents)}
                 </text>
               ) : null}

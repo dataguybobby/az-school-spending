@@ -59,14 +59,14 @@ export default async function VendorGroupPage({
   return (
     <article className="space-y-6">
       <p className="text-sm">
-        <Link className="font-semibold text-copper" href={withBasis("/explore", basis)}>Groups</Link>
+        <Link className="font-semibold text-teal" href={withBasis("/explore", basis)}>Groups</Link>
         {" · "}
-        <Link className="font-semibold text-copper" href="/methodology">Methodology</Link>
+        <Link className="font-semibold text-teal" href="/methodology">Methodology</Link>
       </p>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-copper">Vendor, not a category</p>
-        <h1 className="mt-2 font-serif text-4xl">{display}</h1>
-        <p className="mt-3 font-serif text-5xl">{dollars(total.cents)}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-teal">Vendor, not a category</p>
+        <h1 className="mt-2 font-extrabold text-4xl">{display}</h1>
+        <p className="mt-3 font-extrabold text-5xl">{dollars(total.cents)}</p>
         <p className="mt-3 max-w-3xl text-sm leading-6">
           In the screened public lines in this ledger, {dollars(total.cents)} was reported for this vendor key.
           Date basis: {basisLabel(basis)}. {total.n} lines. This is not unique spend, not a printed report total, and not complete coverage of that vendor or of any district.
@@ -75,12 +75,12 @@ export default async function VendorGroupPage({
       <SimpleList title="Printed payee forms collapsed into this key" rows={forms} />
       <SimpleList title="District on the line" rows={districts} />
       <SimpleList title="Month on the selected date basis" rows={months} />
-      <section className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
+      <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
         <h2 className="font-semibold">Source documents</h2>
         <ul className="mt-3 space-y-2">
           {documents.map((row) => (
             <li key={row.label} className="flex flex-wrap justify-between gap-2">
-              <span>{row.label}{row.url ? <> · <a className="font-semibold text-copper underline" href={row.url}>Official source</a></> : null}</span>
+              <span>{row.label}{row.url ? <> · <a className="font-semibold text-teal underline" href={row.url}>Official source</a></> : null}</span>
               <span>{dollars(row.cents)} · {row.n}</span>
             </li>
           ))}
@@ -88,9 +88,9 @@ export default async function VendorGroupPage({
       </section>
       <ul className="space-y-2">
         {lines.map((line) => (
-          <li key={line.line_id} className="rounded-xl border border-ink/10 bg-white p-3 text-sm">
-            <Link className="font-semibold text-copper underline" href={`/lines/${line.line_id}`}>{dollars(line.amount_cents)} · {line.description_public}</Link>
-            <p className="text-xs text-ink/60">{line.entity_name} · {line.dac_raw || "no department text"} · {line.check_date ? `check date ${line.check_date}` : line.voucher_batch_date ? `batch date ${line.voucher_batch_date}` : "no confirmed date"}</p>
+          <li key={line.line_id} className="rounded-xl border border-teal/10 bg-page p-3 text-sm">
+            <Link className="font-semibold text-teal underline" href={`/lines/${line.line_id}`}>{dollars(line.amount_cents)} · {line.description_public}</Link>
+            <p className="text-xs text-teal/60">{line.entity_name} · {line.dac_raw || "no department text"} · {line.check_date ? `check date ${line.check_date}` : line.voucher_batch_date ? `batch date ${line.voucher_batch_date}` : "no confirmed date"}</p>
           </li>
         ))}
       </ul>
@@ -100,11 +100,11 @@ export default async function VendorGroupPage({
 
 function SimpleList({ title, rows }: { title: string; rows: Array<{ label: string; cents: number; n: number }> }) {
   return (
-    <section className="rounded-xl border border-ink/10 bg-white p-4">
+    <section className="rounded-xl border border-teal/10 bg-page p-4">
       <h2 className="font-semibold">{title}</h2>
       <ul className="mt-3 space-y-1 text-sm">
         {rows.map((row) => (
-          <li key={row.label} className="flex justify-between gap-3 border-b border-ink/5 py-1">
+          <li key={row.label} className="flex justify-between gap-3 border-b border-teal/5 py-1">
             <span>{row.label}</span>
             <span>{dollars(row.cents)} · {row.n}</span>
           </li>

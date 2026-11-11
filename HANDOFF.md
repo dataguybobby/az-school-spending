@@ -1,6 +1,6 @@
 # Handoff
 
-This source is in the public GitHub repository https://github.com/dataguybobby/az-school-spending on the `master` branch. It was not deployed. Connecting Vercel is a separate step, documented in README.md. `http://127.0.0.1:43127` only works on the machine that starts the server.
+AZ School Spending is in the public GitHub repository https://github.com/dataguybobby/az-school-spending on the `master` branch. Phoenix Dataworks publishes the site. It was not deployed. Connecting Vercel is a separate step, documented in README.md. `http://127.0.0.1:43127` only works on the machine that starts the server.
 
 ## Run the screened index offline
 

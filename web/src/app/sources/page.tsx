@@ -27,9 +27,9 @@ export default async function SourcesPage({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-ink/10 bg-white p-5">
-        <h1 className="font-serif text-3xl">Source catalog</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-ink/80">
+      <section className="rounded-xl border border-teal/10 bg-page p-5">
+        <h1 className="font-extrabold text-3xl">Source catalog</h1>
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-teal/80">
           Registry status and ingestion status are different. Confirmed means a line-item document was identified. Indexed means this run parsed it and the lines matched a printed total.
           Searched with no source is a limited search result, not proof that no ledger exists. Unsearched means no query was recorded. This is not a complete metro census, and no coverage percentage is shown.
         </p>
@@ -39,24 +39,24 @@ export default async function SourcesPage({
       </section>
       <SourceDocuments />
       <section className="grid gap-3 md:grid-cols-2">
-        <ul className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
-          {counts.map((row) => <li key={row.source_status} className="flex justify-between border-b border-ink/5 py-1"><span>{row.source_status}</span><span>{row.n}</span></li>)}
+        <ul className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
+          {counts.map((row) => <li key={row.source_status} className="flex justify-between border-b border-teal/5 py-1"><span>{row.source_status}</span><span>{row.n}</span></li>)}
         </ul>
-        <ul className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
-          {ingestion.map((row) => <li key={row.ingestion_status} className="flex justify-between border-b border-ink/5 py-1"><span>{row.ingestion_status}</span><span>{row.n}</span></li>)}
+        <ul className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
+          {ingestion.map((row) => <li key={row.ingestion_status} className="flex justify-between border-b border-teal/5 py-1"><span>{row.ingestion_status}</span><span>{row.n}</span></li>)}
         </ul>
       </section>
       <form className="flex flex-wrap gap-2" action="/sources">
-        <input name="q" defaultValue={params.q || ""} placeholder="Entity, id, or CTDS" className="rounded-md border border-ink/15 px-3 py-2" />
-        <select name="status" defaultValue={status} className="rounded-md border border-ink/15 px-3 py-2">
+        <input name="q" defaultValue={params.q || ""} placeholder="Entity, id, or CTDS" className="rounded-md border border-teal/15 px-3 py-2" />
+        <select name="status" defaultValue={status} className="rounded-md border border-teal/15 px-3 py-2">
           <option value="">All registry statuses</option>
           {counts.map((row) => <option key={row.source_status}>{row.source_status}</option>)}
         </select>
-        <button className="rounded-md bg-copper px-3 py-2 text-sm font-semibold text-white" type="submit">Filter</button>
+        <button className="rounded-md bg-terracotta px-3 py-2 text-sm font-semibold text-white" type="submit">Filter</button>
       </form>
-      <div className="overflow-x-auto rounded-xl border border-ink/10 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-teal/10 bg-page">
         <table className="w-full min-w-[860px] text-left text-sm">
-          <thead className="border-b border-ink/10 text-xs uppercase tracking-wide text-ink/60">
+          <thead className="border-b border-teal/10 text-xs uppercase tracking-wide text-teal/60">
             <tr>
               <th className="px-3 py-2">Entity</th>
               <th className="px-3 py-2">Registry status</th>
@@ -69,10 +69,10 @@ export default async function SourcesPage({
           </thead>
           <tbody>
             {filtered.map((source) => (
-              <tr key={String(source.source_id)} className="border-b border-ink/5 align-top">
+              <tr key={String(source.source_id)} className="border-b border-teal/5 align-top">
                 <td className="px-3 py-2">
                   <div className="font-semibold">{source.entity_name}</div>
-                  <div className="text-xs text-ink/50">{source.entity_type} · {source.document_class}</div>
+                  <div className="text-xs text-teal/50">{source.entity_type} · {source.document_class}</div>
                 </td>
                 <td className="px-3 py-2">{source.source_status}</td>
                 <td className="px-3 py-2">{source.adapter_family}</td>
@@ -85,12 +85,12 @@ export default async function SourcesPage({
           </tbody>
         </table>
       </div>
-      <section className="rounded-xl border border-ink/10 bg-white p-4">
+      <section className="rounded-xl border border-teal/10 bg-page p-4">
         <h2 className="font-semibold">CTDS backlog</h2>
-        <p className="mt-1 text-sm text-ink/70">Unmatched rows stay unsearched. A name here was not automatically treated as unavailable.</p>
+        <p className="mt-1 text-sm text-teal/70">Unmatched rows stay unsearched. A name here was not automatically treated as unavailable.</p>
         <form className="mt-3 flex gap-2" action="/sources">
-          <input name="backlog" defaultValue={params.backlog || ""} placeholder="Search backlog name or CTDS" className="rounded-md border border-ink/15 px-3 py-2" />
-          <button className="rounded-md border border-ink/15 px-3 py-2 text-sm font-semibold" type="submit">Search backlog</button>
+          <input name="backlog" defaultValue={params.backlog || ""} placeholder="Search backlog name or CTDS" className="rounded-md border border-teal/15 px-3 py-2" />
+          <button className="rounded-md border border-teal/15 px-3 py-2 text-sm font-semibold" type="submit">Search backlog</button>
         </form>
         <ul className="mt-3 space-y-1 text-sm">
           {backlog.map((row) => (
@@ -110,9 +110,9 @@ function SourceDocuments() {
      ORDER BY d.indexed DESC, s.entity_name`,
   ).all() as Array<{ document_id: string; entity_name: string | null; url: string | null; indexed: number; parsed_outcome: string | null; public_line_count: number | null }>;
   return (
-    <section className="rounded-xl border border-ink/10 bg-white p-4 text-sm">
+    <section className="rounded-xl border border-teal/10 bg-page p-4 text-sm">
       <h2 className="font-semibold">Official documents in this snapshot</h2>
-      <p className="mt-1 text-ink/70">Links open the district or board page. Raw PDFs are not hosted here. An unindexed file is not zero spending.</p>
+      <p className="mt-1 text-teal/70">Links open the district or board page. Raw PDFs are not hosted here. An unindexed file is not zero spending.</p>
       <ul className="mt-3 space-y-2">
         {documents.map((row) => (
           <li key={row.document_id}>
@@ -120,11 +120,11 @@ function SourceDocuments() {
             {" · "}{row.entity_name || row.document_id}
             {" · "}{row.parsed_outcome}
             {" · "}{row.public_line_count ?? 0} public lines
-            {row.url ? <> · <a className="font-semibold text-copper underline" href={row.url}>Official source</a></> : null}
+            {row.url ? <> · <a className="font-semibold text-teal underline" href={row.url}>Official source</a></> : null}
           </li>
         ))}
       </ul>
-      <p className="mt-3"><a className="font-semibold text-copper underline" href="/methodology">Full source list and methodology</a></p>
+      <p className="mt-3"><a className="font-semibold text-teal underline" href="/methodology">Full source list and methodology</a></p>
     </section>
   );
 }
