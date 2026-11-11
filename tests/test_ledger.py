@@ -14,6 +14,7 @@ import pymupdf
 import pytest
 
 from pipeline.adapters.susd_ap import parse_susd_ap_pdf
+from pipeline.classify import classify_text
 from pipeline.adapters.voucher import parse_voucher_summary_pdf
 from pipeline.csvsafe import sanitize_cell, write_csv, write_xlsx
 from pipeline.ingest import _line_id, run_ingest
@@ -24,6 +25,24 @@ from pipeline.query import export_rows, monthly, search_lines
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
 FIXTURES = json.loads((ROOT / "fixtures" / "safe_fixture_rows.json").read_text(encoding="utf-8"))["rows"]
+
+
+def test_metered_gas_water_and_sewer_are_utilities():
+    assert classify_text("NATURAL GAS")["category"] == "utilities"
+    assert classify_text("WATER/SEWAGE")["category"] == "utilities"
+    assert classify_text("August;Gas,0 Therms#999")["category"] == "utilities"
+    assert classify_text("August;Water,0 Gallons#999")["category"] == "utilities"
+    assert classify_text("August;Sewer,0 Sewer#67740")["category"] == "utilities"
+    assert classify_text("September;Electricity,547657 KWH#T37794")["category"] == "utilities"
+    assert classify_text("August;Telephone,0 Minutes#Phone")["category"] == "communications"
+    assert classify_text("Oak Catering")["category"] == "food"
+    assert classify_text("INSTRUCTIONAL AIDS")["category"] == "instructional_materials"
+    assert classify_text("BLANKET PURCHASE ORDER for the purchase of Diesel Fuel in the 25/26 fiscal year")["category"] == "transport"
+    assert classify_text("EXCESS INSURANCE")["category"] == "insurance"
+    assert classify_text("Simple Houseware 3-Tier Heavy Duty Metal Utility Rolling Cart, White")["category"] == "unclassified"
+    assert classify_text("HES 9600-630 Grade 1 Electric Strike, Fail Safe/Fail Secure")["category"] == "unclassified"
+    assert classify_text("JUNING Sewing Kit with Black Case")["category"] == "unclassified"
+    assert classify_text("including but not limited to bottled water, sandwiches")["category"] == "unclassified"
 
 
 def test_manual_category_override_wins():

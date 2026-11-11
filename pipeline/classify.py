@@ -10,7 +10,7 @@ import json
 import re
 from pathlib import Path
 
-RULESET_VERSION = "phoenix-k12-neutral-2026.11.06"
+RULESET_VERSION = "phoenix-k12-neutral-2026.11.11"
 
 # Longer needles are checked by score, not by list order alone.
 _RULES: list[tuple[str, float, str, str]] = [
@@ -48,6 +48,31 @@ _RULES: list[tuple[str, float, str, str]] = [
     ("student_support", 0.38, "STICKER", "item text only; purpose is not proven"),
     ("student_support", 0.42, "TUITION", "account title says tuition"),
     ("staff_activities", 0.4, "STAFF APPRECIATION", "description mentions staff appreciation"),
+    ("utilities", 0.86, "NATURAL GAS", "description says natural gas"),
+    ("utilities", 0.86, "WATER/SEWAGE", "description says water and sewage"),
+    ("utilities", 0.86, "WATER/SEWER", "description says water and sewer"),
+    ("utilities", 0.82, ";GAS,", "metered gas charge"),
+    ("utilities", 0.82, ";WATER,", "metered water charge"),
+    ("utilities", 0.82, ";SEWER,", "metered sewer charge"),
+    ("utilities", 0.82, ";ELECTRICITY,", "metered electricity charge"),
+    ("utilities", 0.8, "THERMS#", "gas use measured in therms"),
+    ("utilities", 0.8, "KWH#", "electricity measured in kilowatt hours"),
+    ("utilities", 0.78, "GALLONS#", "water use measured in gallons"),
+    ("communications", 0.8, ";TELEPHONE,", "metered telephone charge"),
+    ("communications", 0.74, "CELL PHONE", "description says cell phone service"),
+    ("food", 0.7, "OAK CATERING", "description names a catering order"),
+    ("food", 0.68, "ADULT CATERING", "description says adult catering"),
+    ("food", 0.66, "FOOD/CATERING", "description says food or catering"),
+    ("transport", 0.74, "DIESEL FUEL", "description says diesel fuel"),
+    ("transport", 0.72, "YELLOW FLEET", "description says yellow fleet parts"),
+    ("transport", 0.66, "VEHICLE PARTS", "description says vehicle parts"),
+    ("instructional_materials", 0.7, "INSTRUCTIONAL AID", "description says instructional aids"),
+    ("instructional_materials", 0.64, "COPIER PAPER", "description says copier paper"),
+    ("facilities", 0.72, "BLDG MAINT", "description says building maintenance"),
+    ("facilities", 0.7, "BLDG IMP", "description says building improvement"),
+    ("facilities", 0.7, "SEWER LID", "description says a sewer lid repair"),
+    ("facilities", 0.68, "REPAIR/MAINT", "description says repair and maintenance"),
+    ("insurance", 0.8, "INSURANCE", "description says insurance"),
 ]
 
 

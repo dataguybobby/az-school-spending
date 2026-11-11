@@ -147,7 +147,7 @@ export default async function SpendingPage({
         <label className="text-sm">Category
           <select name="category" defaultValue={filters.category || ""} className="mt-1 w-full rounded-md border border-teal/15 px-3 py-2">
             <option value="">Any</option>
-            {["unclassified","instructional_materials","technology","facilities","transport","food","professional_services","student_support","staff_activities"].map((item) => (
+            {["unclassified","utilities","communications","insurance","instructional_materials","technology","facilities","transport","food","professional_services","student_support","staff_activities"].map((item) => (
               <option key={item} value={item}>{item.replaceAll("_", " ")}</option>
             ))}
           </select>

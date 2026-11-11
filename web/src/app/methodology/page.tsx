@@ -78,7 +78,7 @@ export default async function MethodologyPage() {
       <section className="rounded-xl border border-teal/10 bg-page p-5">
         <h2 className="font-extrabold text-2xl">Categories</h2>
         <p className="mt-2 max-w-3xl">
-          Categories use the ruleset <span className="font-semibold">phoenix-k12-neutral-2026.11.06</span>.
+          Categories use the ruleset <span className="font-semibold">phoenix-k12-neutral-2026.11.11</span>. Metered natural gas, water, sewer, and electricity are utilities.
           An account title printed on the row is stronger evidence than item text. Unclassified is the default.
           A match on item text is weak, and it does not prove why the district bought the item.
           Amazon is a vendor, not a category. These labels are not USFR codes.

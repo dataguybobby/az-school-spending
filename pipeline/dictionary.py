@@ -279,7 +279,7 @@ def _transformations() -> list[dict[str, object]]:
         {
             "id": "categories_and_items",
             "step": (
-                "Categories use phoenix-k12-neutral-2026.11.06. Account titles are stronger than item text. Unclassified is the default. "
+                "Categories use phoenix-k12-neutral-2026.11.11. Account titles are stronger than item text. Unclassified is the default. Metered natural gas, water, sewer, and electricity are utilities. "
                 "Amazon is a vendor, not a category. Categories are not USFR codes. "
                 "Item groups are reviewed description phrases with a label, evidence span, method, and confidence. A not-to-exceed figure in the text is not the line amount."
             ),
