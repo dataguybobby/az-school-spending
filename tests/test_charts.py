@@ -17,7 +17,7 @@ def test_chart_helpers_keep_gaps_and_printed_slices():
             "-e",
             r"""
 import { groupPrintedSlices, printedCategoryField, NO_CATEGORY_PRINTED, OTHER_AS_PRINTED } from "./web/src/lib/printed-slices.ts";
-import { spendWithGaps, enrollmentMarks, axisMonths, contiguousSpendSegments, schoolYearForMonth } from "./web/src/lib/spend-series.ts";
+import { spendWithGaps, enrollmentMarks, axisMonths, contiguousSpendSegments, schoolYearForMonth, axisTicks, monthsWithSpend } from "./web/src/lib/spend-series.ts";
 import { schoolYearForDate } from "./web/src/lib/enrollment-match.ts";
 
 if (printedCategoryField(true, true) !== "account_description") throw new Error("account field");
@@ -68,6 +68,14 @@ if (years.join() !== "2017-2018,2024-2025,2025-2026") throw new Error(years.join
 const axis = axisMonths(["2024-11", "2025-07", "2026-07"], marks.filter((mark) => mark.schoolYear >= "2024-2025"));
 if (axis[0] !== "2024-07" || !axis.includes("2024-10") || axis.at(-1) !== "2026-07") throw new Error(axis.join());
 if (axis.includes("2027-06")) throw new Error("enrollment was extended without a workbook");
+const ticks = axisTicks(0, 503432045, 4);
+if (ticks[0] !== 0 || ticks[ticks.length - 1] < 503432045) throw new Error("spend ticks " + ticks.join());
+if (ticks.length < 3) throw new Error("too few ticks");
+const shown = monthsWithSpend(
+  ["2024-07", "2024-11", "2025-07"],
+  [[{ month: "2024-07", amountCents: null }, { month: "2024-11", amountCents: 50 }, { month: "2025-07", amountCents: null }]],
+);
+if (shown.join() !== "2024-11") throw new Error("empty months stayed visible " + shown.join());
 """,
         ],
         cwd=ROOT,

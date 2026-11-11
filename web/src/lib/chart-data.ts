@@ -12,6 +12,7 @@ import {
 import {
   axisMonths,
   enrollmentMarks,
+  monthsBetween,
   spendWithGaps,
   type EnrollmentMark,
   type SpendPoint,
@@ -177,23 +178,11 @@ export function loadSpendChart(db: DatabaseSync, filters: Filters): SpendChart {
     ),
   );
   districts.sort((left, right) => (order.get(left.sourceId) ?? 99) - (order.get(right.sourceId) ?? 99) || left.district.localeCompare(right.district));
-  const allMonths = new Set<string>();
-  for (const district of districts) {
-    for (const point of district.points) allMonths.add(point.month);
-  }
-  const sortedMonths = [...allMonths].sort();
-  const months = sortedMonths.length === 0 ? [] : axisMonths(sortedMonths, districts.flatMap((district) => district.enrollment));
-  const aligned = districts.map((district) => ({
-    ...district,
-    points: spendWithGaps(
-      district.points.filter((point) => point.amountCents != null).map((point) => point.month),
-      new Map(district.points.filter((point) => point.amountCents != null).map((point) => [point.month, point.amountCents as number])),
-      months,
-    ),
-  }));
+  const covered = districts.flatMap((district) => district.points.map((point) => point.month)).sort();
+  const months = covered.length === 0 ? [] : monthsBetween(covered[0], covered[covered.length - 1]);
   return {
     months,
-    districts: aligned,
+    districts,
     undated: undated.map((row) => ({ district: row.entity_name, lineCount: row.line_count, amountCents: row.amount_cents })),
   };
 }

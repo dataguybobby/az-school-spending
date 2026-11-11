@@ -83,6 +83,34 @@ export function axisMonths(indexedMonths: string[], marks: EnrollmentMark[]): st
   return monthsBetween(sorted[0], sorted[sorted.length - 1]);
 }
 
+export function axisTicks(min: number, max: number, count = 4): number[] {
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return [0];
+  if (max < min) return axisTicks(max, min, count);
+  if (max === min) return [min];
+  const rough = (max - min) / Math.max(count, 1);
+  const power = 10 ** Math.floor(Math.log10(Math.max(rough, 1)));
+  const error = rough / power;
+  const step = (error >= 7.5 ? 10 : error >= 3.5 ? 5 : error >= 1.5 ? 2 : 1) * power;
+  const start = Math.floor((min + step * 1e-9) / step) * step;
+  const ticks: number[] = [];
+  for (let value = start; value <= max + step + step * 1e-6; value += step) {
+    const rounded = Math.round(value);
+    if (ticks[ticks.length - 1] !== rounded) ticks.push(rounded);
+    if (rounded >= max && ticks.length >= 2) break;
+  }
+  if (ticks.length === 0) ticks.push(Math.round(min), Math.round(max));
+  return ticks;
+}
+
+export function monthsWithSpend(
+  months: string[],
+  series: Array<Array<{ month: string; amountCents: number | null }>>,
+): string[] {
+  return months.filter((month) =>
+    series.some((points) => points.some((point) => point.month === month && point.amountCents != null)),
+  );
+}
+
 export function contiguousSpendSegments(points: SpendPoint[]): SpendPoint[][] {
   const segments: SpendPoint[][] = [];
   let current: SpendPoint[] = [];
