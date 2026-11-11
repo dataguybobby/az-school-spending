@@ -105,7 +105,7 @@ The source repository is https://github.com/dataguybobby/az-school-spending. The
 
 In the Vercel project settings:
 
-- Root Directory: `web`
+- Root Directory: leave empty (the repository root). `package.json` there depends on `next`, and `src` and `public` point at `web/src` and `web/public`.
 - Framework preset: Next.js
 - Node.js version: 22.x
 - Install command: `npm ci`
@@ -113,6 +113,8 @@ In the Vercel project settings:
 - Production branch: `master`
 - No environment variables and no database add-on
 
-`web/vercel.json` records the same install and build commands. Python is not installed or run on Vercel. Re-ingest stays on a local machine: run `python3 -m pipeline ingest`, then `node web/scripts/prepare-public-db.mjs`, then commit the updated `web/data/public/ledger.sqlite` before the next Vercel deployment.
+Root Directory `web` also builds, using `web/package.json` and `web/vercel.json`. Leave it empty to use the repository root, where `package.json` depends on `next`.
+
+`vercel.json` at the repository root records the install and build commands. Python is not installed or run on Vercel. Re-ingest stays on a local machine: run `python3 -m pipeline ingest`, then `node web/scripts/prepare-public-db.mjs`, then commit the updated `web/data/public/ledger.sqlite` before the next Vercel deployment.
 
 The hosted site is a read-only extract of screened lines. It is not an official government site, not a complete district census, and not proof that a payment settled.

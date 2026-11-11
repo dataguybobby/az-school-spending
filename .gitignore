@@ -24,6 +24,8 @@ data/quarantine/
 
 # Local Vercel link and Next build output
 .vercel/
+.next/
+next-env.d.ts
 web/.next/
 web/out/
 web/build/
