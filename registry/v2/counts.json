@@ -1,0 +1,23 @@
+{
+  "registry_rows": 53,
+  "source_status_counts": {
+    "confirmed_line_item": 5,
+    "indexed_lead": 1,
+    "confirmed_non_line_item_prior_pass": 1,
+    "indexed_aggregate_lead": 1,
+    "excluded_secondary_PO": 1,
+    "directory_entry_only": 1,
+    "approval_totals_only_prior_pass": 1,
+    "searched_no_source": 16,
+    "candidate_unsearched": 21,
+    "secondary_lead_only": 2,
+    "directory_content_obtained": 3
+  },
+  "confirmed_line_item_sources": 5,
+  "confirmed_line_item_entities": 5,
+  "original_pdf_documents_downloaded": 6,
+  "official_2026_candidate_lea_ids": 395,
+  "county_directory_listings": 78,
+  "exact_active_historical_scope_denominator": null,
+  "new_line_item_entities_since_first_pass": 1
+}

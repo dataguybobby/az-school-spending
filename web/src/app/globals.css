@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #f3ecdf;
+  --color-ink: #1c1712;
+  --color-copper: #9a3412;
+  --color-pine: #1f4d3a;
+  --font-sans: var(--font-sans-body);
+  --font-serif: var(--font-serif-display);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+input, select {
+  background: white;
+}

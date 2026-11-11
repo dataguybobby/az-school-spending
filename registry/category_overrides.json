@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "note": "Manual category overrides win over the ruleset. Keyed by line_id. Empty until a reviewer files one.",
+  "overrides": []
+}

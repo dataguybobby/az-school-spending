@@ -1,0 +1,32 @@
+# Nested git metadata
+.git/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Secrets and local environment
+.env
+.env.*
+*.pem
+
+# Raw PDFs, private/quarantined databases, and ingest logs.
+# The screened public snapshot at data/public/ledger.sqlite
+# and web/data/public/ledger.sqlite stays tracked.
+data/raw/
+data/private/
+data/logs/
+data/quarantine/
+**/*.pdf
+**/*quarantine*
+**/*check*number*
+**/*check_number*
+
+# Local Vercel link and Next build output
+.vercel/
+web/.next/
+web/out/
+web/build/
+
+# OS junk
+.DS_Store
