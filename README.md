@@ -4,7 +4,7 @@ Local, read-only ledger of Phoenix-area public K-12 accounts payable and voucher
 
 No scheduler is installed or enabled.
 
-The GitHub repository is https://github.com/dataguybobby/az-school-spending. The default branch is `master`.
+The GitHub repository is https://github.com/dataguybobby/az-school-spending. The app is on the `master` branch. GitHub still defaults to the placeholder `main` branch; this import did not have permission to change the default. Set the default branch to `master` before publishing.
 
 ## Setup
 
@@ -100,7 +100,7 @@ This workspace did not deploy the site. There is no production URL from this cha
 
 ## Deploy on Vercel later
 
-The source repository is https://github.com/dataguybobby/az-school-spending. The default branch is `master`. This import did not deploy the site, add a Vercel project, set a custom domain, or enable GitHub Pages. Connect Vercel to that GitHub repository when you are ready to publish, and use `master`.
+The source repository is https://github.com/dataguybobby/az-school-spending. Publish the `master` branch. This import did not deploy the site, add a Vercel project, set a custom domain, or enable GitHub Pages. Connect Vercel to that GitHub repository when you are ready to publish, and select `master`. If GitHub still shows `main` as the default branch, switch the default to `master` first.
 
 In the Vercel project settings:
 
