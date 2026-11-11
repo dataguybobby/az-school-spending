@@ -383,6 +383,22 @@ def _aggregations() -> list[dict[str, object]]:
             "surface": "web/src/app/page.tsx",
         },
         {
+            "id": "printed_category_pies",
+            "grain": "printed account description, or the DAC column when that source prints no account code",
+            "filter": "in_default_aggregate = 1 and the page filters. The inferred category column is not used. Vendor is not a category. Slices under 2 percent are grouped as Other (as printed). A blank printed field stays No category printed.",
+            "date_basis": "same as the page filter",
+            "public_wording": "Each pie is one district's screened lines, grouped by the category text printed on that source. Different districts are not merged into one taxonomy. A slice with no printed category is labeled No category printed.",
+            "surface": "web/src/components/category-pies.tsx",
+        },
+        {
+            "id": "spend_and_enrollment_lines",
+            "grain": "month of the selected date basis, plus October 1 enrollment for each comparable school year that overlaps an indexed month",
+            "filter": "in_default_aggregate = 1 and the page filters. A month with no indexed document on the selected date basis is null, not zero. Enrollment is drawn only when one comparable LEA total is loaded for that school year.",
+            "date_basis": "check date, voucher batch date, or check date when present otherwise voucher batch date",
+            "public_wording": "A gap is a month with no indexed document in this filter, not a month of zero spending. October 1 enrollment (ADE headcount, not ADM) is a separate series.",
+            "surface": "web/src/components/spend-enrollment-chart.tsx",
+        },
+        {
             "id": "october1_enrollment_comparison",
             "grain": "one indexed district and one school year, joined to a single ADE October 1 LEA total",
             "filter": "in_default_aggregate = 1; the school year comes from the selected date basis; 2017-2018 onward uses the LEA by Grade total; asterisks stay null and are not summed",

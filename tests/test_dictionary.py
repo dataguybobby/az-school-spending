@@ -71,6 +71,8 @@ def test_aggregation_wording_is_still_on_the_page_that_claims_it():
         "csv_export",
         "october1_enrollment_comparison",
         "october1_enrollment_series",
+        "printed_category_pies",
+        "spend_and_enrollment_lines",
     } <= ids
     for row in payload["aggregations"]:
         surface = (WEB / row["surface"].removeprefix("web/src/")).read_text(encoding="utf-8")
