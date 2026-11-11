@@ -43,6 +43,7 @@ export default async function MethodologyPage() {
         <h1 className="mt-2 font-extrabold text-4xl">Methodology</h1>
         <p className="mt-3 max-w-3xl text-base">
           Phoenix Dataworks publishes AZ School Spending. It is not an official government site, and it is not a district or state report.
+          The <Link className="font-semibold text-teal underline" href="/dictionary">data dictionary</Link> lists each source, transformation, and aggregation in this snapshot.
         </p>
       </header>
 

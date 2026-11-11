@@ -30,7 +30,7 @@ export default async function SourcesPage({
       <section className="rounded-xl border border-teal/10 bg-page p-5">
         <h1 className="font-extrabold text-3xl">Source catalog</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-teal/80">
-          Registry status and ingestion status are different. Confirmed means a line-item document was identified. Indexed means this run parsed it and the lines matched a printed total.
+          The <a className="font-semibold text-teal underline" href="/dictionary">data dictionary</a> is the map of sources, transformations, and aggregations. Registry status and ingestion status are different. Confirmed means a line-item document was identified. Indexed means this run parsed it and the lines matched a printed total.
           Searched with no source is a limited search result, not proof that no ledger exists. Unsearched means no query was recorded. This is not a complete metro census, and no coverage percentage is shown.
         </p>
         <p className="mt-3 text-sm">

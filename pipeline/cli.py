@@ -8,6 +8,7 @@ import sqlite3
 from pathlib import Path
 
 from pipeline.csvsafe import write_csv, write_xlsx
+from pipeline.dictionary import build_dictionary, write_dictionary
 from pipeline.discover import discover
 from pipeline.ingest import run_ingest
 from pipeline.scout import scout
@@ -20,6 +21,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("discover")
     sub.add_parser("scout")
+    sub.add_parser("dictionary")
     sub.add_parser("fetch")
     sub.add_parser("extract")
     sub.add_parser("normalize")
@@ -43,6 +45,20 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "scout":
         print(json.dumps(scout(), indent=2))
+        return 0
+    if args.command == "dictionary":
+        payload = build_dictionary()
+        registry_path, web_path = write_dictionary(payload)
+        snapshot = payload["snapshot"]
+        print(json.dumps({
+            "registry": str(registry_path),
+            "web": str(web_path),
+            "documents": len(payload["documents"]),
+            "sources": len(payload["sources"]),
+            "screened_line_count": snapshot["screened_line_count"],
+            "screened_amount_cents": snapshot["screened_amount_cents"],
+            "enrollment": payload["enrollment"]["status"],
+        }, indent=2))
         return 0
     if args.command in {"fetch", "extract", "normalize", "classify", "index", "ingest"}:
         report = run_ingest()

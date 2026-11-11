@@ -24,7 +24,7 @@ export function GET(request: NextRequest) {
   return new Response(`${header}\n${body}\n`, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": "attachment; filename=metro-school-ledger.csv",
+      "Content-Disposition": "attachment; filename=az-school-spending.csv",
     },
   });
 }
