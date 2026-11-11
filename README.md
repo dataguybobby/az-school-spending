@@ -33,7 +33,7 @@ python3 -m pytest tests/test_ledger.py -q
 
 `discover` reads at most 8 registry discovery URLs, saves same-host anchors, and does not ingest them.
 
-Local ingest writes `data/public/ledger.sqlite`. The Next app does not read that path at runtime. Copy the screened file into the web bundle, then start the app:
+Local ingest writes `data/public/ledger.sqlite`. `python3 -m pipeline historic` then merges the screened historic public extract in `registry/historic/` beside those lines. A document already stored by id or SHA-256 is skipped. The Next app does not read `data/public` at runtime. Copy the screened file into the web bundle, then start the app:
 
 ```bash
 node web/scripts/prepare-public-db.mjs

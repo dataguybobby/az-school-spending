@@ -89,4 +89,13 @@ const filled = db.prepare(
   "SELECT COUNT(*) AS n FROM october1_enrollment WHERE total_as_printed IN ('*', '') AND total_oct1_enrollment IS NOT NULL",
 ).get();
 if (filled.n !== 0) fail("suppressed October 1 total was filled");
+const gate = db.prepare(
+  `SELECT COUNT(*) AS n FROM documents d
+   WHERE d.indexed = 1 AND d.withheld_cents IS NOT NULL AND d.printed_total_cents IS NOT NULL
+   AND (
+     (SELECT COALESCE(SUM(amount_cents), 0) FROM lines WHERE document_id = d.document_id AND in_default_aggregate = 1)
+     + d.withheld_cents + COALESCE(d.revenue_excluded_cents, 0)
+   ) != d.printed_total_cents`,
+).get();
+if (gate.n !== 0) fail(`reconcile gate failed for ${gate.n} indexed documents`);
 console.log(`public ledger ok: ${bundled}`);

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pipeline.csvsafe import write_csv, write_xlsx
 from pipeline.dictionary import build_dictionary, write_dictionary
+from pipeline.historic import load_historic
 from pipeline.enrollment import load_october1_enrollment
 from pipeline.discover import discover
 from pipeline.ingest import run_ingest
@@ -24,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("discover")
     sub.add_parser("scout")
     sub.add_parser("dictionary")
+    sub.add_parser("historic")
     sub.add_parser("enrollment")
     sub.add_parser("fetch")
     sub.add_parser("extract")
@@ -60,6 +62,20 @@ def main(argv: list[str] | None = None) -> int:
             "web": str(web_path),
             **summary,
             "enrollment": payload["enrollment"]["status"],
+        }, indent=2))
+        return 0
+    if args.command == "historic":
+        connection = connect(public_db())
+        summary = load_historic(connection)
+        connection.close()
+        payload = build_dictionary()
+        registry_path, web_path = write_dictionary(payload)
+        print(json.dumps({
+            "registry": str(registry_path),
+            "web": str(web_path),
+            **summary,
+            "screened_line_count": payload["snapshot"]["screened_line_count"],
+            "screened_amount_cents": payload["snapshot"]["screened_amount_cents"],
         }, indent=2))
         return 0
     if args.command == "dictionary":
