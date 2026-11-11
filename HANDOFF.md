@@ -28,8 +28,10 @@ That downloads nine public document URLs, checks SHA-256, and rebuilds the publi
 ## Tests
 
 ```bash
-python3 -m pytest tests/test_ledger.py -q
+python3 -m pytest tests/test_ledger.py tests/test_enrollment.py tests/test_dictionary.py -q
 ```
+
+October 1 enrollment is a separate comparison in the public database. `python3 -m pipeline enrollment` reloads it. A full `python3 -m pipeline ingest` reloads it after rebuilding spending and does not change screened line amounts.
 
 Synthetic privacy, overlap, revision, and duplicate-line tests run without PDFs. Official-PDF assertions skip when `data/raw` is absent. Checks against `data/public/ledger.sqlite` run when that file is present.
 

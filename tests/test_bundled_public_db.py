@@ -18,6 +18,14 @@ ALLOWED = {
     "lines_fts_data",
     "lines_fts_docsize",
     "lines_fts_idx",
+    "october1_enrollment",
+    "october1_extracts",
+    "october1_focus",
+    "october1_index_leas",
+    "october1_screened_by_school_year",
+    "october1_screened_undated",
+    "october1_unmatched_charters",
+    "october1_workbooks",
     "overlap_findings",
     "sources",
 }
@@ -84,6 +92,20 @@ def test_bundled_database_has_no_private_schema_and_keeps_fixtures():
         """
     ).fetchone()[0]
     assert vendor_sensitive == 0
+    screened = connection.execute(
+        "SELECT COUNT(*), COALESCE(SUM(amount_cents), 0) FROM lines WHERE in_default_aggregate = 1"
+    ).fetchone()
+    assert screened == (14387, 2155944882)
+    susd = connection.execute(
+        """SELECT total_oct1_enrollment FROM october1_enrollment
+           WHERE school_year = '2025-2026' AND lea_entity_id = '4240' AND same_basis_as_2017_18_plus = 1"""
+    ).fetchone()
+    assert susd == (20180,)
+    filled = connection.execute(
+        """SELECT COUNT(*) FROM october1_enrollment
+           WHERE total_as_printed IN ('*', '') AND total_oct1_enrollment IS NOT NULL"""
+    ).fetchone()[0]
+    assert filled == 0
 
 
 def test_prepare_script_opens_fts():

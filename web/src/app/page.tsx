@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { BarChart } from "@/components/charts";
+import { CategoryPies } from "@/components/category-pies";
 import { DistrictBars } from "@/components/district-bars";
+import { SpendEnrollmentChart } from "@/components/spend-enrollment-chart";
+import { EnrollmentComparison } from "@/components/enrollment-comparison";
 import { StoryCards } from "@/components/story-cards";
 import { VendorTreemap } from "@/components/treemap";
 import { ButtonLink } from "@/components/ui/button";
 import { activeSort, dateBasis, monthExpr, openDb, orderBy, where, type DateBasis, type Filters, type SortDirection, type SortKey } from "@/lib/db";
 import { basisLabel } from "@/lib/basis";
+import { loadDistrictPies, loadSpendChart } from "@/lib/chart-data";
+import { hasNarrowingFilter, loadComparisons } from "@/lib/enrollment";
 import { dollars } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -92,6 +97,9 @@ export default async function SpendingPage({
     if (value && key !== "page") exportQuery.set(key, value);
   }
   const pages = Math.max(Math.ceil(totals.n / limit), 1);
+  const enrollmentRows = loadComparisons(db, filters);
+  const pies = loadDistrictPies(db, filters);
+  const spendChart = loadSpendChart(db, filters);
 
   return (
     <div className="space-y-6">
@@ -187,8 +195,15 @@ export default async function SpendingPage({
         />
       </div>
 
+      <CategoryPies pies={pies} />
+      <SpendEnrollmentChart chart={spendChart} />
       <VendorTreemap slices={treemap} />
       <DistrictBars rows={districts} />
+      <EnrollmentComparison
+        rows={enrollmentRows}
+        basisName={basisLabel(basis)}
+        filterNote={hasNarrowingFilter(filters) ? "The amounts in this section follow the current filter. The October 1 headcount stays the official district total." : null}
+      />
       <StoryCards stories={stories} />
 
       <section className="rounded-xl border border-teal/10 bg-page p-4">

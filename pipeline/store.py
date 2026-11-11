@@ -5,6 +5,8 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+from pipeline.enrollment import ENROLLMENT_SCHEMA
+
 PUBLIC_SCHEMA = """
 CREATE TABLE sources (
   source_id TEXT PRIMARY KEY,
@@ -127,6 +129,8 @@ CREATE TABLE overlap_findings (
   note TEXT
 );
 """
+
+PUBLIC_SCHEMA = PUBLIC_SCHEMA + ENROLLMENT_SCHEMA
 
 PRIVATE_SCHEMA = """
 CREATE TABLE artifacts (
